@@ -1,3 +1,4 @@
+using Xunit;
 using Sferix.SPO.Provider.SQLite;
 
 namespace Sferix.SPO.Tests.SQLite;
