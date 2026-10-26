@@ -1,0 +1,14 @@
+name: Feature request
+description: Propose a general-purpose capability
+title: "feature: "
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: Use case and problem
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Proposed acceptance criteria and provider impact

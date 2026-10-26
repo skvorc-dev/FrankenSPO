@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "status": "pre-implementation",
+  "release": null,
+  "providers": {
+    "sqlite": "planned",
+    "postgresql": "planned"
+  },
+  "features": {
+    "source_generated_metadata": "planned",
+    "objectspace_crud": "planned",
+    "transactions": "planned",
+    "soft_delete": "planned",
+    "audit_basics": "planned",
+    "sql_injection_regressions": "planned",
+    "associations": "planned",
+    "native_abi": "planned",
+    "middle_tier": "external-planned",
+    "web_api": "external-planned"
+  },
+  "note": "Statuses are declarations, not validation. Do not treat planned features as available."
+}

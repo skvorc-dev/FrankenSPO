@@ -1,0 +1,18 @@
+name: Bug report
+description: Report a reproducible defect
+title: "bug: "
+labels: []
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem and expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction and environment
+      description: Include provider, runtime, relevant version, minimal reproduction; redact secrets.
+    validations:
+      required: true
