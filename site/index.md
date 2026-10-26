@@ -13,7 +13,5 @@ Start with the [development status](status.md) and the [documentation guide](set
 ## FrankenSPO family
 
 - [FrankenSPO — Core ORM](https://frankenspo.sferix.app/)
-- [MiddleTier — remote ObjectSpace](https://frankenspo-server.sferix.app/)
+- [FrankenSPO MiddleTier Server — remote ObjectSpace](https://frankenspo-server.sferix.app/)
 - [WebAPI — ASP.NET Core APIs](https://frankenspo-webapi.sferix.app/)
-
-These links become active after DNS and GitHub Pages setup is completed for each repository.

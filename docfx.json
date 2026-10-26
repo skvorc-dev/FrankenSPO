@@ -18,13 +18,18 @@
     ],
     "dest": "_site",
     "template": [
-      "default"
+      "default",
+      "modern"
     ],
     "globalMetadata": {
       "_appTitle": "FrankenSPO",
       "_appName": "FrankenSPO",
       "_enableSearch": true,
-      "_appFooter": "FrankenSPO by Sferix · Early development"
+      "_appFooter": "FrankenSPO by Sferix · Early development",
+      "_appLogoPath": "assets/logo.svg",
+      "_appLogoUrl": "/",
+      "_appFaviconPath": "assets/favicon.svg",
+      "_lang": "en"
     }
   }
 }
