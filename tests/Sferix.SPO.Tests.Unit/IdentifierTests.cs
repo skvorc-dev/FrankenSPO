@@ -1,3 +1,4 @@
+using Xunit;
 using Sferix.SPO.Abstractions.Metadata;
 using Sferix.SPO.Core.Sql;
 
