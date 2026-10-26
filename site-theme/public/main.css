@@ -1,0 +1,5 @@
+/* Shared FrankenSPO documentation header. Preserve compact logos at any viewport width. */
+:root { --bs-link-color-rgb: 20, 207, 196; }
+header .navbar-brand img, header nav img, .navbar-brand img, .navbar-brand .logo { width: 32px !important; height: 32px !important; max-width: 32px !important; max-height: 32px !important; object-fit: contain; flex-shrink: 0; }
+header .navbar-brand, header nav .navbar-brand { display: inline-flex; align-items: center; gap: .6rem; }
+header .navbar-brand .name, header .navbar-brand span { overflow-wrap: normal; }
