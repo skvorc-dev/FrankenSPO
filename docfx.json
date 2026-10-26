@@ -1,0 +1,30 @@
+{
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.md"
+        ],
+        "src": "site"
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "assets/**"
+        ],
+        "src": "site"
+      }
+    ],
+    "dest": "_site",
+    "template": [
+      "default"
+    ],
+    "globalMetadata": {
+      "_appTitle": "FrankenSPO",
+      "_appName": "FrankenSPO",
+      "_enableSearch": true,
+      "_appFooter": "FrankenSPO by Sferix · Early development"
+    }
+  }
+}
