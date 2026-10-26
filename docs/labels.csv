@@ -1,0 +1,19 @@
+name,color,description
+type:bug,D73A4A,Bug or regression
+type:feature,7057FF,Feature work
+type:docs,0075CA,Documentation and examples
+type:security,B60205,Security related
+type:tests,0E8A16,Tests and conformance
+status:blocked,C2E0C6,Blocked by prerequisite
+priority:P0,BD1E1E,Critical priority
+priority:P1,EF6B2E,High priority
+priority:P2,FBCA04,Normal priority
+priority:P3,0E8A16,Low priority
+area:core,1D76DB,Persistence core
+area:providers,1D76DB,Database providers
+area:query,1D76DB,Query engine
+area:tracking,1D76DB,Change tracking
+area:security,1D76DB,Security enforcement
+area:docs,1D76DB,Documentation
+area:samples,1D76DB,Examples and onboarding
+area:generator,1D76DB,Source generator

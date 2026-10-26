@@ -1,19 +1,27 @@
-# GitHub organization and repository configuration
+# Complete GitHub administration setup
 
-**Tracked files do not automatically create GitHub Projects, repository milestones, custom labels, GitHub organization topics, branch protection, security toggles or a published package.** Configure those separately in repository settings or via an authenticated GitHub CLI.
+Some GitHub settings are **not set by repository files**. The connected repository tool can commit files and create issues, but does not expose writing organization Projects, repository milestones, labels, repo rulesets, CodeQL settings or metadata. These must be configured through GitHub UI or an authorized GitHub CLI.
 
-## Main project
+## One-time CLI bootstrap
 
-Create organizational GitHub Project **FrankenSPO Roadmap**, with views Backlog, Development, Architecture, Provider Matrix, Documentation, Release Roadmap. Fields: Status (Backlog, Ready, In Progress, Review, Verification, Done), Priority (P0–P3), Area, Iteration, Target Release.
+Install GitHub CLI, run `gh auth login`, then from this repository:
 
-## Repository milestones
+```bash
+bash scripts/bootstrap-github-admin.sh
+```
 
-FrankenSPO phases: P0 Foundation, P1 SQLite PoC, P2 Developer Preview, P3 PostgreSQL Conformance, P4 General-purpose query/relationship growth. No speculative calendar deadlines.
+The script creates labels and milestones idempotently in the three product repos. It does **not** create a board, branch rulesets, security settings or silently change visibility. Verify results in the GitHub UI.
 
-For each of MiddleTier and WebAPI, create only **M0 Development Readiness**, linking its existing issue #1. Do not create fake implementation schedules.
+## GitHub Project
 
-## Branch and security settings
+Create one organization Project named **FrankenSPO Roadmap**. Use views: Backlog, Active Development, Architecture, Providers, Documentation, Release Roadmap. Add custom fields Status (Backlog / Ready / In Progress / Review / Verification / Done), Priority P0-P3, Area, and Target Release; connect the main repository. No speculative deadlines.
 
-Protect `main` from force pushes and deletion; require pull requests and passing checks once workflows report their actual names. Start with CI checks rather than imposing nonexistent status checks. Verify Actions permissions, Dependabot, private vulnerability reporting and CodeQL availability/eligibility through GitHub settings. CodeQL source scanning should activate once eligible source exists.
+## Assign issues
 
-Use `gh auth login` locally, then a GitHub CLI or browser session for settings not provided by the connected tools. Do not post credentials into issues or chats.
+P0: FrankenSPO issues #2, #3, #4. P1: #5, #6, #7. The umbrella #1 spans P0-P1. #8 remains future work. MiddleTier issue #1 and WebApi issue #1 belong to their M0 readiness milestone.
+
+## Repository rules / security
+
+Protect `main`: prevent deletions and force pushes; require pull requests and passing status checks after the actual workflow check names appear. Ensure CodeQL is configured when source exists and GitHub's security features permit it. Verify dependabot, private vulnerability reporting, Actions permissions, and branch ruleset eligibility. Organization policies should be configured separately.
+
+Do not enable branch checks that do not yet exist, or the repository can become impossible to merge. Publication of NuGet packages and GitHub Releases is deferred until reproducible, tested code exists.

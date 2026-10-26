@@ -1,26 +1,24 @@
+<p align="center"><img src="branding/banner.svg" alt="FrankenSPO — Persistence, Reimagined" width="100%"/></p>
+
 # FrankenSPO
 
-**FrankenSPO by Sferix** is an early-stage, modular, general-purpose object-relational mapping (ORM) project for .NET.
+**FrankenSPO by Sferix** is an early-stage, MIT-licensed, modular, general-purpose .NET object-relational mapping project.
 
-> **Status: planning and initial development.** No working ORM package or production compatibility is claimed yet.
+> **Pre-implementation:** This repository does not yet provide an installed ORM runtime or production-ready package. See [verified feature declarations](docs/compatibility/features.json).
 
-## Intended design
+## Planned architecture
 
-- C# / .NET 10; generated metadata with a Native AOT-oriented design.
-- Provider-independent persistence core, starting with SQLite and adding PostgreSQL.
-- ObjectSpace, change tracking, queries, validation, transactions, audit fields and SoftDelete.
-- Optional features and providers via separate packages; no required application-specific identity system.
-- Safe SQL generation with bound values and metadata-validated SQL identifiers.
+C# / .NET 10, source-generated metadata, provider-neutral ObjectSpace/UnitOfWork, SQLite first, PostgreSQL next; secure query compilation with bound parameters, tracking, transaction semantics, SoftDelete and basic audit. Optional providers and extensions remain separate. Applications may supply their own security and identity systems.
 
-## Getting started
+## Development
 
-Implementation instructions will appear here as working, tested packages and examples become available. See [roadmap](docs/ROADMAP.md), [architecture](docs/architecture/OVERVIEW.md) and [capability manifest](docs/compatibility/features.json).
+Read [architecture](docs/architecture/OVERVIEW.md), [roadmap](docs/ROADMAP.md), [developer workflow](docs/DEVELOPMENT_WORKFLOW.md), [agent guidance](AGENTS.md) and [current issues](https://github.com/skvorc-dev/FrankenSPO/issues). CI will test code when the first .NET solution is committed.
 
-## Future companion projects
+## Companion projects
 
-- [FrankenSPO.MiddleTier](https://github.com/skvorc-dev/FrankenSPO.MiddleTier) — planned remote ObjectSpace infrastructure.
-- [FrankenSPO.WebApi](https://github.com/skvorc-dev/FrankenSPO.WebApi) — planned model-driven ASP.NET Core API server.
+- [FrankenSPO.MiddleTier](https://github.com/skvorc-dev/FrankenSPO.MiddleTier) — planned remote ObjectSpace protocol and client/server integration.
+- [FrankenSPO.WebApi](https://github.com/skvorc-dev/FrankenSPO.WebApi) — planned ASP.NET Core model-driven endpoint generation and OpenAPI/OData integration.
 
-## Contributing and security
+## Public contributions
 
-Please see [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md). Licensed under [MIT](LICENSE).
+See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), [MIT License](LICENSE) and [third-party notices](THIRD-PARTY-NOTICES.md). Nothing here implies a registered company or any unpublished customer/application integration.
