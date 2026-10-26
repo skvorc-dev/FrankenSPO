@@ -1,0 +1,10 @@
+name: Documentation request
+description: Request or correct documentation
+title: "docs: "
+body:
+  - type: textarea
+    id: details
+    attributes:
+      label: What needs documenting?
+    validations:
+      required: true

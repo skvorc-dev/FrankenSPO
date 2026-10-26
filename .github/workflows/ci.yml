@@ -1,0 +1,39 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/validate_repository.py
+  dotnet:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Build and test when solution exists
+        shell: pwsh
+        run: |
+          $solution = Get-ChildItem -Path . -Recurse -File | Where-Object { $_.Extension -in '.sln', '.slnx' } | Select-Object -First 1
+          if ($null -eq $solution) { Write-Host 'No solution committed yet; build gate activates when it exists.'; exit 0 }
+          dotnet restore $solution.FullName
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet build $solution.FullName --configuration Release --no-restore
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          dotnet test $solution.FullName --configuration Release --no-build
+          exit $LASTEXITCODE

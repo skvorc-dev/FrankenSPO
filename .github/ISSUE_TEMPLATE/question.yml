@@ -1,0 +1,10 @@
+name: Question
+description: Ask about development or usage
+title: "question: "
+body:
+  - type: textarea
+    id: details
+    attributes:
+      label: Question and context
+    validations:
+      required: true
