@@ -7,7 +7,8 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | Agent | Branch | Since |
 |------|-------|-------|--------|-------|
-| S-02 Provider contract, capabilities, activation, then S-02b (chain) | #5 | sonnet-2 | `task/Sonnet_S-02_<time>` | 2026-10-27 |
+| S-02b Neutral schema model, SQLite DDL (chain) | #5 | sonnet-2 | `task/Sonnet_S-02b_<time>` | 2026-10-27 |
+| S-11 Policy requirements fail closed | #6 | haiku-2 | `task/Haiku_S-11_<time>` | 2026-10-27 |
 
 ## Review
 
@@ -19,12 +20,13 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 | Card | Issue | Size |
 |------|-------|------|
 
-Next when their dependency merges: S-11 (haiku-2, after S-02), S-14 localization audit (haiku-2, after S-02b and S-11).
+Next when their dependency merges: S-14 localization audit (haiku-2, after S-02b and S-11).
 
 ## Done (this phase)
 
 | Card | Issue | PR |
 |------|-------|----|
+| S-02 Provider contract, capabilities, activation (sonnet-2) | #5 | #66 |
 | S-12 Generator diagnostics in en, de, hr, es (sonnet-2) | #5 | #64 |
 | S-13 Localization baseline: en, de, hr, es and CI check (haiku-2) | #5 | #61 |
 | S-01b Generator edge cases (sonnet-2) | #5 | #59 |

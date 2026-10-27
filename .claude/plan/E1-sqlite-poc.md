@@ -42,7 +42,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Files: `src/Sferix.SPO.Generators/**`, `tests/Sferix.SPO.Tests.Generators/**`
 
 ### S-02 · Provider contract, capabilities and model activation
-- Issue: #5 · Size: M · Status: In Progress (sonnet-2)
+- Issue: #5 · Size: M · Status: Done (PR #66, sonnet-2)
 - Goal: a provider declares its capabilities, Core builds a compiled model from generated metadata and rejects it at
   activation when a mandatory capability is missing (D-33, D-34, D-39); metadata carries the storage type of enums.
 - Acceptance:
@@ -74,7 +74,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
   here is the one later cards copy; keep it small (one `.resx` per assembly, no localization framework).
 
 ### S-02b · Neutral schema model, SQLite DDL, create and reopen
-- Issue: #5 · Size: M · Status: Backlog · after S-02
+- Issue: #5 · Size: M · Status: In Progress (sonnet-2)
 - Goal: create and reopen a SQLite database with deterministic first-time schema and validation against the model.
 - Acceptance:
   - [ ] `Sferix.SPO.Abstractions/Schema`: immutable `SchemaModel` (tables, columns, optional primary-key columns)
@@ -82,6 +82,8 @@ the main agent completes each card (files, exact acceptance) before moving it to
         enums map to Int32 or Int64 by `EnumUnderlyingType`; `ISpoSchemaDialect` (separate file) renders DDL
   - [ ] `Sferix.SPO.Core/Schema`: builds the schema model from a `CompiledModel` (table = entity class name,
         column = property name, both through `SqlIdentifier`); output is identical across runs (ordered by field number)
+  - [ ] Two entities whose class names give the same table name (e.g. `A.Customer`, `B.Customer`) fail when the
+        schema model is built, before anything is written, with a coded `SpoModelException` (D-42); test
   - [ ] SQLite dialect: Boolean/Int32/Int64 → INTEGER, Double → REAL, Decimal/String/DateTimeOffset → TEXT,
         Guid/Binary → BLOB, DateTime → INTEGER; NOT NULL from nullability; quoted identifiers; DDL in one transaction
   - [ ] Ensure-schema: empty database → creates all tables; existing database that matches → no change; missing
@@ -89,7 +91,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
         column, nothing changed (no migrations, providers.md); message from `.resx` (en, de, hr, es) with a stable code (D-40, D-41)
   - [ ] Tests on a real temp-file database: create, reopen, each mismatch; generated DDL snapshot per storage type
   - [ ] Build 0 warnings; CI green
-- Files: `src/Sferix.SPO.Abstractions/Schema/**`, `src/Sferix.SPO.Core/Schema/**`,
+- Files: `src/Sferix.SPO.Abstractions/Schema/**`, `src/Sferix.SPO.Core/Schema/**`, `src/Sferix.SPO.*/Resources/**`,
   `src/Sferix.SPO.Provider.SQLite/Schema/**`, `tests/Sferix.SPO.Tests.SQLite/**`
 - Not in scope: primary key from `SPOBaseObject` (S-03 sets it), indexes, foreign keys between entities, migrations.
 - Notes: D-32 (63-character identifiers), D-34.
@@ -123,7 +125,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Goal: integer version column on `SPOBaseObject`, incremented per update; conflict exception, nothing written (D-31).
 
 ### S-11 · Policy requirements fail closed at activation
-- Issue: #6 · Size: S · Status: Backlog · after S-02
+- Issue: #6 · Size: S · Status: In Progress (haiku-2)
 - Goal: a model that requires tenant, row or field policy enforcement is rejected when it is activated, because no
   P1 provider can enforce it (D-33).
 - Acceptance:
@@ -136,7 +138,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Files: `src/Sferix.SPO.Abstractions/Providers/SpoCapability.cs`, `src/Sferix.SPO.Core/Model/**`,
   `tests/Sferix.SPO.Tests.Unit/**`, `docs/architecture/query-security.md`
 - Not in scope: policy attributes, a policy engine, raw SQL rejection (no raw SQL in P1).
-- Notes: D-33, D-39. Does not touch the files of S-02b.
+- Notes: D-33, D-39, D-42. Does not touch the files of S-02b; `src/Sferix.SPO.Core/Model/**` is yours while S-02b runs.
 
 ### S-12 · Generator diagnostics from resources
 - Issue: #5 · Size: S · Status: Done (PR #64, sonnet-2)
@@ -181,11 +183,14 @@ the main agent completes each card (files, exact acceptance) before moving it to
         log output; each one is either a resource or listed with a reason (e.g. parameter names)
   - [ ] Read the de, hr, es texts against en: same meaning, same placeholders, consistent terms; fix wording
   - [ ] `scripts/validate_repository.py` also fails when a culture value's `{n}` placeholders differ from the neutral's
+  - [ ] `EntityId`'s constructor message moves to `AbstractionsMessages` (four languages)
+  - [ ] `docs/error-codes.md` lists `SPO1001`… with exception type and meaning (D-42)
   - [ ] `<NeutralResourcesLanguage>`/`<NeutralLanguage>en</NeutralLanguage>` set once in `Directory.Build.props`, so
         English is served from the main assembly without probing for an `en` satellite
   - [ ] Findings that need code changes outside resources: listed in the PR for the main agent, not fixed
   - [ ] `python3 scripts/validate_repository.py` passes; build 0 warnings; CI green
-- Files: `src/**/Resources/**`, `scripts/validate_repository.py`, `Directory.Build.props`
+- Files: `src/**/Resources/**`, `src/Sferix.SPO.Abstractions/Metadata/EntityId.cs`, `scripts/validate_repository.py`,
+  `Directory.Build.props`, `docs/error-codes.md`
 - Notes: D-40, D-41. Each card localizes its own strings; this card only catches what was missed.
 
 ### S-07 · SQL injection regression suite
