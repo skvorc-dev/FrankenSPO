@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SPO0001_Title" xml:space="preserve">
+    <value>Entitätsklasse muss partial sein</value>
+  </data>
+  <data name="SPO0001_Message" xml:space="preserve">
+    <value>Die Entität '{0}' und jede Klasse, die sie enthält, muss als 'partial' deklariert sein</value>
+  </data>
+  <data name="SPO0002_Title" xml:space="preserve">
+    <value>Entitäts-ID fehlt oder ist keine GUID</value>
+  </data>
+  <data name="SPO0002_Message" xml:space="preserve">
+    <value>Die Entität '{0}' benötigt [SpoEntity] mit einer nicht leeren GUID-Zeichenfolge, zum Beispiel [SpoEntity("{1}")]</value>
+  </data>
+  <data name="SPO0003_Title" xml:space="preserve">
+    <value>Entitäts-ID doppelt verwendet</value>
+  </data>
+  <data name="SPO0003_Message" xml:space="preserve">
+    <value>Die Entitäts-ID {1} wird von mehr als einer Entität verwendet, darunter '{0}'</value>
+  </data>
+  <data name="SPO0004_Title" xml:space="preserve">
+    <value>Ungültige [SpoField]-Nummer</value>
+  </data>
+  <data name="SPO0004_Message" xml:space="preserve">
+    <value>Die Eigenschaft '{0}' hat [SpoField({1})]: {2}</value>
+  </data>
+  <data name="SPO0004_ReasonNotPositive" xml:space="preserve">
+    <value>die Nummer muss positiv sein</value>
+  </data>
+  <data name="SPO0004_ReasonDuplicate" xml:space="preserve">
+    <value>die Nummer wird in dieser Entität bereits verwendet</value>
+  </data>
+  <data name="SPO0005_Title" xml:space="preserve">
+    <value>Nicht unterstützter Eigenschaftstyp</value>
+  </data>
+  <data name="SPO0005_Message" xml:space="preserve">
+    <value>Die Eigenschaft '{0}' hat den Typ '{1}', der für die Persistierung nicht unterstützt wird</value>
+  </data>
+  <data name="SPO0006_Title" xml:space="preserve">
+    <value>Persistente Eigenschaft benötigt Getter und Setter</value>
+  </data>
+  <data name="SPO0006_Message" xml:space="preserve">
+    <value>Die Eigenschaft '{0}' hat [SpoField], aber es fehlt ein Getter oder ein Setter</value>
+  </data>
+  <data name="SPO0007_Title" xml:space="preserve">
+    <value>Generische Entität nicht unterstützt</value>
+  </data>
+  <data name="SPO0007_Message" xml:space="preserve">
+    <value>Die Entität '{0}' oder eine Klasse, die sie enthält, ist generisch, was nicht unterstützt wird</value>
+  </data>
+  <data name="SPO0008_Title" xml:space="preserve">
+    <value>Entität muss eine Klasse sein</value>
+  </data>
+  <data name="SPO0008_Message" xml:space="preserve">
+    <value>[SpoEntity] auf '{0}' wird nicht unterstützt: Nur eine einfache 'class' kann eine Entität sein, kein record, struct oder record struct</value>
+  </data>
+</root>

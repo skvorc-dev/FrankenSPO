@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SPO0001_Title" xml:space="preserve">
+    <value>Klasa entiteta mora biti partial</value>
+  </data>
+  <data name="SPO0001_Message" xml:space="preserve">
+    <value>Entitet '{0}' i svaka klasa koja je sadrži moraju biti deklarirani kao 'partial'</value>
+  </data>
+  <data name="SPO0002_Title" xml:space="preserve">
+    <value>ID entiteta nedostaje ili nije GUID</value>
+  </data>
+  <data name="SPO0002_Message" xml:space="preserve">
+    <value>Entitet '{0}' zahtijeva [SpoEntity] s nepraznim GUID nizom, na primjer [SpoEntity("{1}")]</value>
+  </data>
+  <data name="SPO0003_Title" xml:space="preserve">
+    <value>ID entiteta upotrijebljen dvaput</value>
+  </data>
+  <data name="SPO0003_Message" xml:space="preserve">
+    <value>ID entiteta {1} koristi više od jednog entiteta, uključujući '{0}'</value>
+  </data>
+  <data name="SPO0004_Title" xml:space="preserve">
+    <value>Neispravan broj [SpoField]</value>
+  </data>
+  <data name="SPO0004_Message" xml:space="preserve">
+    <value>Svojstvo '{0}' ima [SpoField({1})]: {2}</value>
+  </data>
+  <data name="SPO0004_ReasonNotPositive" xml:space="preserve">
+    <value>broj mora biti pozitivan</value>
+  </data>
+  <data name="SPO0004_ReasonDuplicate" xml:space="preserve">
+    <value>broj je već upotrijebljen u ovom entitetu</value>
+  </data>
+  <data name="SPO0005_Title" xml:space="preserve">
+    <value>Nepodržani tip svojstva</value>
+  </data>
+  <data name="SPO0005_Message" xml:space="preserve">
+    <value>Svojstvo '{0}' ima tip '{1}' koji nije podržan za trajnu pohranu</value>
+  </data>
+  <data name="SPO0006_Title" xml:space="preserve">
+    <value>Trajno svojstvo zahtijeva getter i setter</value>
+  </data>
+  <data name="SPO0006_Message" xml:space="preserve">
+    <value>Svojstvo '{0}' ima [SpoField], ali nema getter ili setter</value>
+  </data>
+  <data name="SPO0007_Title" xml:space="preserve">
+    <value>Generički entitet nije podržan</value>
+  </data>
+  <data name="SPO0007_Message" xml:space="preserve">
+    <value>Entitet '{0}' ili klasa koja ga sadrži je generička, što nije podržano</value>
+  </data>
+  <data name="SPO0008_Title" xml:space="preserve">
+    <value>Entitet mora biti klasa</value>
+  </data>
+  <data name="SPO0008_Message" xml:space="preserve">
+    <value>[SpoEntity] na '{0}' nije podržan: entitet može biti samo obična 'class', a ne record, struct ili record struct</value>
+  </data>
+</root>
