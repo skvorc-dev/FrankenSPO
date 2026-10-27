@@ -61,4 +61,7 @@
   <data name="CapabilityMissing" xml:space="preserve">
     <value>Der Provider '{0}' unterstützt die erforderliche Fähigkeit '{1}' nicht.</value>
   </data>
+  <data name="EntityIdEmpty" xml:space="preserve">
+    <value>Die Entitäts-ID darf nicht leer sein.</value>
+  </data>
 </root>

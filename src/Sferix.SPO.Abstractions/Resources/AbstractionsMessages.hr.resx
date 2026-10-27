@@ -61,4 +61,7 @@
   <data name="CapabilityMissing" xml:space="preserve">
     <value>Pružatelj '{0}' ne podržava potrebnu mogućnost '{1}'.</value>
   </data>
+  <data name="EntityIdEmpty" xml:space="preserve">
+    <value>ID entiteta ne smije biti prazan.</value>
+  </data>
 </root>

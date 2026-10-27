@@ -61,4 +61,7 @@
   <data name="CapabilityMissing" xml:space="preserve">
     <value>El proveedor '{0}' no admite la capacidad requerida '{1}'.</value>
   </data>
+  <data name="EntityIdEmpty" xml:space="preserve">
+    <value>El ID de entidad no puede estar vacío.</value>
+  </data>
 </root>

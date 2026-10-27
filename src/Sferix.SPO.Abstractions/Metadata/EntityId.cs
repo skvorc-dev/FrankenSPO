@@ -1,3 +1,5 @@
+using Sferix.SPO.Abstractions.Resources;
+
 namespace Sferix.SPO.Abstractions.Metadata;
 
 /// <summary>A stable, non-empty identifier for a mapped entity type.</summary>
@@ -9,7 +11,7 @@ public readonly record struct EntityId
     public EntityId(Guid value)
     {
         if (value == Guid.Empty)
-            throw new ArgumentException("Entity identifier cannot be empty.", nameof(value));
+            throw new ArgumentException(AbstractionsMessages.EntityIdEmpty, nameof(value));
         Value = value;
     }
 
