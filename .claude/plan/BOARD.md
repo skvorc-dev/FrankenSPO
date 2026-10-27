@@ -7,7 +7,7 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | Agent | Branch | Since |
 |------|-------|-------|--------|-------|
-| S-12 Generator diagnostics from resources, then S-02 (chain) | #5 | sonnet-2 | `task/Sonnet_S-12_<time>` | 2026-10-27 |
+| S-02 Provider contract, capabilities, activation, then S-02b (chain) | #5 | sonnet-2 | `task/Sonnet_S-02_<time>` | 2026-10-27 |
 
 ## Review
 
@@ -18,14 +18,14 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | Size |
 |------|-------|------|
-| S-02 Provider contract, capabilities, activation (queued for sonnet-2 after S-12) | #5 | M |
 
-Next when their dependency merges: S-02b (sonnet-2, after S-02), S-11 (haiku-2, after S-02), S-14 localization audit (haiku-2, after S-02b and S-11).
+Next when their dependency merges: S-11 (haiku-2, after S-02), S-14 localization audit (haiku-2, after S-02b and S-11).
 
 ## Done (this phase)
 
 | Card | Issue | PR |
 |------|-------|----|
+| S-12 Generator diagnostics in en, de, hr, es (sonnet-2) | #5 | #64 |
 | S-13 Localization baseline: en, de, hr, es and CI check (haiku-2) | #5 | #61 |
 | S-01b Generator edge cases (sonnet-2) | #5 | #59 |
 | S-01 Generator: entity declaration and stable metadata IDs (sonnet) | #5 | #53 |
