@@ -97,7 +97,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Notes: D-32 (63-character identifiers), D-34.
 
 ### S-03a · `SPOBaseObject`, inherited fields and generated accessors
-- Issue: #5 · Size: M · Status: In Progress (sonnet-2)
+- Issue: #5 · Size: M · Status: Done (PR #73, sonnet-2)
 - Goal: entities derive from `SPOBaseObject`, the generator includes its fields, and generated metadata can create
   instances and read/write every property without reflection (D-35, D-37, D-43).
 - Acceptance:
@@ -137,13 +137,49 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Not in scope: the module-name analyzer (`*Module` suffix, D-36: later card), ObjectSpace, DI integration.
 - Notes: D-36, D-42, D-43. Parallel to S-03a: do not touch `Generators`, `Abstractions/Metadata`, `Core/Schema`.
 
-### S-03c · ObjectSpace CRUD with identity map and UUIDv7 keys
-- Issue: #5 · Size: M · Status: Backlog · after S-03a and S-03b
-- Goal: persist, read, update through ObjectSpace on real SQLite; async-first API with sync twins; single-threaded
-  misuse detected; identity map by entity type + key (D-29, D-35). Card completed when S-03a and S-03b are merged.
+### S-03c · Provider data contract and SQLite row access
+- Issue: #5 · Size: M · Status: In Progress (sonnet-2)
+- Goal: Core can insert, update and read one row by key through a provider-neutral contract; SQLite executes it with
+  parameters inside a transaction, with exact value conversion (D-29, D-34, D-44).
+- Acceptance:
+  - [ ] `Sferix.SPO.Abstractions/Providers`: `ISpoProvider.Open(string connectionString)` returns `ISpoConnection`
+        (`IDisposable`, `IAsyncDisposable`) with `EnsureSchema`, `BeginTransaction` (→ `ISpoTransaction` with
+        `Commit`/`Rollback`), `ReadRow(SchemaTable, Guid key)`, `Insert(transaction, SchemaTable, values)`,
+        `Update(transaction, SchemaTable, Guid key, changed columns and values)` returning rows affected. Each as a
+        sync method and an `…Async` twin with `CancellationToken` last; values in schema column order
+  - [ ] SQLite: SQL built only from validated, quoted identifiers; **every value is a parameter**; conversions per
+        D-44 both ways; a non-UTC `DateTime` fails with a coded exception (SPO1007, en/de/hr/es), nothing written
+  - [ ] Tests on a real temp-file database: round-trip of every storage type incl. null, enum, `decimal` scale
+        (`1.50m`), UUIDv7 byte order (later Guid sorts later), `DateTimeOffset` offset kept; update changes only the
+        given columns; rollback leaves the table unchanged; values with quotes, `' OR 1=1 --`, `;` and `%`/`_` are
+        stored and read back literally
+  - [ ] Build 0 warnings; CI green; PR lists the public API additions
+- Files: `src/Sferix.SPO.Abstractions/Providers/**`, `src/Sferix.SPO.Provider.SQLite/**` (new folder `Data/`),
+  `tests/Sferix.SPO.Tests.SQLite/**`
+- Not in scope: ObjectSpace (S-03d), queries (S-05), version check (S-10), uncertain commit (S-06).
+- Notes: D-29, D-34, D-42, D-44. Core uses one internal code path for sync and async (`bool async` pattern), never
+  blocking on async; the provider implements both. S-14 runs in parallel: do not edit `SqliteMessages*.resx` keys it
+  might audit — add new keys only.
+
+### S-03d · ObjectSpace: add, get, update, identity map, UUIDv7
+- Issue: #5 · Size: M · Status: Backlog · after S-03c
+- Goal: an application opens an ObjectSpace from `SpoModel`, adds, loads and updates `SPOBaseObject` entities on real
+  SQLite in one atomic SaveChanges; identity map by entity ID + key; single-threaded misuse detected (D-29, D-35).
+  Card completed when S-03c is merged (it settles the API shape).
+
+### S-15 · Generator: abstract entities and hidden base members
+- Issue: #5 · Size: S · Status: Backlog · after S-14
+- Goal: the generator rejects what the ObjectSpace cannot handle, before runtime (review of #73).
+- Acceptance:
+  - [ ] Error `SPO0012`: `[SpoEntity]` on an `abstract` class (no inheritance mapping in P1, D-35)
+  - [ ] Error `SPO0013`: an entity member hides a `SPOBaseObject` member (`new` or same name)
+  - [ ] SPO0006's message also names init-only setters (since #73 they are rejected); en, de, hr, es
+  - [ ] Tests for each; `AnalyzerReleases.Unshipped.md`; build 0 warnings; CI green
+- Files: `src/Sferix.SPO.Generators/**`, `tests/Sferix.SPO.Tests.Generators/**`
+- Notes: D-35, D-43.
 
 ### S-04 · Scalar tracking, audit timestamps, SoftDelete
-- Issue: #5 · Size: M · Status: Backlog · after S-03c
+- Issue: #5 · Size: M · Status: Backlog · after S-03d
 - Goal: per-type comparers, failed save keeps values dirty (D-30); UTC timestamps via `TimeProvider`; Deleted state,
   `IncludeDeleted()` (D-35).
 
@@ -216,7 +252,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
   `src/Sferix.SPO.Provider.SQLite/**`, `tests/Sferix.SPO.Tests.{Generators,SQLite}/**`.
 
 ### S-14 · Localization audit
-- Issue: #5 · Size: S · Status: Backlog · after S-03a
+- Issue: #5 · Size: S · Status: In Progress (haiku-2)
 - Goal: a check that no user-visible string escaped the four-language rule (D-41).
 - Acceptance:
   - [ ] Search `src/**` for string literals in `throw`, `Exception(` and `DiagnosticDescriptor` calls and in console or
