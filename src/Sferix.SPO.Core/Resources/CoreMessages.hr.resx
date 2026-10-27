@@ -73,4 +73,19 @@
   <data name="ModelUnsupportedStorageType" xml:space="preserve">
     <value>Tip svojstva '{0}' nema tip pohrane.</value>
   </data>
+  <data name="ObjectSpaceEntityNotInModel" xml:space="preserve">
+    <value>Tip '{0}' nije entitet modela ili ga model ne može stvoriti i označiti ključem.</value>
+  </data>
+  <data name="ObjectSpaceNoRowAffected" xml:space="preserve">
+    <value>Spremanjem '{0}' nijedan redak nije promijenjen: izbrisan je ili promijenjen drugdje. Ništa nije spremljeno.</value>
+  </data>
+  <data name="ObjectSpaceKeyAlreadyTracked" xml:space="preserve">
+    <value>Druga instanca '{0}' s istim ključem već se prati.</value>
+  </data>
+  <data name="ObjectSpaceConcurrentUse" xml:space="preserve">
+    <value>ObjectSpace je korišten dok je drugi poziv bio u tijeku. ObjectSpace je namijenjen jednom pozivatelju istodobno.</value>
+  </data>
+  <data name="ObjectSpaceKeyChanged" xml:space="preserve">
+    <value>Ključ praćenog '{0}' promijenjen je nakon dodavanja ili učitavanja. Ništa nije spremljeno; vratite ključ.</value>
+  </data>
 </root>

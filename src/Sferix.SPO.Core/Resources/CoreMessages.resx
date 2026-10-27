@@ -73,4 +73,19 @@
   <data name="ModelUnsupportedStorageType" xml:space="preserve">
     <value>The type of property '{0}' has no storage type.</value>
   </data>
+  <data name="ObjectSpaceEntityNotInModel" xml:space="preserve">
+    <value>The type '{0}' is not an entity of the model, or the model cannot create and key it.</value>
+  </data>
+  <data name="ObjectSpaceNoRowAffected" xml:space="preserve">
+    <value>Saving '{0}' changed no row: it was deleted or changed elsewhere. Nothing was saved.</value>
+  </data>
+  <data name="ObjectSpaceKeyAlreadyTracked" xml:space="preserve">
+    <value>Another '{0}' instance with the same key is already tracked.</value>
+  </data>
+  <data name="ObjectSpaceConcurrentUse" xml:space="preserve">
+    <value>The ObjectSpace was used while another call was running. An ObjectSpace is for one caller at a time.</value>
+  </data>
+  <data name="ObjectSpaceKeyChanged" xml:space="preserve">
+    <value>The key of a tracked '{0}' was changed after it was added or loaded. Nothing was saved; restore the key.</value>
+  </data>
 </root>

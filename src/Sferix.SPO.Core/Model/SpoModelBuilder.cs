@@ -1,12 +1,13 @@
 using Sferix.SPO.Abstractions.Modules;
 using Sferix.SPO.Abstractions.Providers;
+using Sferix.SPO.Core.Schema;
 
 namespace Sferix.SPO.Core.Model;
 
 /// <summary>Registers modules and activates the model against a provider (D-36, D-43).</summary>
 /// <remarks>
 /// Activation runs <see cref="CompiledModel"/> checks and throws <see cref="SpoCapabilityMissingException"/>
-/// (SPO1001) or <see cref="SpoModelException"/> (SPO1002, SPO1003). The builder is not thread-safe.
+/// (SPO1001) or <see cref="SpoModelException"/> (SPO1002, SPO1003, SPO1005, SPO1006: the schema is built here too). The builder is not thread-safe.
 /// </remarks>
 public sealed class SpoModelBuilder
 {
@@ -15,6 +16,7 @@ public sealed class SpoModelBuilder
 
     private readonly List<ISpoModule> modules = [];
     private readonly HashSet<Type> registered = [];
+    private TimeProvider timeProvider = TimeProvider.System;
 
     /// <summary>Registers a module. Registering the same module type again has no effect.</summary>
     /// <typeparam name="TModule">The module type; it must have a public parameterless constructor.</typeparam>
@@ -23,6 +25,16 @@ public sealed class SpoModelBuilder
     {
         if (registered.Add(typeof(TModule)))
             modules.Add(new TModule());
+        return this;
+    }
+
+    /// <summary>Sets the clock used for new keys and the audit timestamps; the default is <see cref="TimeProvider.System"/>.</summary>
+    /// <param name="timeProvider">The clock.</param>
+    /// <returns>This builder, for chaining.</returns>
+    public SpoModelBuilder UseTimeProvider(TimeProvider timeProvider)
+    {
+        ArgumentNullException.ThrowIfNull(timeProvider);
+        this.timeProvider = timeProvider;
         return this;
     }
 
@@ -35,6 +47,7 @@ public sealed class SpoModelBuilder
     {
         ArgumentNullException.ThrowIfNull(provider);
         var entities = modules.SelectMany(module => module.Entities);
-        return new SpoModel(CompiledModel.Build(entities, provider, RequiredCapabilities));
+        var compiled = CompiledModel.Build(entities, provider, RequiredCapabilities);
+        return new SpoModel(compiled, SchemaBuilder.Build(compiled), provider, timeProvider);
     }
 }
