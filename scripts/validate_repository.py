@@ -2,7 +2,7 @@ from pathlib import Path
 import json
 
 root = Path(__file__).resolve().parents[1]
-required = ["README.md", "LICENSE", "AGENTS.md", "SECURITY.md", "CONTRIBUTING.md", "docs/ROADMAP.md", "docs/compatibility/features.json"]
+required = ["README.md", "LICENSE", "AGENTS.md", "CLAUDE.md", "GUARDRAILS.md", ".claude/docs/DECISIONS.md", ".claude/plan/BOARD.md", "SECURITY.md", "CONTRIBUTING.md", "docs/ROADMAP.md", "docs/compatibility/features.json"]
 missing = [p for p in required if not (root / p).is_file()]
 if missing:
     raise SystemExit("Missing files: " + ", ".join(missing))

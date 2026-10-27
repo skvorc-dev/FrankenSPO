@@ -4,7 +4,6 @@ type:feature,7057FF,Feature work
 type:docs,0075CA,Documentation and examples
 type:security,B60205,Security related
 type:tests,0E8A16,Tests and conformance
-status:blocked,C2E0C6,Blocked by prerequisite
 priority:P0,BD1E1E,Critical priority
 priority:P1,EF6B2E,High priority
 priority:P2,FBCA04,Normal priority
