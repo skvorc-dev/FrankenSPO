@@ -18,6 +18,12 @@ internal static class CoreMessages
     internal static string ModelInvalidName(string name) =>
         string.Format(CultureInfo.CurrentUICulture, Get(nameof(ModelInvalidName)), name);
 
+    internal static string ModelDuplicateTableName(string name) =>
+        string.Format(CultureInfo.CurrentUICulture, Get(nameof(ModelDuplicateTableName)), name);
+
+    internal static string ModelUnsupportedStorageType(string name) =>
+        string.Format(CultureInfo.CurrentUICulture, Get(nameof(ModelUnsupportedStorageType)), name);
+
     private static string Get(string name) =>
         Resources.GetString(name, CultureInfo.CurrentUICulture)
         ?? throw new InvalidOperationException($"Missing Core resource '{name}'.");

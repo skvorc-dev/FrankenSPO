@@ -67,4 +67,10 @@
   <data name="ModelInvalidName" xml:space="preserve">
     <value>El nombre '{0}' no es un identificador SQL válido y no puede usarse como nombre de tabla o columna.</value>
   </data>
+  <data name="ModelDuplicateTableName" xml:space="preserve">
+    <value>Dos entidades se asignan al nombre de tabla '{0}'.</value>
+  </data>
+  <data name="ModelUnsupportedStorageType" xml:space="preserve">
+    <value>El tipo de la propiedad '{0}' no tiene tipo de almacenamiento.</value>
+  </data>
 </root>

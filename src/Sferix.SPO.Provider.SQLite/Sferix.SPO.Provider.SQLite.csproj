@@ -1,5 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <InternalsVisibleTo Include="Sferix.SPO.Tests.SQLite" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="../Sferix.SPO.Core/Sferix.SPO.Core.csproj" />
     <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.14" />
   </ItemGroup>
