@@ -9,6 +9,30 @@ body:
       label: Problem and expected behavior
     validations:
       required: true
+  - type: input
+    id: dotnet-sdk
+    attributes:
+      label: ".NET SDK version (`dotnet --version`)"
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options:
+        - Linux
+        - Windows
+        - macOS
+        - other
+    validations:
+      required: true
+  - type: input
+    id: database-provider
+    attributes:
+      label: Database provider and version
+      description: For example SQLite and the Microsoft.Data.Sqlite version. Optional.
+    validations:
+      required: false
   - type: textarea
     id: reproduction
     attributes:
