@@ -14,3 +14,5 @@ SPO0006 | Sferix.SPO | Error | Persistent property needs getter and setter
 SPO0007 | Sferix.SPO | Error | Generic entity not supported
 SPO0008 | Sferix.SPO | Error | Entity must be a class
 SPO0009 | Sferix.SPO | Error | Unsupported enum underlying type
+SPO0010 | Sferix.SPO | Error | Unsupported entity base class
+SPO0011 | Sferix.SPO | Error | Field number reserved for the framework

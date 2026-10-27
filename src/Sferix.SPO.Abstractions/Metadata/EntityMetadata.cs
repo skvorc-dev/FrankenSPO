@@ -10,12 +10,14 @@ public sealed class EntityMetadata
     /// <param name="id">The stable entity ID.</param>
     /// <param name="clrName">The namespace-qualified class name.</param>
     /// <param name="properties">The persistent properties.</param>
-    public EntityMetadata(EntityId id, string clrName, IEnumerable<PropertyMetadata> properties)
+    /// <param name="createInstance">Creates an empty instance; null when the class is abstract or has no parameterless constructor.</param>
+    public EntityMetadata(EntityId id, string clrName, IEnumerable<PropertyMetadata> properties, Func<object>? createInstance = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(clrName);
         ArgumentNullException.ThrowIfNull(properties);
         Id = id;
         ClrName = clrName;
+        CreateInstance = createInstance;
         Properties = new ReadOnlyCollection<PropertyMetadata>(properties.ToArray());
     }
 
@@ -25,6 +27,10 @@ public sealed class EntityMetadata
     /// <summary>The namespace-qualified class name (nested classes are dot-separated).</summary>
     public string ClrName { get; }
 
-    /// <summary>The persistent properties, ordered by field number.</summary>
+    /// <summary>The persistent properties: inherited framework properties first, then the entity's own, each ordered by field number.</summary>
     public IReadOnlyList<PropertyMetadata> Properties { get; }
+
+    /// <summary>Creates an empty instance of the entity without reflection.</summary>
+    /// <remarks>Null on hand-written metadata and for an abstract class or one without a parameterless constructor.</remarks>
+    public Func<object>? CreateInstance { get; }
 }

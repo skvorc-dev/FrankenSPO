@@ -12,6 +12,8 @@ internal static class SchemaBuilder
 {
     public const string DuplicateTableName = "SPO1005";
     public const string UnsupportedStorageType = "SPO1006";
+    private const int FrameworkFieldNumbers = 1000000; // D-43: reserved for SPOBaseObject
+    private const int IdFieldNumber = 1000001;
 
     public static SchemaModel Build(CompiledModel model)
     {
@@ -23,10 +25,12 @@ internal static class SchemaBuilder
             var name = new SqlIdentifier(entity.ClrName[(entity.ClrName.LastIndexOf('.') + 1)..]).Value;
             if (!names.Add(name))
                 throw new SpoModelException(DuplicateTableName, CoreMessages.ModelDuplicateTableName(name));
-            var columns = entity.Properties
-                .OrderBy(p => p.Number)
+            // Framework fields (reserved numbers) come first, then the entity's own, each by field number.
+            var ordered = entity.Properties.OrderBy(p => p.Number >= FrameworkFieldNumbers ? 0 : 1).ThenBy(p => p.Number).ToArray();
+            var primaryKey = ordered.Any(p => p.Number == IdFieldNumber && p.ClrName == "Id") ? new[] { "Id" } : null;
+            var columns = ordered
                 .Select(p => new SchemaColumn(new SqlIdentifier(p.ClrName).Value, StorageTypeOf(p), p.IsNullable));
-            tables.Add(new SchemaTable(name, columns));
+            tables.Add(new SchemaTable(name, columns, primaryKey));
         }
         return new SchemaModel(tables);
     }

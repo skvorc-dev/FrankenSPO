@@ -98,7 +98,7 @@
     <value>Persistent property needs getter and setter</value>
   </data>
   <data name="SPO0006_Message" xml:space="preserve">
-    <value>Property '{0}' has [SpoField] but lacks a getter or a setter</value>
+    <value>Property '{0}' has [SpoField] but lacks a getter or a setter, or its setter is init-only</value>
   </data>
   <data name="SPO0007_Title" xml:space="preserve">
     <value>Generic entity not supported</value>
@@ -117,5 +117,17 @@
   </data>
   <data name="SPO0009_Message" xml:space="preserve">
     <value>Property '{0}' is an enum with underlying type 'ulong', which does not fit a signed 64-bit column</value>
+  </data>
+  <data name="SPO0010_Title" xml:space="preserve">
+    <value>Unsupported entity base class</value>
+  </data>
+  <data name="SPO0010_Message" xml:space="preserve">
+    <value>Entity '{0}' derives from '{1}'; an entity may derive only from 'object' or 'SPOBaseObject'</value>
+  </data>
+  <data name="SPO0011_Title" xml:space="preserve">
+    <value>Field number reserved for the framework</value>
+  </data>
+  <data name="SPO0011_Message" xml:space="preserve">
+    <value>Property '{0}' has [SpoField({1})]: numbers from 1000000 up are reserved for the framework</value>
   </data>
 </root>

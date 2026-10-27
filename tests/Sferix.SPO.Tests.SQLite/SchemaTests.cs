@@ -70,6 +70,27 @@ public sealed class SchemaTests : IDisposable
     }
 
     [Fact]
+    public void EntityWithBaseObjectFieldsGetsIdAsPrimaryKeyAndCreatesOnRealSqlite()
+    {
+        var entity = Entity("App.Doc",
+            new PropertyMetadata(1000001, "Id", typeof(Guid), false),
+            new PropertyMetadata(1, "Title", typeof(string), false));
+        var schema = Schema(entity);
+        var table = Assert.Single(schema.Tables);
+        Assert.Equal(["Id"], table.PrimaryKey);
+        Assert.Equal(["Id", "Title"], table.Columns.Select(c => c.Name));
+        using var connection = Open();
+        SqliteSchemaInitializer.EnsureSchema(connection, schema);
+        using var command = connection.CreateCommand();
+        command.CommandText = "SELECT name FROM pragma_table_info('Doc') WHERE pk = 1";
+        Assert.Equal("Id", command.ExecuteScalar());
+    }
+
+    [Fact]
+    public void EntityWithoutBaseObjectHasNoPrimaryKey() =>
+        Assert.Empty(Assert.Single(Schema(Customer()).Tables).PrimaryKey);
+
+    [Fact]
     public void SchemaOrderFollowsFieldNumber()
     {
         var table = Assert.Single(Schema(Customer()).Tables);

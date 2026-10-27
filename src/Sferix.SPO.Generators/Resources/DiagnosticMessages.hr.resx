@@ -98,7 +98,7 @@
     <value>Trajno svojstvo zahtijeva getter i setter</value>
   </data>
   <data name="SPO0006_Message" xml:space="preserve">
-    <value>Svojstvo '{0}' ima [SpoField], ali nema getter ili setter</value>
+    <value>Svojstvo '{0}' ima [SpoField], ali nema getter ili setter, ili je setter samo init</value>
   </data>
   <data name="SPO0007_Title" xml:space="preserve">
     <value>Generički entitet nije podržan</value>
@@ -117,5 +117,17 @@
   </data>
   <data name="SPO0009_Message" xml:space="preserve">
     <value>Svojstvo '{0}' je enumeracija s temeljnim tipom 'ulong' koji ne stane u 64-bitni stupac s predznakom</value>
+  </data>
+  <data name="SPO0010_Title" xml:space="preserve">
+    <value>Nepodržana osnovna klasa entiteta</value>
+  </data>
+  <data name="SPO0010_Message" xml:space="preserve">
+    <value>Entitet '{0}' nasljeđuje '{1}'; entitet smije nasljeđivati samo 'object' ili 'SPOBaseObject'</value>
+  </data>
+  <data name="SPO0011_Title" xml:space="preserve">
+    <value>Broj polja rezerviran za okvir</value>
+  </data>
+  <data name="SPO0011_Message" xml:space="preserve">
+    <value>Svojstvo '{0}' ima [SpoField({1})]: brojevi od 1000000 nadalje rezervirani su za okvir</value>
   </data>
 </root>
