@@ -130,4 +130,16 @@
   <data name="SPO0011_Message" xml:space="preserve">
     <value>Die Eigenschaft '{0}' hat [SpoField({1})]: Nummern ab 1000000 sind für das Framework reserviert</value>
   </data>
+  <data name="SPO0012_Title" xml:space="preserve">
+    <value>Entitätsklasse darf nicht abstrakt sein</value>
+  </data>
+  <data name="SPO0012_Message" xml:space="preserve">
+    <value>[SpoEntity] auf '{0}' wird nicht unterstützt: Eine abstrakte oder statische Klasse kann keine Entität sein, weil P1 keine Vererbungsabbildung hat</value>
+  </data>
+  <data name="SPO0013_Title" xml:space="preserve">
+    <value>Entitätsmitglied verdeckt ein Basismitglied</value>
+  </data>
+  <data name="SPO0013_Message" xml:space="preserve">
+    <value>Das Mitglied '{1}' der Entität '{0}' verdeckt ein Mitglied von SPOBaseObject; benennen Sie es um oder entfernen Sie das Duplikat</value>
+  </data>
 </root>

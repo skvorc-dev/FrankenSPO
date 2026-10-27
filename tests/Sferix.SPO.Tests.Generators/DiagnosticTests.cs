@@ -203,6 +203,36 @@ public sealed class DiagnosticTests
         Assert.Empty(run.GeneratedTrees);
     }
 
+    [Theory]
+    [InlineData("public abstract partial class")]
+    [InlineData("public static partial class")]
+    public void AbstractOrStaticEntityIsReported(string declaration)
+    {
+        var run = Run($"[SpoEntity(\"{Id1}\")] {declaration} Shape {{ }}");
+        Assert.Equal(["SPO0012"], run.GeneratorDiagnosticIds);
+        Assert.Empty(run.GeneratedTrees);
+    }
+
+    [Theory]
+    [InlineData("public new int Version { get; set; }")]
+    [InlineData("public int Version { get; set; }")]
+    [InlineData("[SpoField(1)] public int Version { get; set; }")]
+    public void MemberHidingBaseObjectMemberIsReported(string member)
+    {
+        var run = Run($"[SpoEntity(\"{Id1}\")] public partial class C : Sferix.SPO.Abstractions.Entities.SPOBaseObject {{ {member} }}");
+        Assert.Equal(["SPO0013"], run.GeneratorDiagnosticIds);
+        Assert.Empty(run.GeneratedTrees);
+    }
+
+    [Fact]
+    public void HidingMessageNamesEntityAndMember()
+    {
+        var run = Run($"[SpoEntity(\"{Id1}\")] public partial class C : Sferix.SPO.Abstractions.Entities.SPOBaseObject {{ public new int Version {{ get; set; }} }}");
+        var message = Assert.Single(run.GeneratorDiagnostics).GetMessage();
+        Assert.Contains("'Version'", message);
+        Assert.Contains("'C'", message);
+    }
+
     [Fact]
     public void LargestAllowedFieldNumberIsAccepted()
     {

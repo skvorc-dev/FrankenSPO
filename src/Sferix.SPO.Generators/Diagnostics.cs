@@ -29,6 +29,10 @@ internal static class Diagnostics
 
     public static readonly DiagnosticDescriptor ReservedFieldNumber = Error("SPO0011");
 
+    public static readonly DiagnosticDescriptor AbstractEntity = Error("SPO0012");
+
+    public static readonly DiagnosticDescriptor HidesBaseMember = Error("SPO0013");
+
     private static DiagnosticDescriptor Error(string id) =>
         new(id, DiagnosticMessages.Localizable(id + "_Title"), DiagnosticMessages.Localizable(id + "_Message"),
             Category, DiagnosticSeverity.Error, isEnabledByDefault: true);
