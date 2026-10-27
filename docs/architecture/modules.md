@@ -34,7 +34,7 @@ Answers are recorded in [DECISIONS.md](../../.claude/docs/DECISIONS.md); a decid
 
 
 1. Where does the line between `Abstractions` and `Core` fall for the ObjectSpace types (interfaces vs implementation)? **Decided: D-34 (interfaces in Abstractions).**
-2. Which modules are planned and what are their assembly names (`SPO.Security`, audit/event modules)? Naming is not defined in the sources. **Decided: D-36 (naming still open).**
+2. Which modules are planned and what are their assembly names (`SPO.Security`, audit/event modules)? Naming is not defined in the sources. **Decided: D-36.**
 3. Do the "public API maturity levels" from issue #3 use the six feature statuses, or a separate scheme (for example experimental, preview, stable)? **Decided: D-36.**
 4. Is there an analyzer or API-compat check planned to enforce the boundaries in rule 2? **Decided: D-36.**
 5. How are modules activated (explicit registration, discovery)? "Verified activation" is named but not defined. **Decided: D-36.**
