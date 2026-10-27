@@ -26,8 +26,9 @@ Checked  01a17d40-e601-739a-af90-c17042a40851 Ada Lovelace, tier Gold, credit 13
 
 ### What it does not show yet
 
-- Queries (`Where`, LINQ) and paging: S-05.
-- Delete and soft delete: S-04 and S-10.
-- Concurrency and version checks: S-10.
-- Transactions after failure and uncertain commits: S-06.
-- Schema mismatch on an existing database: S-02b and S-03c.
+- Queries (`Where`, LINQ) and paging.
+- Soft delete and hard delete.
+- Concurrency and version checks.
+- Transaction behaviour after a failed save, and uncertain commits.
+
+Opening an existing database checks its schema against the model; this sample creates a new file and does not show that check.

@@ -1,4 +1,5 @@
 using Microsoft.Data.Sqlite;
+using Sferix.SPO.Abstractions.ObjectSpace;
 using Sferix.SPO.Core.Model;
 using Sferix.SPO.Provider.SQLite;
 using SpoExample.Module;
@@ -29,13 +30,13 @@ try
 
     using (var reader = model.OpenObjectSpace($"Data Source={path}"))
     {
-        var customer = reader.Get<Customer>(id)!;
+        var customer = Load(reader, id);
         Console.WriteLine($"Read     {customer.Id} {customer.Name}, tier {customer.Tier}, credit {customer.Credit}, last order {customer.LastOrderAt:O}");
     }
 
     using (var updater = model.OpenObjectSpace($"Data Source={path}"))
     {
-        var customer = updater.Get<Customer>(id)!;
+        var customer = Load(updater, id);
         customer.Tier = CustomerTier.Gold;
         customer.Credit += 100m;
         updater.SaveChanges();
@@ -44,7 +45,7 @@ try
 
     using (var check = model.OpenObjectSpace($"Data Source={path}"))
     {
-        var customer = check.Get<Customer>(id)!;
+        var customer = Load(check, id);
         Console.WriteLine($"Checked  {customer.Id} {customer.Name}, tier {customer.Tier}, credit {customer.Credit}");
     }
 }
@@ -55,3 +56,6 @@ finally
     foreach (var file in new[] { path, path + "-wal", path + "-shm" })
         File.Delete(file);
 }
+
+static Customer Load(ISpoObjectSpace space, Guid id) =>
+    space.Get<Customer>(id) ?? throw new InvalidOperationException($"Customer {id} was not found.");
