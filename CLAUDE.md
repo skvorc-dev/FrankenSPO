@@ -62,7 +62,8 @@ At the start of every session:
 
 While working:
 - Keep cards ready to assign: goal, acceptance criteria, size, files. Split anything sized `L` before assigning it.
-- Assign tasks only on BOARD.md; never let two writers touch the same files at once.
+- Assign tasks only on BOARD.md; never let two writers touch the same files at once. Add cards to existing worker
+  chains by message; check each worker's context and the weekly limit with the usage tool (D-38).
 - Review worker PRs against the card's acceptance criteria and GUARDRAILS; merge only with green CI.
 - Mirror changes to GitHub: one issue per card or epic (labels `type:`/`priority:`/`area:`, milestone = phase),
   board Status matches BOARD.md. Plan files win on conflict.
