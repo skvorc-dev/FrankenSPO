@@ -42,7 +42,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Files: `src/Sferix.SPO.Generators/**`, `tests/Sferix.SPO.Tests.Generators/**`
 
 ### S-02 · Provider contract, capabilities and model activation
-- Issue: #5 · Size: M · Status: Ready · after S-01b
+- Issue: #5 · Size: M · Status: In Progress (sonnet-2)
 - Goal: a provider declares its capabilities, Core builds a compiled model from generated metadata and rejects it at
   activation when a mandatory capability is missing (D-33, D-34, D-39); metadata carries the storage type of enums.
 - Acceptance:
@@ -139,7 +139,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Notes: D-33, D-39. Does not touch the files of S-02b.
 
 ### S-12 · Generator diagnostics from resources
-- Issue: #5 · Size: S · Status: In Progress (sonnet-2)
+- Issue: #5 · Size: S · Status: Done (PR #64, sonnet-2)
 - Goal: all generator diagnostic titles and messages come from `.resx` in en, de, hr, es (D-40, D-41), IDs unchanged.
 - Acceptance:
   - [ ] `Diagnostics.cs` uses `LocalizableResourceString` for title and message of every `SPO0001`… descriptor
@@ -181,9 +181,11 @@ the main agent completes each card (files, exact acceptance) before moving it to
         log output; each one is either a resource or listed with a reason (e.g. parameter names)
   - [ ] Read the de, hr, es texts against en: same meaning, same placeholders, consistent terms; fix wording
   - [ ] `scripts/validate_repository.py` also fails when a culture value's `{n}` placeholders differ from the neutral's
+  - [ ] `<NeutralResourcesLanguage>`/`<NeutralLanguage>en</NeutralLanguage>` set once in `Directory.Build.props`, so
+        English is served from the main assembly without probing for an `en` satellite
   - [ ] Findings that need code changes outside resources: listed in the PR for the main agent, not fixed
   - [ ] `python3 scripts/validate_repository.py` passes; build 0 warnings; CI green
-- Files: `src/**/Resources/**`, `scripts/validate_repository.py`
+- Files: `src/**/Resources/**`, `scripts/validate_repository.py`, `Directory.Build.props`
 - Notes: D-40, D-41. Each card localizes its own strings; this card only catches what was missed.
 
 ### S-07 · SQL injection regression suite
