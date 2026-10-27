@@ -1,3 +1,5 @@
+> **Historical:** completed during P0; current work is tracked in the roadmap and issues.
+
 # Codex Task 0001 — smallest working foundation
 
 **Status: ready to assign; not executed.** Related work: issues #2, #3, #4 and umbrella #1.

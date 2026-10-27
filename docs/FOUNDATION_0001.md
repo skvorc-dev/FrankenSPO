@@ -1,3 +1,5 @@
+> **Historical:** completed during P0; current work is tracked in the roadmap and issues.
+
 # Task 0001 — .NET foundation
 
 **Status:** source files committed; CI verification required. No ORM feature is implemented.
