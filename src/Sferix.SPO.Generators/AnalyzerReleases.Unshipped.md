@@ -16,3 +16,5 @@ SPO0008 | Sferix.SPO | Error | Entity must be a class
 SPO0009 | Sferix.SPO | Error | Unsupported enum underlying type
 SPO0010 | Sferix.SPO | Error | Unsupported entity base class
 SPO0011 | Sferix.SPO | Error | Field number reserved for the framework
+SPO0012 | Sferix.SPO | Error | Entity class must not be abstract
+SPO0013 | Sferix.SPO | Error | Entity member hides a base member

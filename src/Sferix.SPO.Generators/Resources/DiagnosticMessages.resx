@@ -130,4 +130,16 @@
   <data name="SPO0011_Message" xml:space="preserve">
     <value>Property '{0}' has [SpoField({1})]: numbers from 1000000 up are reserved for the framework</value>
   </data>
+  <data name="SPO0012_Title" xml:space="preserve">
+    <value>Entity class must not be abstract</value>
+  </data>
+  <data name="SPO0012_Message" xml:space="preserve">
+    <value>[SpoEntity] on '{0}' is not supported: an abstract or static class cannot be an entity, because P1 has no inheritance mapping</value>
+  </data>
+  <data name="SPO0013_Title" xml:space="preserve">
+    <value>Entity member hides a base member</value>
+  </data>
+  <data name="SPO0013_Message" xml:space="preserve">
+    <value>Member '{1}' of entity '{0}' hides a member of SPOBaseObject; rename it or remove the duplicate</value>
+  </data>
 </root>
