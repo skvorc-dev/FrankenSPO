@@ -16,6 +16,7 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
 {
     private const string EntityAttribute = "Sferix.SPO.Abstractions.Metadata.SpoEntityAttribute";
     private const string FieldAttribute = "Sferix.SPO.Abstractions.Metadata.SpoFieldAttribute";
+    internal const string TrackingName = "SpoEntities";
     private const string MetadataNamespace = "global::Sferix.SPO.Abstractions.Metadata";
 
     /// <inheritdoc />
@@ -26,6 +27,7 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
                 EntityAttribute,
                 static (node, _) => node is TypeDeclarationSyntax,
                 static (ctx, ct) => Analyze(ctx, ct))
+            .WithTrackingName(TrackingName)
             .Collect();
 
         context.RegisterSourceOutput(entities, static (spc, models) => Emit(spc, models));
