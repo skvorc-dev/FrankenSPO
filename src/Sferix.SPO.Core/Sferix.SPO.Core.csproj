@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../Sferix.SPO.Abstractions/Sferix.SPO.Abstractions.csproj" />
+  </ItemGroup>
+</Project>
