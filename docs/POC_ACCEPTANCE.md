@@ -29,3 +29,15 @@
 - Working `SpoExample.Module` and `SpoExample.Console` code with documented run instructions.
 - Versioned feature manifest updated from `planned` only with corresponding test evidence.
 - README, AGENTS, samples and release notes describe exactly the same supported features.
+
+## Decisions that refine this contract
+
+- [D-29](../.claude/docs/DECISIONS.md): ObjectSpace: single-threaded, async-first, one transaction per save
+- [D-30](../.claude/docs/DECISIONS.md): Tracking: values stay dirty after a failed save
+- [D-31](../.claude/docs/DECISIONS.md): Optimistic concurrency with a version column
+- [D-32](../.claude/docs/DECISIONS.md): Queries: a fixed LINQ subset, escaped LIKE
+- [D-33](../.claude/docs/DECISIONS.md): Policies: no engine in P1, fail closed
+- [D-34](../.claude/docs/DECISIONS.md): Providers and schema: provider-neutral model, dialect DDL
+- [D-35](../.claude/docs/DECISIONS.md): Entities: SPOBaseObject with shared columns
+- [D-36](../.claude/docs/DECISIONS.md): Modules: explicit registration, no assembly scanning
+- [D-37](../.claude/docs/DECISIONS.md): Declaring entities: stable GUID and numbered fields
