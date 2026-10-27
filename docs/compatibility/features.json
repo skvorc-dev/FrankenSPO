@@ -7,7 +7,7 @@
     "postgresql": "planned"
   },
   "features": {
-    "source_generated_metadata": "planned",
+    "source_generated_metadata": "tested",
     "objectspace_crud": "specified",
     "transactions": "specified",
     "soft_delete": "planned",

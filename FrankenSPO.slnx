@@ -8,5 +8,6 @@
   <Folder Name="/tests/">
     <Project Path="tests/Sferix.SPO.Tests.Unit/Sferix.SPO.Tests.Unit.csproj" />
     <Project Path="tests/Sferix.SPO.Tests.SQLite/Sferix.SPO.Tests.SQLite.csproj" />
+    <Project Path="tests/Sferix.SPO.Tests.Generators/Sferix.SPO.Tests.Generators.csproj" />
   </Folder>
 </Solution>
