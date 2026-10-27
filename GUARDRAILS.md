@@ -40,6 +40,12 @@ These rules come on top of [AGENTS.md](AGENTS.md) and [CLAUDE.md](CLAUDE.md). Wh
    including what you could not check.
 4. If your environment has a local coordination file (`.claude/LOCAL.md`), follow its reporting rules.
 
+## Context and rotation (D-38)
+
+- End each report with your context use in % (from your status line).
+- At about 60 % (Haiku) or 70 % (Sonnet, Opus): finish the card you are on, open its PR, name the next card, and stop
+  with the word `ROTATE`. A fresh session continues from BOARD.md.
+
 ## Stop and ask the main agent when
 
 - The card is unclear, too big, or conflicts with a decision or the code.
