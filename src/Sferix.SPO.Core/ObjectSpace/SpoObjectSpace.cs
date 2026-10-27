@@ -16,6 +16,7 @@ internal sealed class SpoObjectSpace(SpoModel model, ISpoConnection connection) 
 {
     private sealed class Tracked(EntityInfo info, SPOBaseObject entity, object?[]? snapshot)
     {
+        public Guid Key { get; } = entity.Id;
         public EntityInfo Info { get; } = info;
         public SPOBaseObject Entity { get; } = entity;
         public object?[]? Snapshot { get; set; } = snapshot; // null = added, not yet saved
@@ -121,6 +122,12 @@ internal sealed class SpoObjectSpace(SpoModel model, ISpoConnection connection) 
         var restore = new List<Action>();
         try
         {
+            // Fail closed before anything is written: the identity map is keyed by the key the entity had when it was tracked.
+            foreach (var tracked in map.Values)
+                if (tracked.Entity.Id != tracked.Key)
+                    throw new SpoObjectSpaceException(
+                        SpoObjectSpaceException.KeyChanged, CoreMessages.ObjectSpaceKeyChanged(tracked.Info.Metadata.ClrName));
+
             var now = model.TimeProvider.GetUtcNow().UtcDateTime;
             var pending = new List<(Tracked Tracked, object?[] Values)>();
 

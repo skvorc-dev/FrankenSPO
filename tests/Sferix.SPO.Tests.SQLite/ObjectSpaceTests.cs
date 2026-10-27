@@ -117,10 +117,51 @@ public sealed class ObjectSpaceTests : IDisposable
     public void ExistingIdIsKept()
     {
         var id = Guid.CreateVersion7();
+        using (var space = Open())
+        {
+            var person = NewPerson();
+            person.Id = id;
+            space.Add(person);
+            space.SaveChanges();
+        }
+
+        using var check = Open();
+        Assert.NotNull(check.Get<Person>(id));
+    }
+
+    [Fact]
+    public void ChangingTheIdOfAnAddedEntityFailsWithSpo1011AndWritesNothing()
+    {
         using var space = Open();
-        space.Add(NewPerson()).Id = id;
+        var person = space.Add(NewPerson());
+        person.Id = Guid.CreateVersion7();
+        Assert.Equal("SPO1011", Assert.Throws<SpoObjectSpaceException>(() => space.SaveChanges()).Code);
+        Assert.Equal(0, Count(_path, "Person"));
+        Assert.Equal(default, person.CreatedAt);
+    }
+
+    [Fact]
+    public void ChangingTheIdOfALoadedEntityFailsWithSpo1011AndWritesNothing()
+    {
+        Guid id;
+        using (var setup = Open())
+        {
+            id = setup.Add(NewPerson()).Id;
+            setup.SaveChanges();
+        }
+
+        using var space = Open();
+        var person = space.Get<Person>(id)!;
+        var modified = person.ModifiedAt;
+        person.Id = Guid.CreateVersion7();
+        person.Name = "Changed";
+        Assert.Equal("SPO1011", Assert.Throws<SpoObjectSpaceException>(() => space.SaveChanges()).Code);
+        Assert.Equal(modified, person.ModifiedAt);
+
+        person.Id = id;
         space.SaveChanges();
-        Assert.NotNull(Open().Get<Person>(id));
+        using var check = Open();
+        Assert.Equal("Changed", check.Get<Person>(id)!.Name);
     }
 
     [Fact]

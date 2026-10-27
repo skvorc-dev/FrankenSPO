@@ -13,6 +13,9 @@ public sealed class SpoObjectSpaceException : Exception
     /// <summary>A call was made while another call on the same ObjectSpace was running.</summary>
     public const string ConcurrentUse = "SPO1010";
 
+    /// <summary>The key of a tracked entity was changed after it was added or loaded.</summary>
+    public const string KeyChanged = "SPO1011";
+
     internal SpoObjectSpaceException(string code, string message) : base(message) => Code = code;
 
     /// <summary>The stable error code, the same in every language.</summary>

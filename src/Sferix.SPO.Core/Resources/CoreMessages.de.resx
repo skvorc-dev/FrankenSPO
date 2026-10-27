@@ -85,4 +85,7 @@
   <data name="ObjectSpaceConcurrentUse" xml:space="preserve">
     <value>Der ObjectSpace wurde verwendet, während ein anderer Aufruf lief. Ein ObjectSpace ist immer nur für einen Aufrufer gleichzeitig gedacht.</value>
   </data>
+  <data name="ObjectSpaceKeyChanged" xml:space="preserve">
+    <value>Der Schlüssel eines verfolgten '{0}' wurde nach dem Hinzufügen oder Laden geändert. Es wurde nichts gespeichert; stellen Sie den Schlüssel wieder her.</value>
+  </data>
 </root>

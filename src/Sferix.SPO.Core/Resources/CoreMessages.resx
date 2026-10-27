@@ -85,4 +85,7 @@
   <data name="ObjectSpaceConcurrentUse" xml:space="preserve">
     <value>The ObjectSpace was used while another call was running. An ObjectSpace is for one caller at a time.</value>
   </data>
+  <data name="ObjectSpaceKeyChanged" xml:space="preserve">
+    <value>The key of a tracked '{0}' was changed after it was added or loaded. Nothing was saved; restore the key.</value>
+  </data>
 </root>

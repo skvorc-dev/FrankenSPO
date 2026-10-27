@@ -20,6 +20,7 @@ text is localized (en, de, hr, es, D-40, D-41); the code is the same in every la
 | `SPO1008` | `SpoObjectSpaceException` (Core) | public | The entity type is not part of the model, or the model cannot create or key it. |
 | `SPO1009` | `SpoObjectSpaceException` (Core) | public | A save updated no row (deleted or changed elsewhere); the save was rolled back. |
 | `SPO1010` | `SpoObjectSpaceException` (Core) | public | An ObjectSpace call was made while another call on the same ObjectSpace was running. |
+| `SPO1011` | `SpoObjectSpaceException` (Core) | public | The key of a tracked entity was changed after it was added or loaded; nothing was saved. |
 
 Codes planned by later cards are added here by the card that introduces them.
 

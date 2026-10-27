@@ -85,4 +85,7 @@
   <data name="ObjectSpaceConcurrentUse" xml:space="preserve">
     <value>ObjectSpace je korišten dok je drugi poziv bio u tijeku. ObjectSpace je namijenjen jednom pozivatelju istodobno.</value>
   </data>
+  <data name="ObjectSpaceKeyChanged" xml:space="preserve">
+    <value>Ključ praćenog '{0}' promijenjen je nakon dodavanja ili učitavanja. Ništa nije spremljeno; vratite ključ.</value>
+  </data>
 </root>
