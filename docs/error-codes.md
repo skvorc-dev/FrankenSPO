@@ -16,6 +16,7 @@ text is localized (en, de, hr, es, D-40, D-41); the code is the same in every la
 | `SPO1004` | `SpoSchemaMismatchException` (SQLite provider) | internal | An existing database does not match the model; nothing was changed. |
 | `SPO1005` | `SpoModelException` (Core) | public | Two entities map to the same table name. |
 | `SPO1006` | `SpoModelException` (Core) | public | A property has no storage type in the schema. |
+| `SPO1007` | `SpoValueException` (SQLite provider) | internal | A `DateTime` that is not UTC was passed for saving; nothing was written (D-44). |
 
 Codes planned by later cards are added here by the card that introduces them.
 
