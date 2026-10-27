@@ -8,7 +8,6 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 | Card | Issue | Agent | Branch | Since |
 |------|-------|-------|--------|-------|
 | S-02b Neutral schema model, SQLite DDL (chain) | #5 | sonnet-2 | `task/Sonnet_S-02b_<time>` | 2026-10-27 |
-| S-11 Policy requirements fail closed | #6 | haiku-2 | `task/Haiku_S-11_<time>` | 2026-10-27 |
 
 ## Review
 
@@ -19,13 +18,16 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | Size |
 |------|-------|------|
+| S-03a `SPOBaseObject`, inherited fields, generated accessors (sonnet-2 after S-02b) | #5 | M |
+| S-03b Modules and public model activation (haiku-2 after S-02b) | #5 | S |
 
-Next when their dependency merges: S-14 localization audit (haiku-2, after S-02b and S-11).
+Next when their dependency merges: S-14 localization audit (haiku-2, after S-03a and S-03b), S-03c ObjectSpace CRUD (after S-03a and S-03b).
 
 ## Done (this phase)
 
 | Card | Issue | PR |
 |------|-------|----|
+| S-11 Policy requirements fail closed (haiku-2) | #6 | #68 |
 | S-02 Provider contract, capabilities, activation (sonnet-2) | #5 | #66 |
 | S-12 Generator diagnostics in en, de, hr, es (sonnet-2) | #5 | #64 |
 | S-13 Localization baseline: en, de, hr, es and CI check (haiku-2) | #5 | #61 |
