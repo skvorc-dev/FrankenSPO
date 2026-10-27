@@ -7,7 +7,6 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | Agent | Branch | Since |
 |------|-------|-------|--------|-------|
-| F-02 Architecture contracts | #3 | sonnet-1 | `task/Sonnet_F-02_<yyyyMMddTHHmm>` | 2026-10-27 |
 
 ## Review
 
@@ -23,6 +22,7 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | PR |
 |------|-------|----|
+| F-02 Architecture contracts (sonnet-1) | #3 | #39 |
 | F-04, F-09…F-17 Haiku chain 1 (haiku-1) | #3 #4 #6 #15 | #27–#36 |
 | F-01 Repository policies | #2 | owner confirmed, #2 closed |
 | F-03 CI green again (NU1903) | #4 | #14 |
