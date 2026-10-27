@@ -50,5 +50,17 @@ Milestone **P0 — Foundation**. Gate: clean baseline, green CI on three OSes, p
   - [x] Owner and main agent can still squash-merge a green PR (checked with PR #16)
 
 ### F-07 · Merge Dependabot Action bumps
-- Issue: #4 · Size: S · Status: In Progress (main agent)
-- Goal: PRs #9–#13 merged once green on current `main`. #9, #10, #12, #13 merged; Pages deploy verified with the v5 actions.
+- Issue: #4 · Size: S · Status: Done
+- Goal: Dependabot PRs merged once green on current `main`.
+- Done: #9, #10, #12, #13, #17, #18, #20, #21; #11 superseded by #23. Companion repos: all Action bumps merged.
+
+### F-08 · Roslyn version policy for the source generator
+- Issue: #4 · Size: S · Status: Ready
+- Goal: decide which `Microsoft.CodeAnalysis.CSharp` version `Sferix.SPO.Generators` references, so the generator
+  loads in every SDK we support; then accept or close Dependabot #19 (4.14 → 5.9).
+- Acceptance:
+  - [ ] Decision in DECISIONS.md: lowest supported .NET SDK band and the matching Roslyn version
+  - [ ] Dependabot ignore rule for Roslyn versions above it in `.github/dependabot.yml`
+  - [ ] #19 merged or closed with a one-line reason
+- Files: `src/Sferix.SPO.Generators/*.csproj`, `.github/dependabot.yml`, `.claude/docs/DECISIONS.md`
+- Notes: a generator built against a newer Roslyn than the user's compiler fails with CS9057.
