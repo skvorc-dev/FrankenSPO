@@ -3,12 +3,31 @@
 Milestone **P1 — SQLite PoC**. Contract: `docs/POC_ACCEPTANCE.md`, `docs/architecture/*.md`, decisions D-29…D-36. All cards are `Backlog` until E0 is done;
 the main agent completes each card (files, exact acceptance) before moving it to `Ready`.
 
-### S-01 · Generator: model declaration contract and stable metadata IDs
-- Issue: #5 · Size: M · Status: Backlog
-- Goal: a declared entity compiles to generated metadata (entity and property IDs) without runtime reflection.
+### S-01 · Generator: entity declaration and stable metadata IDs
+- Issue: #5 · Size: M · Status: Ready
+- Goal: a class declared per D-37 compiles to generated, reflection-free metadata with its stable entity ID and
+  property numbers; invalid declarations fail the build with clear diagnostics.
 - Acceptance:
-  - [ ] Generator tests prove metadata output and diagnostics for invalid declarations
-  - [ ] `Core` has no reference to the SQLite provider
+  - [ ] `Sferix.SPO.Abstractions`: `SpoEntityAttribute(string id)`, `SpoFieldAttribute(int number)`, and immutable
+        metadata types `EntityMetadata` (EntityId, CLR name, properties) and `PropertyMetadata` (number, CLR name,
+        CLR type, nullable). XML docs per the code style rules.
+  - [ ] `Sferix.SPO.Generators` (incremental generator, Roslyn 5.0.0 per D-25): for each `[SpoEntity]` partial class it
+        emits a `public static EntityMetadata SpoMetadata { get; }` member in the same partial class
+  - [ ] Supported property types: `bool`, `int`, `long`, `decimal`, `double`, `string`, `Guid`, `DateTime`,
+        `DateTimeOffset`, `byte[]`, their nullable forms, and enums (stored as their underlying integer)
+  - [ ] Diagnostics (errors, IDs `SPO0001`…): class not `partial`; entity ID missing or not a GUID; same entity ID
+        twice in a compilation; `[SpoField]` number ≤ 0 or duplicated within the entity; unsupported property type;
+        `[SpoField]` on a property without both getter and setter
+  - [ ] New test project `tests/Sferix.SPO.Tests.Generators` (xUnit, added to `FrankenSPO.slnx`) runs the generator
+        with `CSharpGeneratorDriver`: one test per diagnostic, plus a valid entity whose generated metadata is checked
+        field by field; also a compile-and-run test that reads `SpoMetadata` without reflection
+  - [ ] `Core` still references no provider; no runtime reflection on the metadata path; build 0 warnings; CI green
+  - [ ] `features.json`: `source_generated_metadata` → `tested` only if all of the above pass
+- Files: `src/Sferix.SPO.Abstractions/**`, `src/Sferix.SPO.Generators/**`, `tests/Sferix.SPO.Tests.Generators/**`,
+  `FrankenSPO.slnx`, `docs/compatibility/features.json`
+- Dependency allowed: `Microsoft.CodeAnalysis.CSharp` 5.0.0 in the generator test project (record in THIRD-PARTY-NOTICES)
+- Not in scope: `SPOBaseObject` and its columns (S-03), schema (S-02), model revisions, the GUID code fix, tracking code
+- Notes: D-25, D-35, D-37, `docs/architecture/modules.md` rule 11.
 
 ### S-02 · SQLite schema initialisation and validation
 - Issue: #5 · Size: M · Status: Backlog · after S-01
