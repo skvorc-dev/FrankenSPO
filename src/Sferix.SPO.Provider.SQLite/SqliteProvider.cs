@@ -1,5 +1,6 @@
 using Microsoft.Data.Sqlite;
 using Sferix.SPO.Abstractions.Providers;
+using Sferix.SPO.Provider.SQLite.Data;
 
 namespace Sferix.SPO.Provider.SQLite;
 
@@ -20,6 +21,9 @@ public sealed class SqliteProvider : ISpoProvider
 
     /// <inheritdoc />
     public IReadOnlySet<SpoCapability> Capabilities => Supported;
+
+    /// <inheritdoc />
+    ISpoConnection ISpoProvider.Open(string connectionString) => new SqliteSpoConnection(Open(connectionString));
 
     /// <summary>Opens a connection and applies the provider's settings.</summary>
     /// <param name="connectionString">A SQLite connection string; use <c>:memory:</c> or a temp file in tests.</param>

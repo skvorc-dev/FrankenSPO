@@ -15,6 +15,7 @@ public sealed class SpoModelBuilderTests
     private sealed class StubProvider(params SpoCapability[] capabilities) : ISpoProvider
     {
         public string Name => "Stub";
+        public ISpoConnection Open(string connectionString) => throw new NotSupportedException();
         public IReadOnlySet<SpoCapability> Capabilities { get; } = new HashSet<SpoCapability>(capabilities);
     }
 

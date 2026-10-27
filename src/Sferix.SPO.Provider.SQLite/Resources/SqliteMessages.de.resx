@@ -70,4 +70,16 @@
   <data name="SchemaColumnDiffers" xml:space="preserve">
     <value>Die Datenbank passt nicht zum Modell: Die Spalte '{1}' der Tabelle '{0}' hat einen anderen Typ oder eine andere Nullbarkeit. Es wurde nichts geändert.</value>
   </data>
+  <data name="DateTimeNotUtc" xml:space="preserve">
+    <value>Die Spalte '{1}' der Tabelle '{0}' hat ein DateTime erhalten, das nicht UTC ist. Vor dem Speichern in UTC umwandeln; es wurde nichts geschrieben.</value>
+  </data>
+  <data name="KeyColumnRequired" xml:space="preserve">
+    <value>Die Tabelle '{0}' benötigt für diese Operation genau eine Primärschlüsselspalte.</value>
+  </data>
+  <data name="ValueCountMismatch" xml:space="preserve">
+    <value>Die Tabelle '{0}' hat {1} Spalten, aber es wurden {2} Werte übergeben.</value>
+  </data>
+  <data name="UnknownColumn" xml:space="preserve">
+    <value>Die Tabelle '{0}' hat keine Spalte '{1}'.</value>
+  </data>
 </root>
