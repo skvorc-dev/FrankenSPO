@@ -15,7 +15,7 @@ restored into the build.
 | `SQLitePCLRaw.core` | 2.1.13 | Apache-2.0 | runtime (transitive, SQLite native bundle) |
 | `SQLitePCLRaw.lib.e_sqlite3` | 2.1.13 | Apache-2.0 | runtime (transitive, SQLite native bundle) |
 | `SQLitePCLRaw.provider.e_sqlite3` | 2.1.13 | Apache-2.0 | runtime (transitive, SQLite native bundle) |
-| `Microsoft.CodeAnalysis.CSharp` | 5.0.0 | MIT | build only (source generator, `PrivateAssets="all"`) |
+| `Microsoft.CodeAnalysis.CSharp` | 5.0.0 | MIT | build only (source generator with `PrivateAssets="all"`; also the generator test project) |
 | `Microsoft.NET.Test.Sdk` | 18.11.0 | MIT | build/test only |
 | `xunit` | 2.9.3 | Apache-2.0 | build/test only |
 | `xunit.runner.visualstudio` | 4.0.1 | Apache-2.0 | build/test only |
