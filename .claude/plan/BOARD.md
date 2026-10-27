@@ -7,8 +7,8 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | Agent | Branch | Since |
 |------|-------|-------|--------|-------|
-| S-03c Provider data contract and SQLite row access | #5 | sonnet-2 | `task/Sonnet_S-03c_<time>` | 2026-10-27 |
-| S-14 Localization audit | #5 | haiku-2 | `task/Haiku_S-14_<time>` | 2026-10-27 |
+| S-03d ObjectSpace: add, get, update, identity map, UUIDv7 | #5 | sonnet-2 | `task/Sonnet_S-03d_<time>` | 2026-10-27 |
+| S-15 Generator: abstract entities, hidden base members | #5 | haiku-2 | `task/Haiku_S-15_<time>` | 2026-10-27 |
 
 ## Review
 
@@ -20,12 +20,14 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 | Card | Issue | Size |
 |------|-------|------|
 
-Next when their dependency merges: S-03d ObjectSpace (sonnet-2, after S-03c), S-15 generator checks (haiku-2, after S-14).
+Next when their dependency merges: S-04 tracking, audit, SoftDelete (after S-03d); S-05 LINQ core subset (after S-03d).
 
 ## Done (this phase)
 
 | Card | Issue | PR |
 |------|-------|----|
+| S-03c Provider data contract and SQLite row access (sonnet-2) | #5 | #76 |
+| S-14 Localization audit (haiku-2) | #5 | #75 |
 | S-03a `SPOBaseObject`, inherited fields, generated accessors (sonnet-2) | #5 | #73 |
 | S-03b Modules and public model activation (haiku-2) | #5 | #71 |
 | S-02b Neutral schema model, SQLite DDL (sonnet-2) | #5 | #69 |

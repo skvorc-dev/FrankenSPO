@@ -138,7 +138,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Notes: D-36, D-42, D-43. Parallel to S-03a: do not touch `Generators`, `Abstractions/Metadata`, `Core/Schema`.
 
 ### S-03c · Provider data contract and SQLite row access
-- Issue: #5 · Size: M · Status: In Progress (sonnet-2)
+- Issue: #5 · Size: M · Status: Done (PR #76, sonnet-2)
 - Goal: Core can insert, update and read one row by key through a provider-neutral contract; SQLite executes it with
   parameters inside a transaction, with exact value conversion (D-29, D-34, D-44).
 - Acceptance:
@@ -162,13 +162,42 @@ the main agent completes each card (files, exact acceptance) before moving it to
   might audit — add new keys only.
 
 ### S-03d · ObjectSpace: add, get, update, identity map, UUIDv7
-- Issue: #5 · Size: M · Status: Backlog · after S-03c
+- Issue: #5 · Size: M · Status: In Progress (sonnet-2)
 - Goal: an application opens an ObjectSpace from `SpoModel`, adds, loads and updates `SPOBaseObject` entities on real
-  SQLite in one atomic SaveChanges; identity map by entity ID + key; single-threaded misuse detected (D-29, D-35).
-  Card completed when S-03c is merged (it settles the API shape).
+  SQLite in one atomic SaveChanges; identity map by entity ID + key; misuse detected (D-29, D-30, D-35, D-44).
+- Acceptance:
+  - [ ] `Sferix.SPO.Abstractions/ObjectSpace/ISpoObjectSpace.cs` (`IDisposable`, `IAsyncDisposable`):
+        `T Add<T>(T entity) where T : SPOBaseObject`; `T? Get<T>(Guid id)` and `GetAsync<T>(Guid id, CancellationToken)`;
+        `SaveChanges()` and `SaveChangesAsync(CancellationToken)`. Implementation internal in `Core/ObjectSpace/`
+  - [ ] `SpoModelBuilder.UseTimeProvider(TimeProvider)` (default `TimeProvider.System`); `Build` also builds the schema
+        model (so schema errors are activation errors); `SpoModel.OpenObjectSpace(string connectionString)` opens a
+        provider connection and runs `EnsureSchema`
+  - [ ] `Add`: empty `Id` gets `Guid.CreateVersion7(timeProvider.GetUtcNow())`; entity type not in the model →
+        `SPO1008`. `SaveChanges`: one transaction; added → insert with `CreatedAt = ModifiedAt = UtcNow`; loaded and
+        changed (snapshot compare: `Equals`, `byte[]` by content; S-04 brings the per-type comparers) → update of the
+        changed columns plus `ModifiedAt`; 0 rows affected → `SPO1009`, rollback. Enums convert to and from their
+        underlying integer
+  - [ ] Failure (any exception during SaveChanges): rollback; added stays added, changed stays changed, snapshots and
+        `CreatedAt`/`ModifiedAt` set by this save are restored (D-30); a second SaveChanges after the fix succeeds
+  - [ ] Identity map: `Get` twice → the same instance; `Get` of an added, unsaved entity → that instance
+  - [ ] Misuse: a call into the ObjectSpace while another call runs (re-entrant or concurrent) → `SPO1010`;
+        any call after `Dispose` → `ObjectDisposedException`
+  - [ ] Core uses one internal code path for sync and async (`bool async`); nothing blocks on async
+  - [ ] Codes SPO1008–SPO1010: one public `SpoObjectSpaceException` (Core) with `Code`, messages in en, de, hr, es;
+        `docs/error-codes.md` updated
+  - [ ] Tests (Tests.SQLite, real temp-file DB, a test `TimeProvider` subclass): add+save, then a new ObjectSpace
+        reads equal values; update; identity map; each failure path above; re-entrancy via an entity getter that
+        calls `Get` during SaveChanges; sync and async paths
+  - [ ] Build 0 warnings; CI green; PR lists the public API additions
+- Files: `src/Sferix.SPO.Abstractions/ObjectSpace/**`, `src/Sferix.SPO.Core/ObjectSpace/**`,
+  `src/Sferix.SPO.Core/Model/**`, `src/Sferix.SPO.Core/Resources/**`, `docs/error-codes.md`,
+  `tests/Sferix.SPO.Tests.SQLite/**`, `tests/Sferix.SPO.Tests.Unit/**`
+- Not in scope: delete/SoftDelete and `IncludeDeleted` (S-04), version check (S-10), uncertain commit (S-06),
+  queries (S-05), `features.json` changes (S-09).
+- Notes: D-29, D-30, D-35, D-42, D-44. Parallel to S-15 (generator only).
 
 ### S-15 · Generator: abstract entities and hidden base members
-- Issue: #5 · Size: S · Status: Backlog · after S-14
+- Issue: #5 · Size: S · Status: In Progress (haiku-2)
 - Goal: the generator rejects what the ObjectSpace cannot handle, before runtime (review of #73).
 - Acceptance:
   - [ ] Error `SPO0012`: `[SpoEntity]` on an `abstract` class (no inheritance mapping in P1, D-35)
@@ -252,7 +281,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
   `src/Sferix.SPO.Provider.SQLite/**`, `tests/Sferix.SPO.Tests.{Generators,SQLite}/**`.
 
 ### S-14 · Localization audit
-- Issue: #5 · Size: S · Status: In Progress (haiku-2)
+- Issue: #5 · Size: S · Status: Done (PR #75, haiku-2)
 - Goal: a check that no user-visible string escaped the four-language rule (D-41).
 - Acceptance:
   - [ ] Search `src/**` for string literals in `throw`, `Exception(` and `DiagnosticDescriptor` calls and in console or
