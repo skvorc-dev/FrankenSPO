@@ -7,8 +7,7 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | Agent | Branch | Since |
 |------|-------|-------|--------|-------|
-| S-01b Generator edge cases, then S-12, S-02 (chain) | #5 | sonnet-2 | `task/Sonnet_S-01b_20261027T1152` | 2026-10-27 |
-| S-13 Localization baseline (en, de, hr, es) | #5 | haiku-2 | `task/Haiku_S-13_20261027T1159` | 2026-10-27 |
+| S-12 Generator diagnostics from resources, then S-02 (chain) | #5 | sonnet-2 | `task/Sonnet_S-12_<time>` | 2026-10-27 |
 
 ## Review
 
@@ -19,7 +18,6 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | Size |
 |------|-------|------|
-| S-12 Generator diagnostics from resources (queued for sonnet-2 after S-01b) | #5 | S |
 | S-02 Provider contract, capabilities, activation (queued for sonnet-2 after S-12) | #5 | M |
 
 Next when their dependency merges: S-02b (sonnet-2, after S-02), S-11 (haiku-2, after S-02), S-14 localization audit (haiku-2, after S-02b and S-11).
@@ -28,6 +26,8 @@ Next when their dependency merges: S-02b (sonnet-2, after S-02), S-11 (haiku-2, 
 
 | Card | Issue | PR |
 |------|-------|----|
+| S-13 Localization baseline: en, de, hr, es and CI check (haiku-2) | #5 | #61 |
+| S-01b Generator edge cases (sonnet-2) | #5 | #59 |
 | S-01 Generator: entity declaration and stable metadata IDs (sonnet) | #5 | #53 |
 | F-18…F-25 Haiku chain 2 (haiku-1) | #1 #3 #4 #15 | #45–#52 |
 | F-02 Architecture contracts (sonnet-1) | #3 | #39 |
