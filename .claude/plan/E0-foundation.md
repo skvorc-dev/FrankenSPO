@@ -28,10 +28,12 @@ Milestone **P0 — Foundation**. Gate: clean baseline, green CI on three OSes, p
   - [x] Microsoft.Data.Sqlite 10.0.14; CI green on Linux, Windows, macOS
 
 ### F-04 · CI security gates
-- Issue: #4 · Size: S · Status: Ready
+- Issue: #4 · Size: S · Status: In Progress (haiku-1, chain task 1)
 - Goal: dependency problems are caught in PRs, not on `main`.
 - Acceptance:
-  - [ ] `.github/workflows/dependency-review.yml` runs `actions/dependency-review-action` on PRs and fails on high severity
+  - [ ] New `.github/workflows/dependency-review.yml`: on `pull_request`, `permissions: contents: read`,
+        steps `actions/checkout@v7` then `actions/dependency-review-action@v4` with `fail-on-severity: high`
+  - [ ] Do **not** touch `ci.yml`, `pages.yml`, `dco.yml` or the ruleset
   - [x] CodeQL for C# is enabled (default setup, D-16)
   - [ ] CI green
 - Files: `.github/workflows/**`
@@ -64,3 +66,88 @@ Milestone **P0 — Foundation**. Gate: clean baseline, green CI on three OSes, p
   - [x] #19 merged or closed with a one-line reason
 - Files: `src/Sferix.SPO.Generators/*.csproj`, `.github/dependabot.yml`, `.claude/docs/DECISIONS.md`
 - Notes: a generator built against a newer Roslyn than the user's compiler fails with CS9057.
+
+## Haiku chain 1 (cards F-09 … F-17, with F-04 first)
+
+Small, exact cards for one worker in a chain (D-17). Each card: its own branch from `origin/main`, its own PR,
+`Refs #<issue>`. Never invent features or facts; when a card needs a fact you cannot verify, write
+`TODO(owner):` in the text and say so in the PR.
+
+### F-09 · THIRD-PARTY-NOTICES: list current dependencies
+- Issue: #4 · Size: S · Status: In Progress (haiku-1, chain task 2)
+- Goal: every NuGet package referenced in `src/` and `tests/` is listed with version, licence and use.
+- Acceptance:
+  - [ ] Table in `THIRD-PARTY-NOTICES.md`: package, version (from the csproj), SPDX licence (from nuget.org), "runtime" or "build/test only"
+  - [ ] Transitive SQLite native bundle (`SQLitePCLRaw.*`) listed as runtime
+  - [ ] Existing paragraph kept; no other file changed
+- Files: `THIRD-PARTY-NOTICES.md`
+
+### F-10 · SECURITY.md: private reporting is enabled
+- Issue: #4 · Size: S · Status: In Progress (haiku-1, chain task 3)
+- Goal: SECURITY.md says how to report today.
+- Acceptance:
+  - [ ] Replace "when available" with a link to `https://github.com/skvorc-dev/FrankenSPO/security/advisories/new`
+  - [ ] Add "Supported versions: none yet (pre-release); production releases only on an LTS .NET (see roadmap)"
+  - [ ] Security requirements paragraph unchanged
+- Files: `SECURITY.md`
+
+### F-11 · Development workflow and release checklist match the decisions
+- Issue: #15 · Size: S · Status: In Progress (haiku-1, chain task 4)
+- Goal: `docs/DEVELOPMENT_WORKFLOW.md` and `docs/RELEASE_CHECKLIST.md` agree with D-05, D-21, D-22, D-23, D-25, D-26.
+- Acceptance:
+  - [ ] Workflow: branch names `feature/`, `fix/`, `docs/<issue>-<desc>`; worker branches per GUARDRAILS.md; squash merge via PR with green CI; DCO sign-off for external contributors
+  - [ ] Versioning: `vX.Y.Z-preview.N`; production releases only on an LTS .NET; non-LTS builds are previews
+  - [ ] Checklist gains: "built on an LTS .NET SDK (else mark as preview)", "GitHub Release notes written", "NuGet pushed manually by the owner"
+  - [ ] Link to `.claude/docs/DECISIONS.md` instead of copying decision text
+- Files: `docs/DEVELOPMENT_WORKFLOW.md`, `docs/RELEASE_CHECKLIST.md`
+
+### F-12 · GITHUB_SETUP.md describes the current setup
+- Issue: #15 · Size: S · Status: In Progress (haiku-1, chain task 5)
+- Goal: the file documents what exists now instead of what still has to be done.
+- Acceptance:
+  - [ ] States: labels from `docs/labels.csv`; milestones P0–P3; org project "FrankenSPO Roadmap" (project 1) with Status and Priority; ruleset "Protect main" (no deletion/force push, PR + checks `docs`, `dotnet (ubuntu-latest|windows-latest|macos-latest)`, squash only); CodeQL default setup; private vulnerability reporting; Dependabot for Actions and NuGet
+  - [ ] Keeps the bootstrap script instructions; removes the "Assign issues" section
+- Files: `docs/GITHUB_SETUP.md`
+
+### F-13 · `.editorconfig` from the code style rules
+- Issue: #4 · Size: S · Status: In Progress (haiku-1, chain task 6)
+- Goal: editors and `dotnet format` follow `.claude/rules/code-style.md`.
+- Acceptance:
+  - [ ] Root `.editorconfig`: UTF-8, LF, final newline, 4 spaces for `*.cs`, 2 for `*.{json,yml,yaml,props,csproj,slnx}`; `csharp_style_namespace_declarations = file_scoped:warning`; `dotnet_style_qualification_for_*` false
+  - [ ] `dotnet format FrankenSPO.slnx --verify-no-changes` passes **without changing any `.cs` file**; if it would change code, relax the rule instead and list it in the PR
+  - [ ] Build has 0 warnings
+- Files: `.editorconfig`
+
+### F-14 · Pin the DocFX version in the Pages workflow
+- Issue: #4 · Size: S · Status: In Progress (haiku-1, chain task 7)
+- Goal: reproducible docs builds.
+- Acceptance:
+  - [ ] `pages.yml`: `dotnet tool install --global docfx --version <latest stable from nuget.org>`
+  - [ ] `docfx docfx.json` builds locally without errors with that version (say so in the PR)
+- Files: `.github/workflows/pages.yml`
+
+### F-15 · Bug report form asks for SDK and OS
+- Issue: #4 · Size: S · Status: In Progress (haiku-1, chain task 8)
+- Goal: bug reports carry the environment.
+- Acceptance:
+  - [ ] `bug_report.yml`: required input ".NET SDK version (`dotnet --version`)", required dropdown OS (Linux / Windows / macOS / other), optional input "Database provider and version"
+  - [ ] Existing fields unchanged; YAML valid (`python3 -c "import yaml,sys;yaml.safe_load(open(sys.argv[1]))" <file>`)
+- Files: `.github/ISSUE_TEMPLATE/bug_report.yml`
+
+### F-16 · Capability manifest: `specified` status
+- Issue: #3 · Size: S · Status: In Progress (haiku-1, chain task 9)
+- Goal: first half of F-02 — the manifest can say "specified" (designed, not implemented).
+- Acceptance:
+  - [ ] `scripts/validate_repository.py` accepts `specified`
+  - [ ] `features.json`: `note` explains the order planned → specified → implemented → tested → provider-verified → release-ready; **no feature status changed**
+  - [ ] `site/status.md` gets a short list of those statuses with one line each
+- Files: `scripts/validate_repository.py`, `docs/compatibility/features.json`, `site/status.md`
+
+### F-17 · Edge-case tests for `SqlIdentifier` and `EntityId`
+- Issue: #6 · Size: S · Status: In Progress (haiku-1, chain task 10)
+- Goal: lock in current behavior; no production code change.
+- Acceptance:
+  - [ ] New cases in `IdentifierTests`: 63-char identifier accepted, 64 rejected; null, empty and whitespace rejected; non-ASCII letter (`"KupacČ"`) rejected; `EntityId.ToString()` is the `D` format
+  - [ ] If a test fails, do **not** change `src/`; stop and report it
+  - [ ] `dotnet test` green
+- Files: `tests/Sferix.SPO.Tests.Unit/IdentifierTests.cs`
