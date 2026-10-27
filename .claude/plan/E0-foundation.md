@@ -55,12 +55,12 @@ Milestone **P0 — Foundation**. Gate: clean baseline, green CI on three OSes, p
 - Done: #9, #10, #12, #13, #17, #18, #20, #21; #11 superseded by #23. Companion repos: all Action bumps merged.
 
 ### F-08 · Roslyn version policy for the source generator
-- Issue: #4 · Size: S · Status: Ready
+- Issue: #4 · Size: S · Status: Done (D-25)
 - Goal: decide which `Microsoft.CodeAnalysis.CSharp` version `Sferix.SPO.Generators` references, so the generator
   loads in every SDK we support; then accept or close Dependabot #19 (4.14 → 5.9).
 - Acceptance:
-  - [ ] Decision in DECISIONS.md: lowest supported .NET SDK band and the matching Roslyn version
-  - [ ] Dependabot ignore rule for Roslyn versions above it in `.github/dependabot.yml`
-  - [ ] #19 merged or closed with a one-line reason
+  - [x] Decision in DECISIONS.md: lowest supported .NET SDK band and the matching Roslyn version
+  - [x] Dependabot ignore rule for Roslyn versions above it in `.github/dependabot.yml`
+  - [x] #19 merged or closed with a one-line reason
 - Files: `src/Sferix.SPO.Generators/*.csproj`, `.github/dependabot.yml`, `.claude/docs/DECISIONS.md`
 - Notes: a generator built against a newer Roslyn than the user's compiler fails with CS9057.
