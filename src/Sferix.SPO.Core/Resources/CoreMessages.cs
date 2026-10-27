@@ -12,6 +12,12 @@ internal static class CoreMessages
 
     internal static string SqlIdentifierInvalid => Get(nameof(SqlIdentifierInvalid));
 
+    internal static string ModelDuplicateEntityId(Guid id) =>
+        string.Format(CultureInfo.CurrentUICulture, Get(nameof(ModelDuplicateEntityId)), id);
+
+    internal static string ModelInvalidName(string name) =>
+        string.Format(CultureInfo.CurrentUICulture, Get(nameof(ModelInvalidName)), name);
+
     private static string Get(string name) =>
         Resources.GetString(name, CultureInfo.CurrentUICulture)
         ?? throw new InvalidOperationException($"Missing Core resource '{name}'.");

@@ -112,4 +112,10 @@
   <data name="SPO0008_Message" xml:space="preserve">
     <value>[SpoEntity] auf '{0}' wird nicht unterstützt: Nur eine einfache 'class' kann eine Entität sein, kein record, struct oder record struct</value>
   </data>
+  <data name="SPO0009_Title" xml:space="preserve">
+    <value>Nicht unterstützter zugrunde liegender Enum-Typ</value>
+  </data>
+  <data name="SPO0009_Message" xml:space="preserve">
+    <value>Die Eigenschaft '{0}' ist ein Enum mit dem zugrunde liegenden Typ 'ulong', der nicht in eine vorzeichenbehaftete 64-Bit-Spalte passt</value>
+  </data>
 </root>

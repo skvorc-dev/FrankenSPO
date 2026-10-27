@@ -90,6 +90,34 @@ public sealed class MetadataGenerationTests
     }
 
     // The generated SpoMetadata is read by compiled code (Probe.Get); reflection only locates that entry point.
+    [Fact]
+    public void EnumPropertyCarriesItsUnderlyingType()
+    {
+        const string source = $$"""
+            using Sferix.SPO.Abstractions.Metadata;
+            namespace Shop.Model;
+            public enum SmallE : byte { A }
+            public enum DefaultE { A }
+            public enum LargeE : long { A }
+            [SpoEntity("{{EntityId}}")]
+            public partial class Customer
+            {
+                [SpoField(1)] public SmallE A { get; set; }
+                [SpoField(2)] public DefaultE B { get; set; }
+                [SpoField(3)] public LargeE? C { get; set; }
+                [SpoField(4)] public int D { get; set; }
+            }
+            public static class Probe { public static EntityMetadata Get() => Customer.SpoMetadata; }
+            """;
+        var run = GeneratorHarness.Run(source);
+        Assert.Empty(run.GeneratorDiagnostics);
+        var properties = Probe(run).Properties;
+        Assert.Equal(typeof(byte), properties[0].EnumUnderlyingType);
+        Assert.Equal(typeof(int), properties[1].EnumUnderlyingType);
+        Assert.Equal(typeof(long), properties[2].EnumUnderlyingType);
+        Assert.Null(properties[3].EnumUnderlyingType);
+    }
+
     private static EntityMetadata Probe(GeneratorRun run)
     {
         using var stream = new MemoryStream();
