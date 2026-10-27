@@ -12,4 +12,17 @@ allowed = {"planned", "specified", "implemented", "tested", "provider-verified",
 for field in ("providers", "features"):
     for name, status in capabilities[field].items():
         assert status in allowed, f"Unknown feature status: {field}.{name}={status}"
+import re
+
+architecture = root / "docs/architecture"
+overview = (architecture / "OVERVIEW.md").read_text(encoding="utf-8")
+status_line = re.compile(r"^\*\*Status: (specified|implemented|tested|provider-verified|release-ready)\b")
+for doc in sorted(architecture.glob("*.md")):
+    if doc.name == "OVERVIEW.md":
+        continue
+    head = doc.read_text(encoding="utf-8").splitlines()[:5]
+    if not any(status_line.match(line) for line in head):
+        raise SystemExit(f"{doc.relative_to(root)}: missing '**Status: specified, not implemented.**' in its first 5 lines")
+    if f"]({doc.name})" not in overview and f"](./{doc.name})" not in overview:
+        raise SystemExit(f"{doc.relative_to(root)}: not linked from docs/architecture/OVERVIEW.md")
 print("FrankenSPO repository validation passed")
