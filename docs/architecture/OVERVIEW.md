@@ -14,6 +14,16 @@ FrankenSPO is an independent, platform-neutral .NET ORM with a source-generated 
 - Provider conformance against real SQLite and PostgreSQL; optional advanced modules follow verified activation and compatibility contracts.
 - Explicit entity-aware and set-based bulk models; set-based writes preserve mandatory security/integrity guarantees and invalidate affected tracked/cache state.
 
+## Contract documents
+
+- [ObjectSpace](objectspace.md): identity map, unit of work, SaveChanges.
+- [Tracking](tracking.md): scalar tracking, working/flushed/committed baselines, partial loads.
+- [Query and security](query-security.md): typed query AST, parameters, identifiers, raw SQL, fail-closed policies.
+- [Providers](providers.md): provider contract, capability checks, SQLite first, PostgreSQL in P3.
+- [Modules](modules.md): assembly boundaries, optional modules, public API maturity.
+
+Each states what is specified; none claims anything is implemented. Unsettled points are listed there as open questions.
+
 ## Development boundary
 
 The first PoC proves the smallest correct SQLite vertical slice. The comprehensive feature roadmap is not the PoC's public capability list. Precise unresolved engineering contracts must be documented and tested before their individual features are exposed. See [feature manifest](../compatibility/features.json).
