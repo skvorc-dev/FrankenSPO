@@ -19,3 +19,10 @@
 | **Card** | One task in an epic file: ID, goal, acceptance criteria, size, status. |
 | **Epic** | A group of cards for one phase or theme, one file in `.claude/plan/`. |
 | **Gate** | The evidence a roadmap phase needs before it counts as done. |
+| **SPOBaseObject** | Simple base class for persistent entities with shared columns (UUIDv7 Id, timestamps, soft-delete flags, version); no inheritance mapping (D-35). |
+| **[SpoEntity]** | Attribute on a `partial` class that gives its stable GUID entity ID; the GUID never changes on rename (D-37). |
+| **[SpoField]** | Attribute on a persistent property with a positive field number, unique within its entity and never reused (D-37). |
+| **ISpoModule / `<Name>Module`** | Interface and naming rule for modules, activated by explicit `AddModule<T>()` registration with no assembly scanning (D-36). |
+| **Model activation** | Building the compiled model at startup; all capability and policy checks run then, and a model that fails them is rejected (D-33). |
+| **Uncertain commit** | A commit whose outcome is unknown; it raises `SpoCommitUncertainException`, and that ObjectSpace can no longer be used (D-29). |
+| **Optimistic concurrency (version column)** | An integer version column incremented on every update; a mismatch raises its own exception and writes nothing (D-31). |
