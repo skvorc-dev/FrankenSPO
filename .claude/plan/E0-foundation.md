@@ -11,24 +11,24 @@ Milestone **P0 — Foundation**. Gate: clean baseline, green CI on three OSes, p
 - Files: root `*.md`, `LICENSE`
 
 ### F-02 · Architecture contracts
-- Issue: #3 · Size: M · Status: In Progress (sonnet-1)
+- Issue: #3 · Size: M · Status: Done (PR #39, sonnet-1)
 - Goal: the architecture docs state each core contract precisely enough that P1 cards can be written from them,
   without inventing design that the owner has not approved.
 - Sources (the only ones): `docs/architecture/OVERVIEW.md`, `docs/POC_ACCEPTANCE.md`, `AGENTS.md`, `SECURITY.md`,
   issues #1, #3, #5, #6, `.claude/docs/DECISIONS.md`, and the existing code in `src/`.
 - Acceptance:
-  - [ ] One file per contract in `docs/architecture/`: `objectspace.md` (identity map, unit of work, SaveChanges),
+  - [x] One file per contract in `docs/architecture/`: `objectspace.md` (identity map, unit of work, SaveChanges),
         `tracking.md` (scalar tracking, the three baselines working / flushed / committed, partial loads),
         `query-security.md` (typed query AST, parameters, metadata-validated identifiers, raw SQL boundary,
         no client-side evaluation, tenant/row/field policies fail closed), `providers.md` (provider contract,
         capability checks, fail closed, SQLite first, PostgreSQL in P3), `modules.md` (assembly boundaries of
         `Sferix.SPO.*`, what Core may reference, optional modules, public API maturity levels)
-  - [ ] Every file starts with `**Status: specified, not implemented.**` and has sections: Purpose, Contract
+  - [x] Every file starts with `**Status: specified, not implemented.**` and has sections: Purpose, Contract
         (numbered, testable statements), Not in scope, Open questions
-  - [ ] Anything not in the sources goes under **Open questions** as a question for the owner, never as a decision
-  - [ ] `OVERVIEW.md` links the five files; no other doc claims anything is implemented
-  - [ ] `features.json`: only features whose contract is now written may move `planned` → `specified`; list them in the PR
-  - [ ] `scripts/validate_repository.py` and CI green
+  - [x] Anything not in the sources goes under **Open questions** as a question for the owner, never as a decision
+  - [x] `OVERVIEW.md` links the five files; no other doc claims anything is implemented
+  - [x] `features.json`: only features whose contract is now written may move `planned` → `specified`; list them in the PR
+  - [x] `scripts/validate_repository.py` and CI green
 - Files: `docs/architecture/**`, `docs/compatibility/features.json`
 - Notes: docs only, no code. D-13. Size M: one PR.
 

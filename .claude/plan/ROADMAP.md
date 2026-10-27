@@ -4,8 +4,8 @@ Gates, not dates (D-04). Full phase descriptions: `docs/ROADMAP.md`.
 
 | Phase | Milestone (GitHub) | Epic | Gate | State |
 |-------|--------------------|------|------|-------|
-| P0 | P0 — Foundation (#1) | [E0-foundation.md](E0-foundation.md) | Clean baseline, green CI, public-safe docs, self-organising repo | in progress |
-| P1 | P1 — SQLite PoC (#2) | [E1-sqlite-poc.md](E1-sqlite-poc.md) | Real SQLite CRUD/transaction/injection tests, Console + Module sample | backlog |
+| P0 | P0 — Foundation (#1) | [E0-foundation.md](E0-foundation.md) | Clean baseline, green CI, public-safe docs, self-organising repo | done 2026-10-27 |
+| P1 | P1 — SQLite PoC (#2) | [E1-sqlite-poc.md](E1-sqlite-poc.md) | Real SQLite CRUD/transaction/injection tests, Console + Module sample | next: owner answers the open questions in `docs/architecture/*.md`, then cards S-01… become Ready |
 | P2 | P2 — Developer Preview (#3) | not yet written | Versioned examples, release notes, verified feature matrix, `v0.1.0-preview.1` | — |
 | P3 | P3 — PostgreSQL Conformance (#4) | not yet written | Shared conformance subset verified on both providers | — |
 | P4 | — | — | Associations, queries, bulk, concurrency | — |
