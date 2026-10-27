@@ -7,7 +7,7 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | Agent | Branch | Since |
 |------|-------|-------|--------|-------|
-| S-04 Exact change detection and SoftDelete | #5 | sonnet-2 | `task/Sonnet_S-04_<time>` | 2026-10-27 |
+| S-05a LINQ core subset: filter, order, page, list | #6 | sonnet-2 | `task/Sonnet_S-05a_<time>` | 2026-10-27 |
 | S-08 `SpoExample.Module` and `SpoExample.Console` | #7 | haiku-2 | `task/Haiku_S-08_<time>` | 2026-10-27 |
 
 ## Review
@@ -20,12 +20,13 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 | Card | Issue | Size |
 |------|-------|------|
 
-Next when their dependency merges: S-05a LINQ core subset (sonnet-2, after S-04); S-16 module-name analyzer (haiku-2, after S-08).
+Next when their dependency merges: S-05c single results (sonnet-2, after S-05a); S-16 module-name analyzer (haiku-2, after S-08).
 
 ## Done (this phase)
 
 | Card | Issue | PR |
 |------|-------|----|
+| S-04 Exact change detection and SoftDelete (sonnet-2) | #5 | #82 |
 | S-03d ObjectSpace: add, get, update, identity map, UUIDv7 (sonnet-2) | #5 | #79 |
 | S-15 Generator: abstract entities, hidden base members (haiku-2) | #5 | #78 |
 | S-03c Provider data contract and SQLite row access (sonnet-2) | #5 | #76 |
