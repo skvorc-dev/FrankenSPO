@@ -10,3 +10,13 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    # Stay on .NET 10 LTS (D-25): patches yes, next major (STS/preview) no.
+    ignore:
+      - dependency-name: "Microsoft.CodeAnalysis*"
+        versions: [">= 5.1"]
+      - dependency-name: "Microsoft.Data.Sqlite*"
+        versions: [">= 11"]
+      - dependency-name: "Microsoft.Extensions.*"
+        versions: [">= 11"]
+      - dependency-name: "System.*"
+        versions: [">= 11"]

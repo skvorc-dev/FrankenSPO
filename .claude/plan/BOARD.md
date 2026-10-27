@@ -20,7 +20,6 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 |------|-------|------|
 | F-02 Architecture contracts and capability statuses | #3 | M |
 | F-04 CI security gates (dependency review left; CodeQL on) | #4 | S |
-| F-08 Roslyn version policy for the generator (holds Dependabot #19) | #4 | S |
 
 ## Done (this phase)
 
@@ -28,5 +27,6 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 |------|-------|----|
 | F-01 Repository policies | #2 | owner confirmed, #2 closed |
 | F-03 CI green again (NU1903) | #4 | #14 |
+| F-08 LTS alignment, Roslyn 5.0.0 (D-25) | #4 | this PR |
 | F-07 Merge Dependabot bumps | #4 | #9–#23 |
 | F-06 Protect `main` (ruleset "Protect main") | #15 | settings |

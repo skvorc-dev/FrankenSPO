@@ -17,10 +17,10 @@ This repository is **public**. Everything committed here is visible to everyone 
 
 ## Tech stack
 
-- C# / .NET 10 (`Directory.Build.props`: nullable, implicit usings, `TreatWarningsAsErrors`, latest analyzers).
+- C# / .NET 10 LTS, kept in sync with LTS patches; production releases only on LTS .NET (D-25, D-26; `global.json`, `Directory.Build.props`: nullable, implicit usings, `TreatWarningsAsErrors`, latest analyzers).
 - Solution `FrankenSPO.slnx`; projects `src/Sferix.SPO.*`, tests `tests/Sferix.SPO.Tests.*` (xUnit).
 - SQLite via `Microsoft.Data.Sqlite`; PostgreSQL from milestone P3.
-- Roslyn incremental source generator (`Sferix.SPO.Generators`).
+- Roslyn incremental source generator (`Sferix.SPO.Generators`), referencing Roslyn 5.0.0 — the first .NET 10 band (D-25).
 - Docs site: DocFX from `site/`, published to GitHub Pages by `.github/workflows/pages.yml`.
 - CI: `.github/workflows/ci.yml` — `scripts/validate_repository.py` plus build and test on Linux, Windows and macOS.
 
