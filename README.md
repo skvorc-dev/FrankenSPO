@@ -4,7 +4,7 @@
 
 **FrankenSPO by Sferix** is an early-stage, MIT-licensed, modular, general-purpose .NET object-relational mapping project.
 
-> **Pre-implementation:** This repository does not yet provide an installed ORM runtime or production-ready package. See [verified feature declarations](docs/compatibility/features.json).
+> **Early foundation:** .NET 10 project scaffolding and infrastructure tests exist; this repository still does not provide a functional ORM runtime or production-ready package. See [verified feature declarations](docs/compatibility/features.json).
 
 ## Planned architecture
 
@@ -12,7 +12,7 @@ C# / .NET 10, source-generated metadata, provider-neutral ObjectSpace/UnitOfWork
 
 ## Development
 
-Read [architecture](docs/architecture/OVERVIEW.md), [roadmap](docs/ROADMAP.md), [developer workflow](docs/DEVELOPMENT_WORKFLOW.md), [agent guidance](AGENTS.md) and [current issues](https://github.com/skvorc-dev/FrankenSPO/issues). CI will test code when the first .NET solution is committed.
+Read [architecture](docs/architecture/OVERVIEW.md), [roadmap](docs/ROADMAP.md), [developer workflow](docs/DEVELOPMENT_WORKFLOW.md), [agent guidance](AGENTS.md) and [current issues](https://github.com/skvorc-dev/FrankenSPO/issues). CI builds and tests the committed .NET 10 solution. See [foundation task](docs/FOUNDATION_0001.md) for current scope and limitations.
 
 ## Companion projects
 
