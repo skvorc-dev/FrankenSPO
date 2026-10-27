@@ -208,7 +208,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Notes: D-35, D-43.
 
 ### S-04 · Exact change detection and SoftDelete
-- Issue: #5 · Size: M · Status: In Progress (sonnet-2)
+- Issue: #5 · Size: M · Status: Done (PR #82, sonnet-2)
 - Goal: dirty checks are exact per type (D-30, D-45) and entities can be soft-deleted and are then hidden (D-35).
 - Acceptance:
   - [ ] Per-property comparer chosen once at activation from the generated `ClrType` (D-45): `decimal` by value and
@@ -227,14 +227,43 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Not in scope: hard delete, restore of deleted rows, version check (S-10).
 - Notes: D-30, D-35, D-42, D-45.
 
-### S-05a · LINQ core subset: filter, order, page, single results
-- Issue: #6 · Size: M · Status: Backlog · after S-04
-- Goal: `ISpoObjectSpace.Query<T>()` translates the D-32 subset (without Select and GroupBy) into a neutral query
-  model in Core; SQLite renders it with parameters; results go through the identity map (D-32, D-35, D-45).
-  Card completed when S-04 is merged.
+### S-05a · LINQ core subset: filter, order, page, list
+- Issue: #6 · Size: M · Status: In Progress (sonnet-2)
+- Goal: `ISpoObjectSpace.Query<T>()` translates Where, OrderBy/ThenBy(+Descending), Skip/Take and `IncludeDeleted()`
+  into a neutral query model in Core; SQLite renders it with parameters; results come back as tracked entities through
+  the identity map (D-32, D-35, D-45, D-46).
+- Acceptance:
+  - [ ] `Query<T>()` on `ISpoObjectSpace` returns `IQueryable<T>`; `ToList()` and an async `ToListAsync(CancellationToken)`
+        extension; `IncludeDeleted()` extension. Public neutral query types in `Abstractions/Query`, translator in
+        `Core/Query`, rendering in the SQLite provider (`ISpoConnection.Query`/`QueryAsync`)
+  - [ ] Where: `==`, `!=`, `<`, `<=`, `>`, `>=`, `&&`, `||`, `!`, null checks, `StartsWith`/`EndsWith`/`Contains` on strings
+        (D-45: `substr`/`instr`, no LIKE). Captured variables and constants become parameters; property access maps to
+        columns through metadata only
+  - [ ] **C# null semantics** (D-46): `x.A == null` → `IS NULL`; comparison with a parameter whose value is null → `IS NULL`
+        / `IS NOT NULL`; `x.A != v` on a nullable column also returns rows where `A` is null
+  - [ ] D-46: `decimal` and `DateTimeOffset` in Where or OrderBy, and any operator outside the subset → public
+        `SpoQueryNotSupportedException` (code SPO1013, names the operator or member, never SQL or values; en, de, hr, es)
+  - [ ] Results: soft-deleted rows hidden unless `IncludeDeleted()`; an already tracked instance is returned as is
+        (its in-memory values win); entities pending delete are left out; added, unsaved entities are not in results
+  - [ ] Tests on real SQLite: each operator; null semantics both ways; ordering stable with ThenBy; Skip/Take;
+        UUIDv7 `OrderBy(x => x.Id)` = insertion order; IncludeDeleted; identity map; strings with `%`, `_`, `\`,
+        quotes, `' OR 1=1 --` match literally; empty-string StartsWith/EndsWith/Contains; case-sensitive matching;
+        each rejected case; sync and async
+  - [ ] Build 0 warnings; CI green on all three OSes; PR lists the public API additions
+- Files: `src/Sferix.SPO.Abstractions/Query/**`, `src/Sferix.SPO.Abstractions/ObjectSpace/**`,
+  `src/Sferix.SPO.Abstractions/Providers/ISpoConnection.cs`, `src/Sferix.SPO.Core/Query/**`,
+  `src/Sferix.SPO.Core/ObjectSpace/**`, `src/Sferix.SPO.Core/Resources/**`, `src/Sferix.SPO.Provider.SQLite/**`,
+  `docs/error-codes.md`, `tests/Sferix.SPO.Tests.SQLite/**`, `tests/Sferix.SPO.Tests.Unit/**`
+- Not in scope: First/Single/Count/Any (S-05c), Select (S-05), GroupBy/aggregates (S-05b), joins, raw SQL.
+- Notes: D-32, D-35, D-42, D-45, D-46. Evaluating a captured variable's value is not mapping reflection; mapping stays
+  metadata-only.
+
+### S-05c · Single results and scalars
+- Issue: #6 · Size: S · Status: Backlog · after S-05a
+- Goal: First/FirstOrDefault/Single/SingleOrDefault/Count/Any with async twins, on the S-05a translator (D-32).
 
 ### S-05 · Select to DTO
-- Issue: #6 · Size: S · Status: Backlog · after S-05a
+- Issue: #6 · Size: S · Status: Backlog · after S-05c
 - Goal: `Select` into a DTO or anonymous type, as untracked results (tracking rule 10).
 
 ### S-05b · GroupBy and aggregates
