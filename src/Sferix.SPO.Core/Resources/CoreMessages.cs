@@ -24,6 +24,17 @@ internal static class CoreMessages
     internal static string ModelUnsupportedStorageType(string name) =>
         string.Format(CultureInfo.CurrentUICulture, Get(nameof(ModelUnsupportedStorageType)), name);
 
+    internal static string ObjectSpaceEntityNotInModel(string type) =>
+        string.Format(CultureInfo.CurrentUICulture, Get(nameof(ObjectSpaceEntityNotInModel)), type);
+
+    internal static string ObjectSpaceNoRowAffected(string entity) =>
+        string.Format(CultureInfo.CurrentUICulture, Get(nameof(ObjectSpaceNoRowAffected)), entity);
+
+    internal static string ObjectSpaceKeyAlreadyTracked(string entity) =>
+        string.Format(CultureInfo.CurrentUICulture, Get(nameof(ObjectSpaceKeyAlreadyTracked)), entity);
+
+    internal static string ObjectSpaceConcurrentUse => Get(nameof(ObjectSpaceConcurrentUse));
+
     private static string Get(string name) =>
         Resources.GetString(name, CultureInfo.CurrentUICulture)
         ?? throw new InvalidOperationException($"Missing Core resource '{name}'.");

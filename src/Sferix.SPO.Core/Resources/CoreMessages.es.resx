@@ -73,4 +73,16 @@
   <data name="ModelUnsupportedStorageType" xml:space="preserve">
     <value>El tipo de la propiedad '{0}' no tiene tipo de almacenamiento.</value>
   </data>
+  <data name="ObjectSpaceEntityNotInModel" xml:space="preserve">
+    <value>El tipo '{0}' no es una entidad del modelo, o el modelo no puede crearlo ni asignarle una clave.</value>
+  </data>
+  <data name="ObjectSpaceNoRowAffected" xml:space="preserve">
+    <value>Al guardar '{0}' no se cambió ninguna fila: se eliminó o cambió en otro lugar. No se guardó nada.</value>
+  </data>
+  <data name="ObjectSpaceKeyAlreadyTracked" xml:space="preserve">
+    <value>Ya se está siguiendo otra instancia de '{0}' con la misma clave.</value>
+  </data>
+  <data name="ObjectSpaceConcurrentUse" xml:space="preserve">
+    <value>El ObjectSpace se usó mientras se ejecutaba otra llamada. Un ObjectSpace es para un solo llamador a la vez.</value>
+  </data>
 </root>
