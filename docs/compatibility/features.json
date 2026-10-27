@@ -18,5 +18,5 @@
     "middle_tier": "external-planned",
     "web_api": "external-planned"
   },
-  "note": "Statuses are declarations, not validation. Do not treat planned features as available."
+  "note": "Statuses are declarations, not validation. Do not treat planned features as available. Order: planned, specified, implemented, tested, provider-verified, release-ready."
 }
