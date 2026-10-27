@@ -1,0 +1,31 @@
+# Board
+
+Who works on what now. Only the main agent and the owner edit this file. Mirrored on
+<https://github.com/orgs/skvorc-dev/projects/1>.
+
+## In Progress
+
+| Card | Issue | Agent | Branch | Since |
+|------|-------|-------|--------|-------|
+| F-05 Project organisation | #15 | main agent | `docs/15-project-organisation` | 2026-10-27 |
+| F-07 Merge Dependabot Action bumps | #4 | main agent | #11 left (rebase requested) | 2026-10-27 |
+
+## Review
+
+| Card | Issue | PR | Waiting for |
+|------|-------|----|-------------|
+| F-01 Repository policies | #2 | — | owner: confirm LICENSE holder and public texts, then close #2 |
+
+## Ready (unassigned)
+
+| Card | Issue | Size |
+|------|-------|------|
+| F-02 Architecture contracts and capability statuses | #3 | M |
+| F-04 CI security gates | #4 | S |
+
+## Done (this phase)
+
+| Card | Issue | PR |
+|------|-------|----|
+| F-03 CI green again (NU1903) | #4 | #14 |
+| F-06 Protect `main` (ruleset "Protect main") | #15 | settings |

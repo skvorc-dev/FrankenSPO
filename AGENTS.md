@@ -4,6 +4,10 @@
 
 Read README.md, docs/architecture/OVERVIEW.md, docs/ROADMAP.md, and docs/compatibility/features.json before modifying code. **Planned means unavailable**; never invent an implemented API.
 
+## Agent workflow
+
+AI agents also follow [CLAUDE.md](CLAUDE.md) (roles, conventions, plan in `.claude/plan/`, decisions in `.claude/docs/DECISIONS.md`). Agents other than the main agent work only on assigned tasks under [GUARDRAILS.md](GUARDRAILS.md).
+
 ## Work scope
 
 - Initial target: .NET 10, source-generated metadata, SQLite ObjectSpace CRUD, scalar tracking, transaction correctness, auditing and safe SQL; provide tests and reproducible samples.
