@@ -20,7 +20,7 @@ identifier check exists (`SqlIdentifier` in `src/Sferix.SPO.Core/Sql/`); it is a
 7. Dynamic filtering and sorting accept only metadata-known property names; a malicious sort name is rejected.
 8. `LIKE` patterns built from user text escape wildcards so the text matches literally.
 9. Raw SQL is an explicit, separately named, documented trust boundary. Its values must still be passable as parameters. It never silently bypasses a declared policy (see rule 10 and open question 3).
-10. A declared tenant, row or field restriction is injected into every affected query. If the provider or compiler cannot enforce it, model activation fails; the policy is never silently dropped.
+10. A declared tenant, row or field restriction is injected into every affected query. If the provider or compiler cannot enforce it, model activation fails; the policy is never silently dropped. `PolicyCapabilityTests.RequiredPolicyCapabilityFailsActivation` in `tests/Sferix.SPO.Tests.Unit/Model/` proves it for tenant, row and field policy.
 11. Unsupported mandatory mappings and capability gaps (for example exact decimal query operations, complex associations) reject or remain absent; they do not degrade silently.
 12. Regression cases that must exist before the feature is claimed (real SQLite): quotes, boolean tautologies, comments, semicolons, malicious sort names, bulk-like payloads, literal LIKE escaping.
 
