@@ -88,4 +88,7 @@
   <data name="ObjectSpaceKeyChanged" xml:space="preserve">
     <value>The key of a tracked '{0}' was changed after it was added or loaded. Nothing was saved; restore the key.</value>
   </data>
+  <data name="ObjectSpaceNotTracked" xml:space="preserve">
+    <value>This '{0}' is not tracked by the ObjectSpace; only entities that were added or loaded here can be deleted.</value>
+  </data>
 </root>

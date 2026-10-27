@@ -88,4 +88,7 @@
   <data name="ObjectSpaceKeyChanged" xml:space="preserve">
     <value>Der Schlüssel eines verfolgten '{0}' wurde nach dem Hinzufügen oder Laden geändert. Es wurde nichts gespeichert; stellen Sie den Schlüssel wieder her.</value>
   </data>
+  <data name="ObjectSpaceNotTracked" xml:space="preserve">
+    <value>Dieses '{0}' wird vom ObjectSpace nicht verfolgt; nur hier hinzugefügte oder geladene Entitäten können gelöscht werden.</value>
+  </data>
 </root>
