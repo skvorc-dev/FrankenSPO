@@ -91,4 +91,10 @@
   <data name="ObjectSpaceNotTracked" xml:space="preserve">
     <value>Ovaj '{0}' ObjectSpace ne prati; brisati se mogu samo entiteti dodani ili učitani ovdje.</value>
   </data>
+  <data name="QueryNotSupported" xml:space="preserve">
+    <value>Upit koristi '{0}', što nije podržano.</value>
+  </data>
+  <data name="QueryColumnNotSupported" xml:space="preserve">
+    <value>Stupac '{0}' tipa {1} ne može se koristiti u Where ili OrderBy: njegov pohranjeni oblik ne uspoređuje se ispravno u SQL-u.</value>
+  </data>
 </root>

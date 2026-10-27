@@ -39,6 +39,12 @@ internal static class CoreMessages
     internal static string ObjectSpaceNotTracked(string entity) =>
         string.Format(CultureInfo.CurrentUICulture, Get(nameof(ObjectSpaceNotTracked)), entity);
 
+    internal static string QueryNotSupported(string name) =>
+        string.Format(CultureInfo.CurrentUICulture, Get(nameof(QueryNotSupported)), name);
+
+    internal static string QueryColumnNotSupported(string column, string type) =>
+        string.Format(CultureInfo.CurrentUICulture, Get(nameof(QueryColumnNotSupported)), column, type);
+
     internal static string ObjectSpaceConcurrentUse => Get(nameof(ObjectSpaceConcurrentUse));
 
     private static string Get(string name) =>

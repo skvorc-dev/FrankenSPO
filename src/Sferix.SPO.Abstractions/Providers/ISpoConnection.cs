@@ -1,3 +1,4 @@
+using Sferix.SPO.Abstractions.Query;
 using Sferix.SPO.Abstractions.Schema;
 
 namespace Sferix.SPO.Abstractions.Providers;
@@ -67,4 +68,14 @@ public interface ISpoConnection : IDisposable, IAsyncDisposable
     /// <param name="cancellationToken">Cancels the call before it starts.</param>
     /// <returns>The number of rows affected: 1, or 0 when there is no such row.</returns>
     Task<int> UpdateAsync(ISpoTransaction transaction, SchemaTable table, Guid key, IReadOnlyList<SpoColumnValue> changes, CancellationToken cancellationToken);
+
+    /// <summary>Runs a query and returns whole rows, each in schema column order.</summary>
+    /// <param name="query">The neutral query; values are parameters, column names come from its table.</param>
+    /// <remarks>Reads take part in the connection's current transaction.</remarks>
+    IReadOnlyList<IReadOnlyList<object?>> Query(SpoQuery query);
+
+    /// <summary>Runs a query and returns whole rows, each in schema column order.</summary>
+    /// <param name="query">The neutral query.</param>
+    /// <param name="cancellationToken">Cancels the call before it starts.</param>
+    Task<IReadOnlyList<IReadOnlyList<object?>>> QueryAsync(SpoQuery query, CancellationToken cancellationToken);
 }

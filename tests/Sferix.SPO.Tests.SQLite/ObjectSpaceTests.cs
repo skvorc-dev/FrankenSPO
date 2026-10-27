@@ -424,6 +424,7 @@ public sealed class ObjectSpaceTests : IDisposable
 
         public T Add<T>(T entity) where T : SPOBaseObject => throw new NotSupportedException();
         public void Delete<T>(T entity) where T : SPOBaseObject => throw new NotSupportedException();
+        public IQueryable<T> Query<T>() where T : SPOBaseObject => throw new NotSupportedException();
         public Task<T?> GetAsync<T>(Guid id, CancellationToken cancellationToken) where T : SPOBaseObject => throw new NotSupportedException();
         public void SaveChanges() => throw new NotSupportedException();
         public Task SaveChangesAsync(CancellationToken cancellationToken) => throw new NotSupportedException();

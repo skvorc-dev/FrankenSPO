@@ -1,7 +1,9 @@
 using Sferix.SPO.Abstractions.Entities;
 using Sferix.SPO.Abstractions.ObjectSpace;
 using Sferix.SPO.Abstractions.Providers;
+using System.Linq.Expressions;
 using Sferix.SPO.Core.Model;
+using Sferix.SPO.Core.Query;
 using Sferix.SPO.Core.Resources;
 
 namespace Sferix.SPO.Core.ObjectSpace;
@@ -85,6 +87,46 @@ internal sealed class SpoObjectSpace(SpoModel model, ISpoConnection connection) 
     {
         cancellationToken.ThrowIfCancellationRequested();
         return GetCoreAsync<T>(true, id, cancellationToken);
+    }
+
+    public IQueryable<T> Query<T>() where T : SPOBaseObject
+    {
+        ObjectDisposedException.ThrowIf(disposed, this);
+        _ = InfoFor(typeof(T));
+        return new SpoQueryable<T>(this);
+    }
+
+    internal async Task<List<T>> ExecuteQueryAsync<T>(bool async, Expression expression, CancellationToken ct) where T : SPOBaseObject
+    {
+        Enter();
+        try
+        {
+            var info = InfoFor(typeof(T));
+            var query = QueryTranslator.Translate(expression, info);
+            var rows = async ? await connection.QueryAsync(query, ct) : connection.Query(query);
+
+            var results = new List<T>(rows.Count);
+            foreach (var row in rows)
+            {
+                // Safe: IdColumn is the non-nullable Guid primary key column, so the value is never null.
+                var id = (Guid)row[info.IdColumn]!;
+                if (map.TryGetValue((info.Metadata.ClrName, id), out var existing))
+                {
+                    if (!existing.PendingDelete) // the tracked instance wins, with its in-memory values
+                        results.Add((T)existing.Entity);
+                    continue;
+                }
+                var entity = (SPOBaseObject)info.Metadata.CreateInstance!();
+                info.WriteValues(entity, row);
+                map[(info.Metadata.ClrName, id)] = new Tracked(info, entity, info.ReadValues(entity));
+                results.Add((T)(object)entity);
+            }
+            return results;
+        }
+        finally
+        {
+            Leave();
+        }
     }
 
     public void SaveChanges() => SaveCoreAsync(false, default).GetAwaiter().GetResult();

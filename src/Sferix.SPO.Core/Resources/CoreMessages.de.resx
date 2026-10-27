@@ -91,4 +91,10 @@
   <data name="ObjectSpaceNotTracked" xml:space="preserve">
     <value>Dieses '{0}' wird vom ObjectSpace nicht verfolgt; nur hier hinzugefügte oder geladene Entitäten können gelöscht werden.</value>
   </data>
+  <data name="QueryNotSupported" xml:space="preserve">
+    <value>Die Abfrage verwendet '{0}', was nicht unterstützt wird.</value>
+  </data>
+  <data name="QueryColumnNotSupported" xml:space="preserve">
+    <value>Die Spalte '{0}' vom Typ {1} kann nicht in Where oder OrderBy verwendet werden: Ihre gespeicherte Form lässt sich in SQL nicht korrekt vergleichen.</value>
+  </data>
 </root>
