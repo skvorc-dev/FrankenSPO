@@ -30,6 +30,14 @@ internal static class Diagnostics
         "SPO0006", "Persistent property needs getter and setter",
         "Property '{0}' has [SpoField] but lacks a getter or a setter");
 
+    public static readonly DiagnosticDescriptor GenericEntity = Error(
+        "SPO0007", "Generic entity not supported",
+        "Entity '{0}' or a class containing it is generic, which is not supported");
+
+    public static readonly DiagnosticDescriptor UnsupportedEntityKind = Error(
+        "SPO0008", "Entity must be a class",
+        "[SpoEntity] on '{0}' is not supported: only a plain 'class' can be an entity, not a record, struct or record struct");
+
     private static DiagnosticDescriptor Error(string id, string title, string message) =>
         new(id, title, message, Category, DiagnosticSeverity.Error, isEnabledByDefault: true);
 }

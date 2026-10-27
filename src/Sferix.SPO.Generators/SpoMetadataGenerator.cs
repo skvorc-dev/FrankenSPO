@@ -24,7 +24,7 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
         var entities = context.SyntaxProvider
             .ForAttributeWithMetadataName(
                 EntityAttribute,
-                static (node, _) => node is ClassDeclarationSyntax,
+                static (node, _) => node is TypeDeclarationSyntax,
                 static (ctx, ct) => Analyze(ctx, ct))
             .Collect();
 
@@ -34,10 +34,23 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
     private static EntityModel Analyze(GeneratorAttributeSyntaxContext ctx, CancellationToken ct)
     {
         var symbol = (INamedTypeSymbol)ctx.TargetSymbol;
-        var declaration = (ClassDeclarationSyntax)ctx.TargetNode;
+        var declaration = (TypeDeclarationSyntax)ctx.TargetNode;
         var displayName = symbol.ToDisplayString();
         var classLocation = LocationInfo.From(declaration.Identifier.GetLocation());
         var diagnostics = new List<DiagnosticInfo>();
+
+        if (symbol.TypeKind != TypeKind.Class || symbol.IsRecord)
+        {
+            // Only plain classes are supported; stop here so nothing is emitted for other shapes.
+            diagnostics.Add(new(Diagnostics.UnsupportedEntityKind, classLocation, Args(displayName)));
+            return Rejected(symbol, displayName, classLocation, diagnostics);
+        }
+
+        if (IsGenericChain(symbol))
+        {
+            diagnostics.Add(new(Diagnostics.GenericEntity, classLocation, Args(displayName)));
+            return Rejected(symbol, displayName, classLocation, diagnostics);
+        }
 
         if (!IsPartialChain(symbol, declaration))
             diagnostics.Add(new(Diagnostics.NotPartial, classLocation, Args(displayName)));
@@ -53,7 +66,7 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
             diagnostics.Add(new(
                 Diagnostics.InvalidEntityId,
                 location is null ? classLocation : LocationInfo.From(location),
-                Args(displayName, Guid.NewGuid().ToString("D"))));
+                Args(displayName)));
         }
 
         var properties = new List<PropertyModel>();
@@ -111,6 +124,18 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
             classLocation,
             new(properties.OrderBy(p => p.Number).ToImmutableArray()),
             new(diagnostics.ToImmutableArray()));
+    }
+
+    private static EntityModel Rejected(
+        INamedTypeSymbol symbol, string displayName, LocationInfo location, List<DiagnosticInfo> diagnostics) =>
+        new(null, default, symbol.Name, displayName, null, location, default, new(diagnostics.ToImmutableArray()));
+
+    private static bool IsGenericChain(INamedTypeSymbol symbol)
+    {
+        for (var type = symbol; type is not null; type = type.ContainingType)
+            if (type.IsGenericType)
+                return true;
+        return false;
     }
 
     private static EquatableArray<string> Args(params string[] args) => new(args.ToImmutableArray());
@@ -175,7 +200,12 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
         foreach (var model in models)
         {
             foreach (var diagnostic in model.Diagnostics.Items)
-                spc.ReportDiagnostic(diagnostic.ToDiagnostic());
+            {
+                // The suggested GUID is created here, not in the model, so the model stays equal between runs.
+                spc.ReportDiagnostic(ReferenceEquals(diagnostic.Descriptor, Diagnostics.InvalidEntityId)
+                    ? Diagnostic.Create(diagnostic.Descriptor, diagnostic.Location.ToLocation(), model.DisplayName, Guid.NewGuid().ToString("D"))
+                    : diagnostic.ToDiagnostic());
+            }
 
             if (duplicates.TryGetValue(model.DisplayName, out var duplicateId))
             {
@@ -194,7 +224,16 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
         var name = new StringBuilder();
         foreach (var ch in model.DisplayName)
             name.Append(char.IsLetterOrDigit(ch) ? ch : '_');
-        return name + ".SpoMetadata.g.cs";
+        // Sanitizing maps different names to the same text (A.B_C, A_B.C); the hash of the real name keeps them apart.
+        return name + "_" + StableHash(model.DisplayName) + ".SpoMetadata.g.cs";
+    }
+
+    private static string StableHash(string text)
+    {
+        var hash = 2166136261u;
+        foreach (var ch in text)
+            hash = unchecked((hash ^ ch) * 16777619u);
+        return hash.ToString("x8");
     }
 
     private static string Render(EntityModel model, Guid id)
