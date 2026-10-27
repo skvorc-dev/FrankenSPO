@@ -11,12 +11,12 @@ Milestone **P0 — Foundation**. Gate: clean baseline, green CI on three OSes, p
 - Files: root `*.md`, `LICENSE`
 
 ### F-02 · Architecture contracts and capability statuses
-- Issue: #3 · Size: M · Status: Ready
+- Issue: #3 · Size: M · Status: Ready (manifest half done by F-16; architecture docs left)
 - Goal: architecture docs cover ObjectSpace, three baselines, secured query AST, provider capability checks,
   module boundaries; the manifest distinguishes specified / implemented / tested / provider-verified.
 - Acceptance:
   - [ ] `docs/architecture/` has one short section per contract named in issue #3, each marked `specified`
-  - [ ] `features.json` allows `specified`; `scripts/validate_repository.py` accepts it; CI green
+  - [x] `features.json` allows `specified`; `scripts/validate_repository.py` accepts it; CI green (F-16)
   - [ ] README, AGENTS.md and the manifest agree that no ORM feature is implemented
 - Files: `docs/architecture/**`, `docs/compatibility/features.json`, `scripts/validate_repository.py`
 - Notes: docs only, no code. D-13.
@@ -28,10 +28,10 @@ Milestone **P0 — Foundation**. Gate: clean baseline, green CI on three OSes, p
   - [x] Microsoft.Data.Sqlite 10.0.14; CI green on Linux, Windows, macOS
 
 ### F-04 · CI security gates
-- Issue: #4 · Size: S · Status: In Progress (haiku-1, chain task 1)
+- Issue: #4 · Size: S · Status: Done (PR #27, haiku-1)
 - Goal: dependency problems are caught in PRs, not on `main`.
 - Acceptance:
-  - [ ] New `.github/workflows/dependency-review.yml`: on `pull_request`, `permissions: contents: read`,
+  - [x] New `.github/workflows/dependency-review.yml`: on `pull_request`, `permissions: contents: read`,
         steps `actions/checkout@v7` then `actions/dependency-review-action@v4` with `fail-on-severity: high`
   - [ ] Do **not** touch `ci.yml`, `pages.yml`, `dco.yml` or the ruleset
   - [x] CodeQL for C# is enabled (default setup, D-16)
@@ -40,7 +40,7 @@ Milestone **P0 — Foundation**. Gate: clean baseline, green CI on three OSes, p
 - Notes: Dependabot for NuGet is added by F-05. D-12.
 
 ### F-05 · Project organisation
-- Issue: #15 · Size: M · Status: In Progress (main agent)
+- Issue: #15 · Size: M · Status: Done
 - Goal: CLAUDE.md, `.claude/` rules, decisions, glossary, plan, GUARDRAILS, labels, milestones, board.
 - Acceptance: see issue #15.
 
@@ -74,7 +74,7 @@ Small, exact cards for one worker in a chain (D-17). Each card: its own branch f
 `TODO(owner):` in the text and say so in the PR.
 
 ### F-09 · THIRD-PARTY-NOTICES: list current dependencies
-- Issue: #4 · Size: S · Status: In Progress (haiku-1, chain task 2)
+- Issue: #4 · Size: S · Status: Done (PR #28, haiku-1)
 - Goal: every NuGet package referenced in `src/` and `tests/` is listed with version, licence and use.
 - Acceptance:
   - [ ] Table in `THIRD-PARTY-NOTICES.md`: package, version (from the csproj), SPDX licence (from nuget.org), "runtime" or "build/test only"
@@ -83,7 +83,7 @@ Small, exact cards for one worker in a chain (D-17). Each card: its own branch f
 - Files: `THIRD-PARTY-NOTICES.md`
 
 ### F-10 · SECURITY.md: private reporting is enabled
-- Issue: #4 · Size: S · Status: In Progress (haiku-1, chain task 3)
+- Issue: #4 · Size: S · Status: Done (PR #29, haiku-1)
 - Goal: SECURITY.md says how to report today.
 - Acceptance:
   - [ ] Replace "when available" with a link to `https://github.com/skvorc-dev/FrankenSPO/security/advisories/new`
@@ -92,7 +92,7 @@ Small, exact cards for one worker in a chain (D-17). Each card: its own branch f
 - Files: `SECURITY.md`
 
 ### F-11 · Development workflow and release checklist match the decisions
-- Issue: #15 · Size: S · Status: In Progress (haiku-1, chain task 4)
+- Issue: #15 · Size: S · Status: Done (PR #30, haiku-1)
 - Goal: `docs/DEVELOPMENT_WORKFLOW.md` and `docs/RELEASE_CHECKLIST.md` agree with D-05, D-21, D-22, D-23, D-25, D-26.
 - Acceptance:
   - [ ] Workflow: branch names `feature/`, `fix/`, `docs/<issue>-<desc>`; worker branches per GUARDRAILS.md; squash merge via PR with green CI; DCO sign-off for external contributors
@@ -102,7 +102,7 @@ Small, exact cards for one worker in a chain (D-17). Each card: its own branch f
 - Files: `docs/DEVELOPMENT_WORKFLOW.md`, `docs/RELEASE_CHECKLIST.md`
 
 ### F-12 · GITHUB_SETUP.md describes the current setup
-- Issue: #15 · Size: S · Status: In Progress (haiku-1, chain task 5)
+- Issue: #15 · Size: S · Status: Done (PR #31, haiku-1)
 - Goal: the file documents what exists now instead of what still has to be done.
 - Acceptance:
   - [ ] States: labels from `docs/labels.csv`; milestones P0–P3; org project "FrankenSPO Roadmap" (project 1) with Status and Priority; ruleset "Protect main" (no deletion/force push, PR + checks `docs`, `dotnet (ubuntu-latest|windows-latest|macos-latest)`, squash only); CodeQL default setup; private vulnerability reporting; Dependabot for Actions and NuGet
@@ -110,7 +110,7 @@ Small, exact cards for one worker in a chain (D-17). Each card: its own branch f
 - Files: `docs/GITHUB_SETUP.md`
 
 ### F-13 · `.editorconfig` from the code style rules
-- Issue: #4 · Size: S · Status: In Progress (haiku-1, chain task 6)
+- Issue: #4 · Size: S · Status: Done (PR #32, haiku-1)
 - Goal: editors and `dotnet format` follow `.claude/rules/code-style.md`.
 - Acceptance:
   - [ ] Root `.editorconfig`: UTF-8, LF, final newline, 4 spaces for `*.cs`, 2 for `*.{json,yml,yaml,props,csproj,slnx}`; `csharp_style_namespace_declarations = file_scoped:warning`; `dotnet_style_qualification_for_*` false
@@ -119,7 +119,7 @@ Small, exact cards for one worker in a chain (D-17). Each card: its own branch f
 - Files: `.editorconfig`
 
 ### F-14 · Pin the DocFX version in the Pages workflow
-- Issue: #4 · Size: S · Status: In Progress (haiku-1, chain task 7)
+- Issue: #4 · Size: S · Status: Done (PR #33, haiku-1)
 - Goal: reproducible docs builds.
 - Acceptance:
   - [ ] `pages.yml`: `dotnet tool install --global docfx --version <latest stable from nuget.org>`
@@ -127,7 +127,7 @@ Small, exact cards for one worker in a chain (D-17). Each card: its own branch f
 - Files: `.github/workflows/pages.yml`
 
 ### F-15 · Bug report form asks for SDK and OS
-- Issue: #4 · Size: S · Status: In Progress (haiku-1, chain task 8)
+- Issue: #4 · Size: S · Status: Done (PR #34, haiku-1)
 - Goal: bug reports carry the environment.
 - Acceptance:
   - [ ] `bug_report.yml`: required input ".NET SDK version (`dotnet --version`)", required dropdown OS (Linux / Windows / macOS / other), optional input "Database provider and version"
@@ -135,7 +135,7 @@ Small, exact cards for one worker in a chain (D-17). Each card: its own branch f
 - Files: `.github/ISSUE_TEMPLATE/bug_report.yml`
 
 ### F-16 · Capability manifest: `specified` status
-- Issue: #3 · Size: S · Status: In Progress (haiku-1, chain task 9)
+- Issue: #3 · Size: S · Status: Done (PR #35, haiku-1)
 - Goal: first half of F-02 — the manifest can say "specified" (designed, not implemented).
 - Acceptance:
   - [ ] `scripts/validate_repository.py` accepts `specified`
@@ -144,7 +144,7 @@ Small, exact cards for one worker in a chain (D-17). Each card: its own branch f
 - Files: `scripts/validate_repository.py`, `docs/compatibility/features.json`, `site/status.md`
 
 ### F-17 · Edge-case tests for `SqlIdentifier` and `EntityId`
-- Issue: #6 · Size: S · Status: In Progress (haiku-1, chain task 10)
+- Issue: #6 · Size: S · Status: Done (PR #36, haiku-1)
 - Goal: lock in current behavior; no production code change.
 - Acceptance:
   - [ ] New cases in `IdentifierTests`: 63-char identifier accepted, 64 rejected; null, empty and whitespace rejected; non-ASCII letter (`"KupacČ"`) rejected; `EntityId.ToString()` is the `D` format
