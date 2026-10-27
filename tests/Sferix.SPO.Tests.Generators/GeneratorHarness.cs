@@ -20,14 +20,17 @@ internal static class GeneratorHarness
             .Split(Path.PathSeparator)
             .Select(path => (MetadataReference)MetadataReference.CreateFromFile(path))];
 
+    public static CSharpCompilation CreateCompilation(params SyntaxTree[] trees) =>
+        CSharpCompilation.Create(
+            "GeneratorTestAssembly",
+            trees,
+            References,
+            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, nullableContextOptions: NullableContextOptions.Enable));
+
     public static GeneratorRun Run(params string[] sources)
     {
         var options = new CSharpParseOptions(LanguageVersion.Latest);
-        var compilation = CSharpCompilation.Create(
-            "GeneratorTestAssembly",
-            sources.Select(s => CSharpSyntaxTree.ParseText(s, options)),
-            References,
-            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary, nullableContextOptions: NullableContextOptions.Enable));
+        var compilation = CreateCompilation([.. sources.Select(s => CSharpSyntaxTree.ParseText(s, options))]);
 
         GeneratorDriver driver = CSharpGeneratorDriver.Create(new SpoMetadataGenerator());
         driver = driver.RunGeneratorsAndUpdateCompilation(compilation, out var output, out var diagnostics);

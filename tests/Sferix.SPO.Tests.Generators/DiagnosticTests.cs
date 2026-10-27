@@ -114,4 +114,51 @@ public sealed class DiagnosticTests
         var run = Run($"[SpoEntity(\"{Id1}\")] public partial class C {{ public object Cache {{ get; }} = new(); }}");
         Assert.Empty(run.GeneratorDiagnostics);
     }
+
+    [Fact]
+    public void GenericEntityIsReported()
+    {
+        var run = Run($"[SpoEntity(\"{Id1}\")] public partial class Box<T> {{ }}");
+        Assert.Equal(["SPO0007"], run.GeneratorDiagnosticIds);
+        Assert.Empty(run.GeneratedTrees);
+    }
+
+    [Fact]
+    public void EntityInsideGenericClassIsReported()
+    {
+        var run = Run($"public partial class Outer<T> {{ [SpoEntity(\"{Id1}\")] public partial class Inner {{ }} }}");
+        Assert.Equal(["SPO0007"], run.GeneratorDiagnosticIds);
+        Assert.Empty(run.GeneratedTrees);
+    }
+
+    [Theory]
+    [InlineData("public partial record")]
+    [InlineData("public partial record struct")]
+    [InlineData("public partial struct")]
+    public void RecordOrStructEntityIsReported(string declaration)
+    {
+        var run = Run($"[SpoEntity(\"{Id1}\")] {declaration} Customer {{ }}");
+        Assert.Equal(["SPO0008"], run.GeneratorDiagnosticIds);
+        Assert.Empty(run.GeneratedTrees);
+    }
+
+    [Fact]
+    public void HintNamesThatSanitizeToTheSameTextStillBothGenerate()
+    {
+        var run = Run(
+            $"namespace A {{ [SpoEntity(\"{Id1}\")] public partial class B_C {{ }} }} " +
+            $"namespace A_B {{ [SpoEntity(\"{Id2}\")] public partial class C {{ }} }}");
+        Assert.Empty(run.GeneratorDiagnostics);
+        Assert.Equal(2, run.GeneratedTrees.Length);
+        Assert.Empty(run.CompilationErrors);
+    }
+
+    [Fact]
+    public void SuggestedGuidInEntityIdMessageIsAValidGuid()
+    {
+        var run = Run("[SpoEntity(\"bad\")] public partial class Customer { }");
+        var message = Assert.Single(run.GeneratorDiagnostics).GetMessage();
+        var start = message.IndexOf("[SpoEntity(\"", StringComparison.Ordinal) + 12;
+        Assert.True(Guid.TryParse(message.AsSpan(start, 36), out var guid) && guid != Guid.Empty);
+    }
 }
