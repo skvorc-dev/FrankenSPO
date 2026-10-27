@@ -25,10 +25,12 @@ for doc in sorted(architecture.glob("*.md")):
         raise SystemExit(f"{doc.relative_to(root)}: missing '**Status: specified, not implemented.**' in its first 5 lines")
     if f"]({doc.name})" not in overview and f"](./{doc.name})" not in overview:
         raise SystemExit(f"{doc.relative_to(root)}: not linked from docs/architecture/OVERVIEW.md")
+import re
 import xml.etree.ElementTree as ET
 
 # Every neutral .resx needs the same keys, with a non-empty value, in de, hr and es (D-41).
 translations = ("de", "hr", "es")
+placeholder = re.compile(r"\{\d+(?::[^}]*)?\}")
 
 
 def resource_keys(path):
@@ -55,6 +57,8 @@ for neutral in sorted((root / "src").rglob("*.resx")):
                 raise SystemExit(f"{culture.relative_to(root)}: missing key '{key}'")
             if not actual[key]:
                 raise SystemExit(f"{culture.relative_to(root)}: empty value for key '{key}'")
+            if sorted(placeholder.findall(actual[key])) != sorted(placeholder.findall(expected[key])):
+                raise SystemExit(f"{culture.relative_to(root)}: placeholders of key '{key}' differ from {neutral.name}")
         for key in actual:
             if key not in expected:
                 raise SystemExit(f"{culture.relative_to(root)}: key '{key}' is not in {neutral.name}")

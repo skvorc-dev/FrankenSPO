@@ -14,6 +14,8 @@ internal static class AbstractionsMessages
     internal static string CapabilityMissing(string providerName, SpoCapability capability) =>
         string.Format(CultureInfo.CurrentUICulture, Get(nameof(CapabilityMissing)), providerName, capability);
 
+    internal static string EntityIdEmpty => Get(nameof(EntityIdEmpty));
+
     private static string Get(string name) =>
         Resources.GetString(name, CultureInfo.CurrentUICulture)
         ?? throw new InvalidOperationException($"Missing Abstractions resource '{name}'.");

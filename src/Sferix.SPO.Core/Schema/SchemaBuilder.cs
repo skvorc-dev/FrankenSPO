@@ -10,8 +10,6 @@ namespace Sferix.SPO.Core.Schema;
 /// <remarks>Table = entity class name, column = property name. Output order is the model order, then field number. Nothing is written.</remarks>
 internal static class SchemaBuilder
 {
-    public const string DuplicateTableName = "SPO1005";
-    public const string UnsupportedStorageType = "SPO1006";
     private const int FrameworkFieldNumbers = 1000000; // D-43: reserved for SPOBaseObject
     private const int IdFieldNumber = 1000001;
 
@@ -24,7 +22,7 @@ internal static class SchemaBuilder
         {
             var name = new SqlIdentifier(entity.ClrName[(entity.ClrName.LastIndexOf('.') + 1)..]).Value;
             if (!names.Add(name))
-                throw new SpoModelException(DuplicateTableName, CoreMessages.ModelDuplicateTableName(name));
+                throw new SpoModelException(SpoModelException.DuplicateTableName, CoreMessages.ModelDuplicateTableName(name));
             // Framework fields (reserved numbers) come first, then the entity's own, each by field number.
             var ordered = entity.Properties.OrderBy(p => p.Number >= FrameworkFieldNumbers ? 0 : 1).ThenBy(p => p.Number).ToArray();
             var primaryKey = ordered.Any(p => p.Number == IdFieldNumber && p.ClrName == "Id") ? new[] { "Id" } : null;
@@ -58,5 +56,5 @@ internal static class SchemaBuilder
         type == typeof(byte) || type == typeof(sbyte) || type == typeof(short) || type == typeof(ushort) || type == typeof(int);
 
     private static SpoStorageType Unsupported(PropertyMetadata property) =>
-        throw new SpoModelException(UnsupportedStorageType, CoreMessages.ModelUnsupportedStorageType(property.ClrName));
+        throw new SpoModelException(SpoModelException.UnsupportedStorageType, CoreMessages.ModelUnsupportedStorageType(property.ClrName));
 }
