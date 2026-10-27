@@ -1,5 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <InternalsVisibleTo Include="Sferix.SPO.Tests.Unit" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="../Sferix.SPO.Abstractions/Sferix.SPO.Abstractions.csproj" />
   </ItemGroup>
 </Project>

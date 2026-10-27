@@ -13,3 +13,4 @@ SPO0005 | Sferix.SPO | Error | Unsupported property type
 SPO0006 | Sferix.SPO | Error | Persistent property needs getter and setter
 SPO0007 | Sferix.SPO | Error | Generic entity not supported
 SPO0008 | Sferix.SPO | Error | Entity must be a class
+SPO0009 | Sferix.SPO | Error | Unsupported enum underlying type

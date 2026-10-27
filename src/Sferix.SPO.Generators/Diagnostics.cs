@@ -23,6 +23,8 @@ internal static class Diagnostics
 
     public static readonly DiagnosticDescriptor UnsupportedEntityKind = Error("SPO0008");
 
+    public static readonly DiagnosticDescriptor UnsupportedEnumUnderlyingType = Error("SPO0009");
+
     private static DiagnosticDescriptor Error(string id) =>
         new(id, DiagnosticMessages.Localizable(id + "_Title"), DiagnosticMessages.Localizable(id + "_Message"),
             Category, DiagnosticSeverity.Error, isEnabledByDefault: true);

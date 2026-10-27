@@ -1,7 +1,7 @@
 namespace Sferix.SPO.Abstractions.Metadata;
 
 /// <summary>Immutable description of one persistent property of an entity.</summary>
-/// <remarks>Produced by the source generator. It does not describe columns or storage types.</remarks>
+/// <remarks>Produced by the source generator. It does not describe columns; for an enum it records the integer type used for storage.</remarks>
 public sealed class PropertyMetadata
 {
     /// <summary>Creates the description.</summary>
@@ -9,7 +9,8 @@ public sealed class PropertyMetadata
     /// <param name="clrName">The property name.</param>
     /// <param name="clrType">The property type without the nullable wrapper.</param>
     /// <param name="isNullable">Whether the property accepts null.</param>
-    public PropertyMetadata(int number, string clrName, Type clrType, bool isNullable)
+    /// <param name="enumUnderlyingType">The underlying integer type when <paramref name="clrType"/> is an enum; otherwise null.</param>
+    public PropertyMetadata(int number, string clrName, Type clrType, bool isNullable, Type? enumUnderlyingType = null)
     {
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(number);
         ArgumentException.ThrowIfNullOrWhiteSpace(clrName);
@@ -18,6 +19,7 @@ public sealed class PropertyMetadata
         ClrName = clrName;
         ClrType = clrType;
         IsNullable = isNullable;
+        EnumUnderlyingType = enumUnderlyingType;
     }
 
     /// <summary>The stable field number from <see cref="SpoFieldAttribute"/>.</summary>
@@ -32,4 +34,7 @@ public sealed class PropertyMetadata
 
     /// <summary>Whether the property accepts null (nullable value type or annotated reference type).</summary>
     public bool IsNullable { get; }
+
+    /// <summary>The enum's underlying integer type, or null when the property is not an enum.</summary>
+    public Type? EnumUnderlyingType { get; }
 }

@@ -61,4 +61,10 @@
   <data name="SqlIdentifierInvalid" xml:space="preserve">
     <value>Ungültiger SQL-Bezeichner.</value>
   </data>
+  <data name="ModelDuplicateEntityId" xml:space="preserve">
+    <value>Die Entitäts-ID {0} wird von mehr als einer Entität verwendet.</value>
+  </data>
+  <data name="ModelInvalidName" xml:space="preserve">
+    <value>Der Name '{0}' ist kein gültiger SQL-Bezeichner und kann nicht als Tabellen- oder Spaltenname verwendet werden.</value>
+  </data>
 </root>

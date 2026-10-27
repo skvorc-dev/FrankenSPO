@@ -61,4 +61,10 @@
   <data name="SqlIdentifierInvalid" xml:space="preserve">
     <value>Neispravan SQL identifikator.</value>
   </data>
+  <data name="ModelDuplicateEntityId" xml:space="preserve">
+    <value>ID entiteta {0} koristi više od jednog entiteta.</value>
+  </data>
+  <data name="ModelInvalidName" xml:space="preserve">
+    <value>Naziv '{0}' nije valjani SQL identifikator i ne može se koristiti kao naziv tablice ili stupca.</value>
+  </data>
 </root>

@@ -112,4 +112,10 @@
   <data name="SPO0008_Message" xml:space="preserve">
     <value>[SpoEntity] na '{0}' nije podržan: entitet može biti samo obična 'class', a ne record, struct ili record struct</value>
   </data>
+  <data name="SPO0009_Title" xml:space="preserve">
+    <value>Nepodržani temeljni tip enumeracije</value>
+  </data>
+  <data name="SPO0009_Message" xml:space="preserve">
+    <value>Svojstvo '{0}' je enumeracija s temeljnim tipom 'ulong' koji ne stane u 64-bitni stupac s predznakom</value>
+  </data>
 </root>

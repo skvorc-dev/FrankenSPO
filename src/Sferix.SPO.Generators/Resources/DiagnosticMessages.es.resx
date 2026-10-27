@@ -112,4 +112,10 @@
   <data name="SPO0008_Message" xml:space="preserve">
     <value>[SpoEntity] en '{0}' no se admite: solo una 'class' simple puede ser una entidad, no un record, struct o record struct</value>
   </data>
+  <data name="SPO0009_Title" xml:space="preserve">
+    <value>Tipo subyacente de enumeración no admitido</value>
+  </data>
+  <data name="SPO0009_Message" xml:space="preserve">
+    <value>La propiedad '{0}' es una enumeración con tipo subyacente 'ulong', que no cabe en una columna de 64 bits con signo</value>
+  </data>
 </root>

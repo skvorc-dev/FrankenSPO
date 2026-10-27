@@ -19,7 +19,7 @@ internal sealed record DiagnosticInfo(DiagnosticDescriptor Descriptor, LocationI
 
 internal sealed record ContainerInfo(string Keyword, string Name);
 
-internal sealed record PropertyModel(int Number, string Name, string ClrTypeExpression, bool IsNullable);
+internal sealed record PropertyModel(int Number, string Name, string ClrTypeExpression, bool IsNullable, string? EnumUnderlyingTypeExpression);
 
 internal sealed record EntityModel(
     string? Namespace,

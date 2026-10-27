@@ -61,4 +61,10 @@
   <data name="SqlIdentifierInvalid" xml:space="preserve">
     <value>Identificador SQL no válido.</value>
   </data>
+  <data name="ModelDuplicateEntityId" xml:space="preserve">
+    <value>El ID de entidad {0} lo usa más de una entidad.</value>
+  </data>
+  <data name="ModelInvalidName" xml:space="preserve">
+    <value>El nombre '{0}' no es un identificador SQL válido y no puede usarse como nombre de tabla o columna.</value>
+  </data>
 </root>

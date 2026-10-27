@@ -161,4 +161,12 @@ public sealed class DiagnosticTests
         var start = message.IndexOf("[SpoEntity(\"", StringComparison.Ordinal) + 12;
         Assert.True(Guid.TryParse(message.AsSpan(start, 36), out var guid) && guid != Guid.Empty);
     }
+
+    [Fact]
+    public void UlongEnumPropertyIsReported()
+    {
+        var run = Run($"public enum Big : ulong {{ A = 1 }} [SpoEntity(\"{Id1}\")] public partial class C {{ [SpoField(1)] public Big X {{ get; set; }} }}");
+        Assert.Equal(["SPO0009"], run.GeneratorDiagnosticIds);
+        Assert.Empty(run.GeneratedTrees);
+    }
 }

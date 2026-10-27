@@ -104,14 +104,19 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
                 valid = false;
             }
 
-            if (!TryMapType(property.Type, out var typeExpression, out var nullable))
+            if (!TryMapType(property.Type, out var typeExpression, out var nullable, out var enumUnderlying))
             {
                 diagnostics.Add(new(Diagnostics.UnsupportedType, location, Args(property.Name, property.Type.ToDisplayString())));
                 valid = false;
             }
+            else if (enumUnderlying == "ulong")
+            {
+                diagnostics.Add(new(Diagnostics.UnsupportedEnumUnderlyingType, location, Args(property.Name)));
+                valid = false;
+            }
 
             if (valid)
-                properties.Add(new(number, property.Name, typeExpression, nullable));
+                properties.Add(new(number, property.Name, typeExpression, nullable, enumUnderlying));
         }
 
         var containers = new List<ContainerInfo>();
@@ -168,10 +173,11 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
         _ => "class",
     };
 
-    private static bool TryMapType(ITypeSymbol type, out string typeExpression, out bool nullable)
+    private static bool TryMapType(ITypeSymbol type, out string typeExpression, out bool nullable, out string? enumUnderlying)
     {
         var inner = type;
         nullable = false;
+        enumUnderlying = null;
         if (type is INamedTypeSymbol { OriginalDefinition.SpecialType: SpecialType.System_Nullable_T } named)
         {
             inner = named.TypeArguments[0];
@@ -182,6 +188,9 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
 
         inner = inner.WithNullableAnnotation(NullableAnnotation.NotAnnotated);
         typeExpression = inner.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+
+        if (inner is INamedTypeSymbol { TypeKind: TypeKind.Enum, EnumUnderlyingType: { } underlying })
+            enumUnderlying = underlying.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
 
         return inner.TypeKind == TypeKind.Enum
             || inner.SpecialType is SpecialType.System_Boolean or SpecialType.System_Int32 or SpecialType.System_Int64
@@ -264,7 +273,8 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
         {
             sb.Append("            new ").Append(MetadataNamespace).Append(".PropertyMetadata(")
               .Append(p.Number).Append(", ").Append(SymbolDisplay.FormatLiteral(p.Name, quote: true))
-              .Append(", typeof(").Append(p.ClrTypeExpression).Append("), ").Append(p.IsNullable ? "true" : "false").AppendLine("),");
+              .Append(", typeof(").Append(p.ClrTypeExpression).Append("), ").Append(p.IsNullable ? "true" : "false")
+              .Append(", ").Append(p.EnumUnderlyingTypeExpression is null ? "null" : "typeof(" + p.EnumUnderlyingTypeExpression + ")").AppendLine("),");
         }
         sb.AppendLine("        });");
         sb.AppendLine("}");
