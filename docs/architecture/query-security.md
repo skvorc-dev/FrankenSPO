@@ -32,10 +32,13 @@ identifier check exists (`SqlIdentifier` in `src/Sferix.SPO.Core/Sql/`); it is a
 
 ## Open questions
 
-1. Which LINQ operators and types make up the PoC "explicitly supported subset"? The sources name none.
-2. How are policies declared (attributes, a metadata API, a module) and what does a policy expression look like? Where does the tenant/actor value come from at runtime?
-3. Is raw SQL allowed to bypass declared tenant/row/field policies, or is it rejected on entities that have a policy?
-4. What does "model activation" mean in code: building the compiled model, or opening the first ObjectSpace?
-5. What is the error contract for unsupported expressions (exception type, message content, whether the SQL text is exposed)?
-6. Case sensitivity and collation of string comparison: provider-dependent, or normalised?
-7. Should the 63-character `SqlIdentifier` limit stay for SQLite (no such limit there), or is it a deliberate PostgreSQL-compatible lowest common denominator?
+Answers are recorded in [DECISIONS.md](../../.claude/docs/DECISIONS.md); a decided question names its decision.
+
+
+1. Which LINQ operators and types make up the PoC "explicitly supported subset"? The sources name none. **Decided: D-32.**
+2. How are policies declared (attributes, a metadata API, a module) and what does a policy expression look like? Where does the tenant/actor value come from at runtime? **Decided: D-33.**
+3. Is raw SQL allowed to bypass declared tenant/row/field policies, or is it rejected on entities that have a policy? **Decided: D-33.**
+4. What does "model activation" mean in code: building the compiled model, or opening the first ObjectSpace? **Decided: D-33.**
+5. What is the error contract for unsupported expressions (exception type, message content, whether the SQL text is exposed)? **Decided: D-32.**
+6. Case sensitivity and collation of string comparison: provider-dependent, or normalised? **Decided: D-32.**
+7. Should the 63-character `SqlIdentifier` limit stay for SQLite (no such limit there), or is it a deliberate PostgreSQL-compatible lowest common denominator? **Decided: D-32.**

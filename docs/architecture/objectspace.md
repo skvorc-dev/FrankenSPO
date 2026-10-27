@@ -32,11 +32,14 @@ one place where changes are collected, and one atomic save. Sources: [OVERVIEW](
 
 ## Open questions
 
-1. Are ObjectSpaces thread-safe, or single-threaded per instance? (Sources are silent.)
-2. Is the identity map keyed by entity type + key, or by root type? What happens to inherited types?
-3. What exactly is "uncertain commit reporting": a dedicated exception type, a result value, or both? Must it carry the changes in the unit?
-4. After an uncertain commit, may the ObjectSpace be used further, or must it be discarded?
-5. Is autonomous commit allowed (a save with no ambient transaction), and can several ObjectSpaces share one transaction?
-6. Do SoftDelete and audit timestamps participate in the same SaveChanges transaction (assumed yes, not stated)? Which actor identity source applies? POC_ACCEPTANCE says this must be specified before actor-level guarantees are claimed.
-7. Concurrency control (optimistic locking, row versions): not mentioned in any source. In or out of the PoC?
-8. Is an async API (with `CancellationToken`, per the public API rules) part of the first PoC, or sync-first?
+Answers are recorded in [DECISIONS.md](../../.claude/docs/DECISIONS.md); a decided question names its decision.
+
+
+1. Are ObjectSpaces thread-safe, or single-threaded per instance? (Sources are silent.) **Decided: D-29.**
+2. Is the identity map keyed by entity type + key, or by root type? What happens to inherited types? **Decided: D-35.**
+3. What exactly is "uncertain commit reporting": a dedicated exception type, a result value, or both? Must it carry the changes in the unit? **Decided: D-29.**
+4. After an uncertain commit, may the ObjectSpace be used further, or must it be discarded? **Decided: D-29.**
+5. Is autonomous commit allowed (a save with no ambient transaction), and can several ObjectSpaces share one transaction? **Decided: D-29.**
+6. Do SoftDelete and audit timestamps participate in the same SaveChanges transaction (assumed yes, not stated)? Which actor identity source applies? POC_ACCEPTANCE says this must be specified before actor-level guarantees are claimed. **Decided: D-29, D-35.**
+7. Concurrency control (optimistic locking, row versions): not mentioned in any source. In or out of the PoC? **Decided: D-31.**
+8. Is an async API (with `CancellationToken`, per the public API rules) part of the first PoC, or sync-first? **Decided: D-29.**

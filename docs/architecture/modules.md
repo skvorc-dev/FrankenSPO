@@ -30,9 +30,12 @@ issues #3, #5, D-11, D-25. The project files in `src/` are the factual basis for
 
 ## Open questions
 
-1. Where does the line between `Abstractions` and `Core` fall for the ObjectSpace types (interfaces vs implementation)?
-2. Which modules are planned and what are their assembly names (`SPO.Security`, audit/event modules)? Naming is not defined in the sources.
-3. Do the "public API maturity levels" from issue #3 use the six feature statuses, or a separate scheme (for example experimental, preview, stable)?
-4. Is there an analyzer or API-compat check planned to enforce the boundaries in rule 2?
-5. How are modules activated (explicit registration, discovery)? "Verified activation" is named but not defined.
-6. What are the package boundaries (one convenience package vs per-assembly packages) and when are they decided (D-19 only reserves the prefix)?
+Answers are recorded in [DECISIONS.md](../../.claude/docs/DECISIONS.md); a decided question names its decision.
+
+
+1. Where does the line between `Abstractions` and `Core` fall for the ObjectSpace types (interfaces vs implementation)? **Decided: D-34 (interfaces in Abstractions).**
+2. Which modules are planned and what are their assembly names (`SPO.Security`, audit/event modules)? Naming is not defined in the sources. **Decided: D-36 (naming still open).**
+3. Do the "public API maturity levels" from issue #3 use the six feature statuses, or a separate scheme (for example experimental, preview, stable)? **Decided: D-36.**
+4. Is there an analyzer or API-compat check planned to enforce the boundaries in rule 2? **Decided: D-36.**
+5. How are modules activated (explicit registration, discovery)? "Verified activation" is named but not defined. **Decided: D-36.**
+6. What are the package boundaries (one convenience package vs per-assembly packages) and when are they decided (D-19 only reserves the prefix)? **Decided: D-36.**

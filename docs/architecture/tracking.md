@@ -29,9 +29,12 @@ and partial loads must behave. Sources: [OVERVIEW](OVERVIEW.md), [POC acceptance
 
 ## Open questions
 
-1. How is "equal" decided for scalar comparison: `Equals`, a metadata-provided comparer, or per-type rules? (decimal, DateTime kinds, byte arrays.)
-2. Does "flushed" exist in the PoC at all, i.e. can writes reach the database before commit other than inside SaveChanges?
-3. After rollback, should in-memory current values stay as the user left them (still dirty), or be reset to the original?
-4. How is a deleted (SoftDeleted) object represented in tracking: a state flag, or a scalar like any other?
+Answers are recorded in [DECISIONS.md](../../.claude/docs/DECISIONS.md); a decided question names its decision.
+
+
+1. How is "equal" decided for scalar comparison: `Equals`, a metadata-provided comparer, or per-type rules? (decimal, DateTime kinds, byte arrays.) **Decided: D-30.**
+2. Does "flushed" exist in the PoC at all, i.e. can writes reach the database before commit other than inside SaveChanges? **Decided: D-30.**
+3. After rollback, should in-memory current values stay as the user left them (still dirty), or be reset to the original? **Decided: D-30.**
+4. How is a deleted (SoftDeleted) object represented in tracking: a state flag, or a scalar like any other? **Decided: D-35.**
 5. Which instrumentation approach will make partial loads of entities possible (generated subclasses, interceptors, other)? Out of the PoC, but affects metadata.
 6. What happens to tracked objects after a successful commit on a partially loaded object?
