@@ -30,9 +30,12 @@ is missing. SQLite is first; PostgreSQL follows in milestone P3. Sources: [OVERV
 
 ## Open questions
 
-1. What is the shape of the provider contract: interfaces in `Abstractions`, or in `Core`? The sources do not say.
+Answers are recorded in [DECISIONS.md](../../.claude/docs/DECISIONS.md); a decided question names its decision.
+
+
+1. What is the shape of the provider contract: interfaces in `Abstractions`, or in `Core`? The sources do not say. **Decided: D-34.**
 2. What are the capability names and their granularity? Where do they live: code, `features.json`, or both?
 3. Is the capability manifest in `features.json` (a repository document) the same thing as the runtime capability set, or are they separate?
-4. Who owns schema initialisation and validation: the provider, or Core with provider dialect hooks?
-5. How does a provider know about a connection owned by the caller versus one it opens itself?
-6. SQLite specifics for atomicity and isolation (journal mode, locking, multiple connections): not decided.
+4. Who owns schema initialisation and validation: the provider, or Core with provider dialect hooks? **Decided: D-34.**
+5. How does a provider know about a connection owned by the caller versus one it opens itself? **Decided: D-29 (P1: the provider opens its own connection).**
+6. SQLite specifics for atomicity and isolation (journal mode, locking, multiple connections): not decided. **Decided: D-34.**
