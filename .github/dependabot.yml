@@ -5,11 +5,20 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    groups:
+      actions:
+        patterns:
+          - "*"
   - package-ecosystem: nuget
     directory: /
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
+    groups:
+      test-tools:
+        patterns:
+          - "xunit*"
+          - "Microsoft.NET.Test.Sdk"
     # Stay on .NET 10 LTS (D-25): patches yes, next major (STS/preview) no.
     ignore:
       - dependency-name: "Microsoft.CodeAnalysis*"
