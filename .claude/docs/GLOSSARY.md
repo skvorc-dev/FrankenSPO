@@ -6,7 +6,7 @@
 | **ObjectSpace** | The unit-of-work session: loads, tracks and saves persistent objects within one context. |
 | **UnitOfWork** | Pattern behind ObjectSpace: collect changes, commit them atomically. |
 | **Provider** | Database-specific adapter (SQLite, later PostgreSQL) implementing the provider contract. |
-| **Capability / capability manifest** | What a provider or build actually supports; recorded in `docs/compatibility/features.json`. |
+| **Capability / capability manifest** | What a provider or build actually supports. At runtime: the provider's `SpoCapability` set; for people: `docs/compatibility/features.json` (D-39). |
 | **Fail closed** | Refuse to run when a mandatory guarantee cannot be enforced, instead of silently degrading. |
 | **Baselines (working / flushed / committed)** | The three states of tracked values: in memory, written in the open transaction, durably committed. |
 | **SoftDelete** | Deleting by marking a record as deleted instead of removing the row. |
