@@ -30,7 +30,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Notes: D-25, D-35, D-37, `docs/architecture/modules.md` rule 11.
 
 ### S-01b · Generator edge cases (review of #53)
-- Issue: #5 · Size: S · Status: In Progress (sonnet-2)
+- Issue: #5 · Size: S · Status: Done (PR #59, sonnet-2)
 - Goal: the generator fails closed on every declaration it cannot handle and never crashes.
 - Acceptance:
   - [ ] `SPO0007` error: generic entity class (today it emits code that does not compile)
@@ -139,7 +139,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Notes: D-33, D-39. Does not touch the files of S-02b.
 
 ### S-12 · Generator diagnostics from resources
-- Issue: #5 · Size: S · Status: Ready (sonnet-2, after S-01b)
+- Issue: #5 · Size: S · Status: In Progress (sonnet-2)
 - Goal: all generator diagnostic titles and messages come from `.resx` in en, de, hr, es (D-40, D-41), IDs unchanged.
 - Acceptance:
   - [ ] `Diagnostics.cs` uses `LocalizableResourceString` for title and message of every `SPO0001`… descriptor
@@ -154,7 +154,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
   added in resources directly. Not in parallel with another card that touches the generator.
 
 ### S-13 · Localization baseline: four languages and a CI check
-- Issue: #5 · Size: S · Status: In Progress (haiku-2)
+- Issue: #5 · Size: S · Status: Done (PR #61, haiku-2)
 - Goal: the resource pattern every later card copies exists in Core with en, de, hr, es, and CI rejects a missing
   language or key (D-40, D-41).
 - Acceptance:
@@ -180,9 +180,10 @@ the main agent completes each card (files, exact acceptance) before moving it to
   - [ ] Search `src/**` for string literals in `throw`, `Exception(` and `DiagnosticDescriptor` calls and in console or
         log output; each one is either a resource or listed with a reason (e.g. parameter names)
   - [ ] Read the de, hr, es texts against en: same meaning, same placeholders, consistent terms; fix wording
+  - [ ] `scripts/validate_repository.py` also fails when a culture value's `{n}` placeholders differ from the neutral's
   - [ ] Findings that need code changes outside resources: listed in the PR for the main agent, not fixed
   - [ ] `python3 scripts/validate_repository.py` passes; build 0 warnings; CI green
-- Files: `src/**/Resources/**`
+- Files: `src/**/Resources/**`, `scripts/validate_repository.py`
 - Notes: D-40, D-41. Each card localizes its own strings; this card only catches what was missed.
 
 ### S-07 · SQL injection regression suite
