@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.Data.Sqlite;
 using Sferix.SPO.Abstractions.Providers;
+using Sferix.SPO.Abstractions.Query;
 using Sferix.SPO.Abstractions.Schema;
 using Sferix.SPO.Provider.SQLite.Resources;
 using Sferix.SPO.Provider.SQLite.Schema;
@@ -66,6 +67,30 @@ internal sealed class SqliteSpoConnection(SqliteConnection connection) : ISpoCon
     {
         cancellationToken.ThrowIfCancellationRequested();
         return Task.FromResult(ReadRow(table, key));
+    }
+
+    public IReadOnlyList<IReadOnlyList<object?>> Query(SpoQuery query)
+    {
+        ArgumentNullException.ThrowIfNull(query);
+        using var command = connection.CreateCommand();
+        command.Transaction = _current?.Inner;
+        SqliteQueryRenderer.Render(command, query);
+        using var reader = command.ExecuteReader();
+        var rows = new List<IReadOnlyList<object?>>();
+        while (reader.Read())
+        {
+            var row = new object?[query.Table.Columns.Count];
+            for (var i = 0; i < row.Length; i++)
+                row[i] = SqliteValueConverter.FromStored(query.Table.Columns[i].StorageType, reader, i);
+            rows.Add(row);
+        }
+        return rows;
+    }
+
+    public Task<IReadOnlyList<IReadOnlyList<object?>>> QueryAsync(SpoQuery query, CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        return Task.FromResult(Query(query));
     }
 
     public void Insert(ISpoTransaction transaction, SchemaTable table, IReadOnlyList<object?> values)

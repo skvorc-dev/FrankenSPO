@@ -22,6 +22,7 @@ text is localized (en, de, hr, es, D-40, D-41); the code is the same in every la
 | `SPO1010` | `SpoObjectSpaceException` (Core) | public | An ObjectSpace call was made while another call on the same ObjectSpace was running. |
 | `SPO1011` | `SpoObjectSpaceException` (Core) | public | The key of a tracked entity was changed after it was added or loaded; nothing was saved. |
 | `SPO1012` | `SpoObjectSpaceException` (Core) | public | `Delete` was called with an entity this ObjectSpace does not track. |
+| `SPO1013` | `SpoQueryNotSupportedException` (Core) | public | A query uses an operator outside the supported subset, or a `decimal`, `DateTimeOffset` or `byte[]` column in Where or OrderBy (D-32, D-46). |
 
 Codes planned by later cards are added here by the card that introduces them.
 

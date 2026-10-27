@@ -36,6 +36,18 @@ public interface ISpoObjectSpace : IDisposable, IAsyncDisposable
     /// <returns>The entity, or null when there is no such row or it is soft-deleted.</returns>
     Task<T?> GetAsync<T>(Guid id, CancellationToken cancellationToken) where T : SPOBaseObject;
 
+    /// <summary>Starts a query over the entities of type <typeparamref name="T"/>.</summary>
+    /// <typeparam name="T">The entity type.</typeparam>
+    /// <returns>
+    /// A queryable supporting Where, OrderBy/ThenBy (and descending), Skip and Take; use <c>ToList()</c>, <c>ToListAsync</c> and
+    /// <c>IncludeDeleted()</c>. Anything else throws a <c>SpoQueryNotSupportedException</c> (SPO1013) when the query runs.
+    /// </returns>
+    /// <remarks>
+    /// Results are tracked: an already tracked instance is returned as it is. Soft-deleted rows and entities pending deletion are left out
+    /// (<c>IncludeDeleted()</c> keeps the former); added, unsaved entities are not in the results.
+    /// </remarks>
+    IQueryable<T> Query<T>() where T : SPOBaseObject;
+
     /// <summary>Writes all additions and changes in one transaction.</summary>
     /// <remarks>On failure nothing is written, values set by the save are restored, and the changes stay pending.</remarks>
     void SaveChanges();

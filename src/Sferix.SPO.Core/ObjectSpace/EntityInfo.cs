@@ -67,6 +67,12 @@ internal sealed class EntityInfo
         }
     }
 
+    /// <summary>The column index of the persistent property named <paramref name="propertyName"/>, or -1.</summary>
+    public int FindColumn(string propertyName) =>
+        Array.FindIndex(properties, p => p is not null && p.ClrName == propertyName);
+
+    public PropertyMetadata PropertyAt(int column) => properties[column]!;
+
     public bool SameValue(int column, object? a, object? b) => comparers[column](a, b);
 
     /// <summary>The exact comparer for values of <paramref name="type"/> (D-30, D-45); null equals only null.</summary>
