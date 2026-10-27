@@ -1,6 +1,11 @@
-# Complete GitHub administration setup
+# GitHub administration setup
 
-Some GitHub settings are **not set by repository files**. The connected repository tool can commit files and create issues, but does not expose writing organization Projects, repository milestones, labels, repo rulesets, CodeQL settings or metadata. These must be configured through GitHub UI or an authorized GitHub CLI.
+This file records the GitHub settings that repository files cannot set, and what exists now. Some settings are
+changed only through the GitHub UI or an authorized GitHub CLI.
+
+## Labels and milestones
+
+Labels come from `docs/labels.csv`. Milestones are P0 to P3, one per roadmap phase.
 
 ## One-time CLI bootstrap
 
@@ -14,14 +19,13 @@ The script creates labels and milestones idempotently in the three product repos
 
 ## GitHub Project
 
-Create one organization Project named **FrankenSPO Roadmap**. Use views: Backlog, Active Development, Architecture, Providers, Documentation, Release Roadmap. Add custom fields Status (Backlog / Ready / In Progress / Review / Verification / Done), Priority P0-P3, Area, and Target Release; connect the main repository. No speculative deadlines.
+Organization Project **FrankenSPO Roadmap** (project 1) has Status and Priority fields, and is connected to this repository.
 
-## Assign issues
+## Repository rules and security
 
-P0: FrankenSPO issues #2, #3, #4. P1: #5, #6, #7. The umbrella #1 spans P0-P1. #8 remains future work. MiddleTier issue #1 and WebApi issue #1 belong to their M0 readiness milestone.
+- Ruleset **Protect main**: no deletions and no force pushes; pull requests required (squash merge only); required status checks `docs` and `dotnet (ubuntu-latest|windows-latest|macos-latest)`.
+- CodeQL: default setup for C#.
+- Private vulnerability reporting: enabled (see [SECURITY.md](../SECURITY.md)).
+- Dependabot: version updates for GitHub Actions and NuGet, configured in `.github/dependabot.yml`.
 
-## Repository rules / security
-
-Protect `main`: prevent deletions and force pushes; require pull requests and passing status checks after the actual workflow check names appear. Ensure CodeQL is configured when source exists and GitHub's security features permit it. Verify dependabot, private vulnerability reporting, Actions permissions, and branch ruleset eligibility. Organization policies should be configured separately.
-
-Do not enable branch checks that do not yet exist, or the repository can become impossible to merge. Publication of NuGet packages and GitHub Releases is deferred until reproducible, tested code exists.
+Publication of NuGet packages and GitHub Releases is deferred until reproducible, tested code exists.
