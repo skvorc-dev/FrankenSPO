@@ -1,0 +1,24 @@
+name: DCO
+on:
+  pull_request:
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+  sign-off:
+    # Only external contributions (PRs from forks) must be signed off (D-22).
+    if: github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Signed-off-by on every commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          missing=$(gh api "repos/$REPO/pulls/$PR/commits" --paginate \
+            --jq '.[] | select(.commit.message | test("(^|\\n)Signed-off-by: [^\\n]+ <[^\\n]+>") | not) | .sha[0:7]')
+          if [ -n "$missing" ]; then
+            echo "::error::Commits without a DCO sign-off (use git commit -s): $missing"
+            exit 1
+          fi

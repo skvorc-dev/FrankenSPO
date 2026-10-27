@@ -19,3 +19,13 @@ that names the one it replaces (`Replaces D-03`). Other files link here instead 
 | D-12 | 2026-10-27 | **Dependency updates:** Dependabot weekly for GitHub Actions and NuGet. Known-vulnerable packages fail the build and are upgraded, not suppressed. |
 | D-13 | 2026-10-27 | **Capability truth:** feature status only in `docs/compatibility/features.json`; "planned means unavailable"; status moves only with test evidence (from AGENTS.md). |
 | D-14 | 2026-10-27 | **Card sizes:** S (≤ half a day of agent work), M (≤ 2 days), L (must be split before it is assigned). |
+| D-15 | 2026-10-27 | **Licence holder:** LICENSE stays "Copyright (c) 2026 FrankenSPO contributors" (owner, closes #2). |
+| D-16 | 2026-10-27 | **CodeQL:** GitHub default setup enabled for C# (part of F-04). |
+| D-17 | 2026-10-27 | **Worker agents:** Claude side sessions, Codex and Gemini (Antigravity) are all allowed, as on the owner's other projects. None starts until the owner says when and how; until then the main agent works the cards itself. |
+| D-18 | 2026-10-27 | **Companion repos** (MiddleTier, WebApi) get the same GitHub setup now: labels `type:*`/`priority:*`, milestone M0, the family board, CLAUDE.md, a `main` ruleset. They become separate local projects with their own main agents later. Amends D-01. |
+| D-19 | 2026-10-27 | **NuGet:** reserve the `Sferix.SPO` package ID prefix before the P2 preview, not now. |
+| D-20 | 2026-10-27 | **Brand:** "FrankenSPO by Sferix" stays, with the existing "no registered company" wording. |
+| D-21 | 2026-10-27 | **Outside contributions:** issues welcome; pull requests only on a maintainer's request until P2 (CONTRIBUTING.md). |
+| D-22 | 2026-10-27 | **DCO:** external contributors sign off commits (`git commit -s`); `.github/workflows/dco.yml` checks PRs from forks. No CLA. |
+| D-23 | 2026-10-27 | **Releases (from P2):** tag `vX.Y.Z-preview.N` plus a GitHub Release with notes; the owner pushes NuGet packages by hand. No publishing automation or NuGet secrets in CI. |
+| D-24 | 2026-10-27 | **No GitHub Discussions** yet; the "question" issue template stays. |
