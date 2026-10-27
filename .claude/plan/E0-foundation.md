@@ -10,16 +10,27 @@ Milestone **P0 — Foundation**. Gate: clean baseline, green CI on three OSes, p
   - [x] Owner confirms LICENSE copyright holder and that no text reveals private details
 - Files: root `*.md`, `LICENSE`
 
-### F-02 · Architecture contracts and capability statuses
-- Issue: #3 · Size: M · Status: Ready (manifest half done by F-16; architecture docs left)
-- Goal: architecture docs cover ObjectSpace, three baselines, secured query AST, provider capability checks,
-  module boundaries; the manifest distinguishes specified / implemented / tested / provider-verified.
+### F-02 · Architecture contracts
+- Issue: #3 · Size: M · Status: In Progress (sonnet-1)
+- Goal: the architecture docs state each core contract precisely enough that P1 cards can be written from them,
+  without inventing design that the owner has not approved.
+- Sources (the only ones): `docs/architecture/OVERVIEW.md`, `docs/POC_ACCEPTANCE.md`, `AGENTS.md`, `SECURITY.md`,
+  issues #1, #3, #5, #6, `.claude/docs/DECISIONS.md`, and the existing code in `src/`.
 - Acceptance:
-  - [ ] `docs/architecture/` has one short section per contract named in issue #3, each marked `specified`
-  - [x] `features.json` allows `specified`; `scripts/validate_repository.py` accepts it; CI green (F-16)
-  - [ ] README, AGENTS.md and the manifest agree that no ORM feature is implemented
-- Files: `docs/architecture/**`, `docs/compatibility/features.json`, `scripts/validate_repository.py`
-- Notes: docs only, no code. D-13.
+  - [ ] One file per contract in `docs/architecture/`: `objectspace.md` (identity map, unit of work, SaveChanges),
+        `tracking.md` (scalar tracking, the three baselines working / flushed / committed, partial loads),
+        `query-security.md` (typed query AST, parameters, metadata-validated identifiers, raw SQL boundary,
+        no client-side evaluation, tenant/row/field policies fail closed), `providers.md` (provider contract,
+        capability checks, fail closed, SQLite first, PostgreSQL in P3), `modules.md` (assembly boundaries of
+        `Sferix.SPO.*`, what Core may reference, optional modules, public API maturity levels)
+  - [ ] Every file starts with `**Status: specified, not implemented.**` and has sections: Purpose, Contract
+        (numbered, testable statements), Not in scope, Open questions
+  - [ ] Anything not in the sources goes under **Open questions** as a question for the owner, never as a decision
+  - [ ] `OVERVIEW.md` links the five files; no other doc claims anything is implemented
+  - [ ] `features.json`: only features whose contract is now written may move `planned` → `specified`; list them in the PR
+  - [ ] `scripts/validate_repository.py` and CI green
+- Files: `docs/architecture/**`, `docs/compatibility/features.json`
+- Notes: docs only, no code. D-13. Size M: one PR.
 
 ### F-03 · CI green again (NU1903)
 - Issue: #4 · Size: S · Status: Done (PR #14)

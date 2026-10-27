@@ -7,6 +7,7 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | Agent | Branch | Since |
 |------|-------|-------|--------|-------|
+| F-02 Architecture contracts | #3 | sonnet-1 | `task/Sonnet_F-02_<yyyyMMddTHHmm>` | 2026-10-27 |
 
 ## Review
 
@@ -17,7 +18,6 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | Size |
 |------|-------|------|
-| F-02 Architecture contracts (manifest part done by F-16) | #3 | M |
 
 ## Done (this phase)
 
