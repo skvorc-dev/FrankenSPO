@@ -96,14 +96,54 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Not in scope: primary key from `SPOBaseObject` (S-03 sets it), indexes, foreign keys between entities, migrations.
 - Notes: D-32 (63-character identifiers), D-34.
 
-### S-03 · ObjectSpace CRUD with identity map, `SPOBaseObject` and UUIDv7 keys
-- Issue: #5 · Size: M · Status: Backlog · after S-02b
+### S-03a · `SPOBaseObject`, inherited fields and generated accessors
+- Issue: #5 · Size: M · Status: Ready · after S-02b
+- Goal: entities derive from `SPOBaseObject`, the generator includes its fields, and generated metadata can create
+  instances and read/write every property without reflection (D-35, D-37, D-43).
+- Acceptance:
+  - [ ] `Sferix.SPO.Abstractions/Entities/SPOBaseObject.cs`: public abstract class with `[SpoField]` properties
+        `Id` (Guid, 1000001), `CreatedAt` (DateTime, 1000002), `ModifiedAt` (DateTime, 1000003), `IsDeleted` (bool,
+        1000004), `DeletedAt` (DateTime?, 1000005), `Version` (long, 1000006); XML docs say the behaviour arrives in
+        S-03c, S-04 and S-10 and is not active yet
+  - [ ] Generator: includes inherited `[SpoField]` properties of `SPOBaseObject` first, then the entity's own, each
+        ordered by number; an entity may derive only from `object` or `SPOBaseObject` → else error `SPO0010`;
+        an entity field number ≥ 1000000 → error `SPO0011` (reserved for the framework, D-43); both in en, de, hr, es
+  - [ ] Generated metadata: `EntityMetadata` gains `Func<object> CreateInstance`; `PropertyMetadata` gains
+        `Func<object, object?> GetValue` and `Action<object, object?> SetValue`, emitted as lambdas (no reflection);
+        a compile-and-run test round-trips every supported type, including nullable and enum
+  - [ ] `SchemaBuilder`: an entity with `SPOBaseObject` gets primary key `Id`; test on real SQLite
+  - [ ] Build 0 warnings; CI green; PR notes the public API additions
+- Files: `src/Sferix.SPO.Abstractions/Entities/**`, `src/Sferix.SPO.Abstractions/Metadata/**`,
+  `src/Sferix.SPO.Generators/**`, `src/Sferix.SPO.Core/Schema/**`, `tests/Sferix.SPO.Tests.Generators/**`,
+  `tests/Sferix.SPO.Tests.SQLite/**`
+- Not in scope: setting Id/timestamps/version (S-03c, S-04, S-10), declared keys without `SPOBaseObject`, modules.
+- Notes: D-35, D-37, D-42, D-43.
+
+### S-03b · Modules and public model activation
+- Issue: #5 · Size: S · Status: Ready · after S-02b
+- Goal: an application registers its entity modules and activates the model through a small public API (D-36, D-43).
+- Acceptance:
+  - [ ] `Sferix.SPO.Abstractions/Modules/ISpoModule.cs`: `IEnumerable<EntityMetadata> Entities { get; }`
+  - [ ] `Sferix.SPO.Core/Model`: public sealed `SpoModelBuilder` with `AddModule<TModule>() where TModule :
+        ISpoModule, new()` (fluent, a module added twice counts once) and `SpoModel Build(ISpoProvider provider)`, which
+        runs `CompiledModel.Build` (activation) with the provider's required capabilities (`AtomicSaveChanges`)
+  - [ ] public sealed `SpoModel` exposes nothing but the activated entity list (`IReadOnlyList<EntityMetadata>`)
+  - [ ] `SpoModelException` becomes public (D-42: a public API now throws it) with `Code`; its XML docs list
+        SPO1002, SPO1003, SPO1005, SPO1006
+  - [ ] Tests (Tests.Unit): two modules activate; duplicate entity across modules fails with SPO1002; missing
+        capability fails with SPO1001; a module added twice is registered once
+  - [ ] Build 0 warnings; CI green; PR notes the public API additions
+- Files: `src/Sferix.SPO.Abstractions/Modules/**`, `src/Sferix.SPO.Core/Model/**`, `tests/Sferix.SPO.Tests.Unit/Model/**`
+- Not in scope: the module-name analyzer (`*Module` suffix, D-36: later card), ObjectSpace, DI integration.
+- Notes: D-36, D-42, D-43. Parallel to S-03a: do not touch `Generators`, `Abstractions/Metadata`, `Core/Schema`.
+
+### S-03c · ObjectSpace CRUD with identity map and UUIDv7 keys
+- Issue: #5 · Size: M · Status: Backlog · after S-03a and S-03b
 - Goal: persist, read, update through ObjectSpace on real SQLite; async-first API with sync twins; single-threaded
-  misuse detected (D-29, D-35). The generator must include `[SpoField]` properties inherited from `SPOBaseObject`
-  (today it reads only the class's own members); base-class field numbers must not collide with the entity's.
+  misuse detected; identity map by entity type + key (D-29, D-35). Card completed when S-03a and S-03b are merged.
 
 ### S-04 · Scalar tracking, audit timestamps, SoftDelete
-- Issue: #5 · Size: M · Status: Backlog · after S-03
+- Issue: #5 · Size: M · Status: Backlog · after S-03c
 - Goal: per-type comparers, failed save keeps values dirty (D-30); UTC timestamps via `TimeProvider`; Deleted state,
   `IncludeDeleted()` (D-35).
 
@@ -125,7 +165,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Goal: integer version column on `SPOBaseObject`, incremented per update; conflict exception, nothing written (D-31).
 
 ### S-11 · Policy requirements fail closed at activation
-- Issue: #6 · Size: S · Status: In Progress (haiku-2)
+- Issue: #6 · Size: S · Status: Done (PR #68, haiku-2)
 - Goal: a model that requires tenant, row or field policy enforcement is rejected when it is activated, because no
   P1 provider can enforce it (D-33).
 - Acceptance:
@@ -176,7 +216,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
   `src/Sferix.SPO.Provider.SQLite/**`, `tests/Sferix.SPO.Tests.{Generators,SQLite}/**`.
 
 ### S-14 · Localization audit
-- Issue: #5 · Size: S · Status: Backlog · after S-02b and S-11
+- Issue: #5 · Size: S · Status: Backlog · after S-03a and S-03b
 - Goal: a check that no user-visible string escaped the four-language rule (D-41).
 - Acceptance:
   - [ ] Search `src/**` for string literals in `throw`, `Exception(` and `DiagnosticDescriptor` calls and in console or
