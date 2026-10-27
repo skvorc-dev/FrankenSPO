@@ -71,6 +71,7 @@ internal sealed class EntityInfo
     public int FindColumn(string propertyName) =>
         Array.FindIndex(properties, p => p is not null && p.ClrName == propertyName);
 
+    // Safe: callers pass an index from FindColumn (>= 0), which only returns columns that have a property.
     public PropertyMetadata PropertyAt(int column) => properties[column]!;
 
     public bool SameValue(int column, object? a, object? b) => comparers[column](a, b);

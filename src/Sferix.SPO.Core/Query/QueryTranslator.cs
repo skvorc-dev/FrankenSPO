@@ -104,6 +104,7 @@ internal sealed class QueryTranslator(EntityInfo info)
         return lambda is { } && lambda.Parameters.Count == parameters ? lambda : throw SpoQueryNotSupportedException.ForOperator(call.Method.Name);
     }
 
+    // Safe: Skip and Take take an int argument, so the evaluated value is a boxed int, never null.
     private static int Count(Expression expression) => (int)Evaluate(expression)!;
 
     private SpoOrdering Order(MethodCallExpression call, bool descending)
@@ -137,6 +138,7 @@ internal sealed class QueryTranslator(EntityInfo info)
             case MemberExpression { Member.Name: "HasValue" } m when Column(m.Expression!, x) is { } column:
                 return new SpoNullCheckPredicate(info.Table.Columns[column.Index].Name, false);
             case var _ when !Uses(e, x) && e.Type == typeof(bool):
+                // Safe: the guard above checked e.Type == typeof(bool) and a non-nullable bool is never null.
                 return new SpoConstantPredicate((bool)Evaluate(e)!);
             case var _ when Column(e, x) is { } column && info.Table.Columns[column.Index].StorageType == SpoStorageType.Boolean:
                 return new SpoComparisonPredicate(info.Table.Columns[column.Index].Name, SpoComparisonOperator.Equal, true);
@@ -155,10 +157,11 @@ internal sealed class QueryTranslator(EntityInfo info)
         {
             if (Uses(b, x))
                 throw SpoQueryNotSupportedException.ForOperator(b.NodeType.ToString());
+            // Safe: a comparison node has type bool (not bool?) here because neither side is a column, so the value is never null.
             return new SpoConstantPredicate((bool)Evaluate(b)!);
         }
 
-        var column = (left ?? right)!;
+        var column = (left ?? right)!; // Safe: the checks above ruled out both being null.
         var operand = left is not null ? b.Right : b.Left;
         if (Uses(operand, x))
             throw SpoQueryNotSupportedException.ForOperator(b.NodeType.ToString());

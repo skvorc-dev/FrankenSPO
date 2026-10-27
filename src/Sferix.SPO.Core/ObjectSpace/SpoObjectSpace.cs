@@ -108,6 +108,7 @@ internal sealed class SpoObjectSpace(SpoModel model, ISpoConnection connection) 
             var results = new List<T>(rows.Count);
             foreach (var row in rows)
             {
+                // Safe: IdColumn is the non-nullable Guid primary key column, so the value is never null.
                 var id = (Guid)row[info.IdColumn]!;
                 if (map.TryGetValue((info.Metadata.ClrName, id), out var existing))
                 {

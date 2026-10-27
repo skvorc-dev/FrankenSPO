@@ -12,6 +12,7 @@ internal interface ISpoListSource<T>
 /// <summary>Extensions for queries returned by <c>ISpoObjectSpace.Query</c>.</summary>
 public static class SpoQueryableExtensions
 {
+    // Safe: IncludeDeleted is a public method declared on this class, so the lookup always finds it.
     internal static readonly MethodInfo IncludeDeletedMethod =
         typeof(SpoQueryableExtensions).GetMethod(nameof(IncludeDeleted))!;
 
