@@ -228,7 +228,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Notes: D-30, D-35, D-42, D-45.
 
 ### S-05a · LINQ core subset: filter, order, page, list
-- Issue: #6 · Size: M · Status: In Progress (sonnet-2)
+- Issue: #6 · Size: M · Status: Done (#84)
 - Goal: `ISpoObjectSpace.Query<T>()` translates Where, OrderBy/ThenBy(+Descending), Skip/Take and `IncludeDeleted()`
   into a neutral query model in Core; SQLite renders it with parameters; results come back as tracked entities through
   the identity map (D-32, D-35, D-45, D-46).
@@ -259,7 +259,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
   metadata-only.
 
 ### S-05c · Single results and scalars
-- Issue: #6 · Size: S · Status: Backlog · after S-05a
+- Issue: #6 · Size: S · Status: Ready · sonnet-2 after the pause
 - Goal: First/FirstOrDefault/Single/SingleOrDefault/Count/Any with async twins, on the S-05a translator (D-32).
 
 ### S-05 · Select to DTO
@@ -355,7 +355,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Goal: the cases listed in `docs/POC_ACCEPTANCE.md` (quotes, tautologies, comments, semicolons, sort names, LIKE).
 
 ### S-08 · `SpoExample.Module` and `SpoExample.Console`
-- Issue: #7 · Size: M · Status: In Progress (haiku-2)
+- Issue: #7 · Size: M · Status: Done (#81)
 - Goal: a compilable sample shows today's working features end to end; it is built in CI (POC_ACCEPTANCE).
 - Acceptance:
   - [ ] `samples/SpoExample.Module` (class library): a `Customer : SPOBaseObject` entity with a few typed fields
@@ -370,7 +370,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Notes: D-36, D-43. Parallel to S-04: do not touch `src/**` or `tests/**`. S-09 extends the sample later.
 
 ### S-16 · Analyzer: module names end in `Module`
-- Issue: #5 · Size: S · Status: Backlog · after S-08
+- Issue: #5 · Size: S · Status: Ready · haiku-2 after the pause
 - Goal: a class implementing `ISpoModule` whose name does not end in `Module` is a compile error (D-36).
 - Acceptance:
   - [ ] `DiagnosticAnalyzer` in `Sferix.SPO.Generators`, error `SPO0014` in en, de, hr, es
