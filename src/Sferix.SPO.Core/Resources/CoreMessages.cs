@@ -36,6 +36,9 @@ internal static class CoreMessages
     internal static string ObjectSpaceKeyChanged(string entity) =>
         string.Format(CultureInfo.CurrentUICulture, Get(nameof(ObjectSpaceKeyChanged)), entity);
 
+    internal static string ObjectSpaceNotTracked(string entity) =>
+        string.Format(CultureInfo.CurrentUICulture, Get(nameof(ObjectSpaceNotTracked)), entity);
+
     internal static string ObjectSpaceConcurrentUse => Get(nameof(ObjectSpaceConcurrentUse));
 
     private static string Get(string name) =>

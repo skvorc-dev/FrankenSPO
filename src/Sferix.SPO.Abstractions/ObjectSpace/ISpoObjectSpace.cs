@@ -7,7 +7,7 @@ namespace Sferix.SPO.Abstractions.ObjectSpace;
 /// Not thread-safe: a call made while another call is running (re-entrant or from another thread) throws a
 /// <c>SpoObjectSpaceException</c> with code SPO1010, and any call after disposal throws <see cref="ObjectDisposedException"/>.
 /// Each <c>SaveChanges</c> runs in its own transaction. Sync and async members share one code path.
-/// There is no delete, no query and no version check yet.
+/// There is no hard delete, no query and no version check yet.
 /// </remarks>
 public interface ISpoObjectSpace : IDisposable, IAsyncDisposable
 {
@@ -17,17 +17,23 @@ public interface ISpoObjectSpace : IDisposable, IAsyncDisposable
     /// <returns><paramref name="entity"/>.</returns>
     T Add<T>(T entity) where T : SPOBaseObject;
 
+    /// <summary>Marks a tracked entity as deleted; the next save soft-deletes it (sets <c>IsDeleted</c> and <c>DeletedAt</c>).</summary>
+    /// <typeparam name="T">The entity type.</typeparam>
+    /// <param name="entity">The tracked entity. An added, unsaved entity is simply no longer tracked.</param>
+    /// <remarks>An entity this ObjectSpace does not track throws a <c>SpoObjectSpaceException</c> (SPO1012). The row is kept; it is only hidden.</remarks>
+    void Delete<T>(T entity) where T : SPOBaseObject;
+
     /// <summary>Returns the entity with the given key: the tracked instance if there is one, otherwise it is loaded.</summary>
     /// <typeparam name="T">The entity type.</typeparam>
     /// <param name="id">The key.</param>
-    /// <returns>The entity, or null when there is no such row.</returns>
+    /// <returns>The entity, or null when there is no such row or it is soft-deleted.</returns>
     T? Get<T>(Guid id) where T : SPOBaseObject;
 
     /// <summary>Returns the entity with the given key: the tracked instance if there is one, otherwise it is loaded.</summary>
     /// <typeparam name="T">The entity type.</typeparam>
     /// <param name="id">The key.</param>
     /// <param name="cancellationToken">Cancels the call before it starts.</param>
-    /// <returns>The entity, or null when there is no such row.</returns>
+    /// <returns>The entity, or null when there is no such row or it is soft-deleted.</returns>
     Task<T?> GetAsync<T>(Guid id, CancellationToken cancellationToken) where T : SPOBaseObject;
 
     /// <summary>Writes all additions and changes in one transaction.</summary>

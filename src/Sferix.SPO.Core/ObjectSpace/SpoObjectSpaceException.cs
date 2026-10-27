@@ -16,6 +16,9 @@ public sealed class SpoObjectSpaceException : Exception
     /// <summary>The key of a tracked entity was changed after it was added or loaded.</summary>
     public const string KeyChanged = "SPO1011";
 
+    /// <summary>The entity passed to <c>Delete</c> is not tracked by this ObjectSpace.</summary>
+    public const string NotTracked = "SPO1012";
+
     internal SpoObjectSpaceException(string code, string message) : base(message) => Code = code;
 
     /// <summary>The stable error code, the same in every language.</summary>

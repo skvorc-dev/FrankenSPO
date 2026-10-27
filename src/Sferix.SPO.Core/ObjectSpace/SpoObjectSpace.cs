@@ -19,6 +19,7 @@ internal sealed class SpoObjectSpace(SpoModel model, ISpoConnection connection) 
         public Guid Key { get; } = entity.Id;
         public EntityInfo Info { get; } = info;
         public SPOBaseObject Entity { get; } = entity;
+        public bool PendingDelete { get; set; }
         public object?[]? Snapshot { get; set; } = snapshot; // null = added, not yet saved
     }
 
@@ -47,6 +48,30 @@ internal sealed class SpoObjectSpace(SpoModel model, ISpoConnection connection) 
             map[key] = tracked;
             added.Add(tracked);
             return entity;
+        }
+        finally
+        {
+            Leave();
+        }
+    }
+
+    public void Delete<T>(T entity) where T : SPOBaseObject
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        Enter();
+        try
+        {
+            var info = InfoFor(entity.GetType());
+            if (!map.TryGetValue((info.Metadata.ClrName, entity.Id), out var tracked) || !ReferenceEquals(tracked.Entity, entity))
+                throw new SpoObjectSpaceException(
+                    SpoObjectSpaceException.NotTracked, CoreMessages.ObjectSpaceNotTracked(info.Metadata.ClrName));
+            if (tracked.Snapshot is null)
+            {
+                map.Remove((info.Metadata.ClrName, entity.Id));
+                added.Remove(tracked);
+            }
+            else
+                tracked.PendingDelete = true;
         }
         finally
         {
@@ -99,10 +124,10 @@ internal sealed class SpoObjectSpace(SpoModel model, ISpoConnection connection) 
         {
             var info = InfoFor(typeof(T));
             if (map.TryGetValue((info.Metadata.ClrName, id), out var existing))
-                return (T)existing.Entity;
+                return existing.PendingDelete ? null : (T)existing.Entity;
 
             var row = async ? await connection.ReadRowAsync(info.Table, id, ct) : connection.ReadRow(info.Table, id);
-            if (row is null)
+            if (row is null || row[info.IsDeletedColumn] is true)
                 return null;
 
             var entity = (SPOBaseObject)info.Metadata.CreateInstance!();
@@ -150,17 +175,19 @@ internal sealed class SpoObjectSpace(SpoModel model, ISpoConnection connection) 
                 foreach (var tracked in map.Values.Where(t => t.Snapshot is not null))
                 {
                     var (entity, info) = (tracked.Entity, tracked.Info);
-                    if (!Changed(info, tracked.Snapshot!, info.ReadValues(entity)))
+                    if (!tracked.PendingDelete && !Changed(info, tracked.Snapshot!, info.ReadValues(entity)))
                         continue;
 
-                    var modified = entity.ModifiedAt;
-                    restore.Add(() => entity.ModifiedAt = modified);
+                    var (modified, isDeleted, deletedAt) = (entity.ModifiedAt, entity.IsDeleted, entity.DeletedAt);
+                    restore.Add(() => (entity.ModifiedAt, entity.IsDeleted, entity.DeletedAt) = (modified, isDeleted, deletedAt));
                     entity.ModifiedAt = now;
+                    if (tracked.PendingDelete)
+                        (entity.IsDeleted, entity.DeletedAt) = (true, now);
 
                     var values = info.ReadValues(entity);
                     var changes = new List<SpoColumnValue>();
                     for (var i = 0; i < values.Length; i++)
-                        if (i != info.IdColumn && !EntityInfo.SameValue(values[i], tracked.Snapshot![i]))
+                        if (i != info.IdColumn && !info.SameValue(i, values[i], tracked.Snapshot![i]))
                             changes.Add(new(info.Table.Columns[i].Name, values[i]));
 
                     var affected = async
@@ -184,7 +211,11 @@ internal sealed class SpoObjectSpace(SpoModel model, ISpoConnection connection) 
 
             // Only after the commit: the saved values become the baseline. No user code runs here.
             foreach (var (tracked, values) in pending)
+            {
                 tracked.Snapshot = values;
+                if (tracked.PendingDelete)
+                    map.Remove((tracked.Info.Metadata.ClrName, tracked.Key)); // a later Get reads the row and finds it hidden
+            }
             added.Clear();
         }
         catch
@@ -202,7 +233,7 @@ internal sealed class SpoObjectSpace(SpoModel model, ISpoConnection connection) 
     private static bool Changed(EntityInfo info, object?[] snapshot, object?[] current)
     {
         for (var i = 0; i < current.Length; i++)
-            if (i != info.IdColumn && !EntityInfo.SameValue(current[i], snapshot[i]))
+            if (i != info.IdColumn && !info.SameValue(i, current[i], snapshot[i]))
                 return true;
         return false;
     }

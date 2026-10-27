@@ -88,4 +88,7 @@
   <data name="ObjectSpaceKeyChanged" xml:space="preserve">
     <value>Ključ praćenog '{0}' promijenjen je nakon dodavanja ili učitavanja. Ništa nije spremljeno; vratite ključ.</value>
   </data>
+  <data name="ObjectSpaceNotTracked" xml:space="preserve">
+    <value>Ovaj '{0}' ObjectSpace ne prati; brisati se mogu samo entiteti dodani ili učitani ovdje.</value>
+  </data>
 </root>
