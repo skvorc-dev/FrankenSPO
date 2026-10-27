@@ -12,6 +12,8 @@ C# / .NET 10, source-generated metadata, provider-neutral ObjectSpace/UnitOfWork
 
 ## Development
 
+Foundation (P0) complete; the SQLite proof of concept (P1) is in development.
+
 Read [architecture](docs/architecture/OVERVIEW.md), [roadmap](docs/ROADMAP.md), [developer workflow](docs/DEVELOPMENT_WORKFLOW.md), [agent guidance](AGENTS.md) and [current issues](https://github.com/skvorc-dev/FrankenSPO/issues). CI builds and tests the committed .NET 10 solution. See [foundation task](docs/FOUNDATION_0001.md) for current scope and limitations.
 
 ## Companion projects
