@@ -43,12 +43,12 @@ Milestone **P0 — Foundation**. Gate: clean baseline, green CI on three OSes, p
 - Acceptance: see issue #15.
 
 ### F-06 · Protect `main`
-- Issue: #15 · Size: S · Status: In Progress (main agent)
+- Issue: #15 · Size: S · Status: Done (ruleset "Protect main", 2026-10-27)
 - Goal: ruleset per D-08 once CI is green.
 - Acceptance:
-  - [ ] Ruleset active: no deletion, no force push, PR required, required checks `docs` and `dotnet (*)`
-  - [ ] Owner and main agent can still squash-merge a green PR
+  - [x] Ruleset active: no deletion, no force push, PR required (0 approvals, squash only), required checks `docs` and `dotnet (ubuntu|windows|macos-latest)`, no bypass
+  - [x] Owner and main agent can still squash-merge a green PR (checked with PR #16)
 
 ### F-07 · Merge Dependabot Action bumps
 - Issue: #4 · Size: S · Status: In Progress (main agent)
-- Goal: PRs #9–#13 merged once green on current `main`.
+- Goal: PRs #9–#13 merged once green on current `main`. #9, #10, #12, #13 merged; Pages deploy verified with the v5 actions.
