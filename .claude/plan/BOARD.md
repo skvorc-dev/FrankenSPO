@@ -7,6 +7,7 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | Agent | Branch | Since |
 |------|-------|-------|--------|-------|
+| S-01 Generator: entity declaration and stable metadata IDs | #5 | sonnet-2 | `task/Sonnet_S-01_<yyyyMMddTHHmm>` | 2026-10-27 |
 
 ## Review
 
@@ -17,7 +18,6 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | Size |
 |------|-------|------|
-| S-01 Generator: entity declaration and stable metadata IDs (P1) | #5 | M |
 
 ## Done (this phase)
 

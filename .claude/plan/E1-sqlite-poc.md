@@ -4,7 +4,7 @@ Milestone **P1 — SQLite PoC**. Contract: `docs/POC_ACCEPTANCE.md`, `docs/archi
 the main agent completes each card (files, exact acceptance) before moving it to `Ready`.
 
 ### S-01 · Generator: entity declaration and stable metadata IDs
-- Issue: #5 · Size: M · Status: Ready
+- Issue: #5 · Size: M · Status: In Progress (sonnet-2)
 - Goal: a class declared per D-37 compiles to generated, reflection-free metadata with its stable entity ID and
   property numbers; invalid declarations fail the build with clear diagnostics.
 - Acceptance:
