@@ -5,6 +5,10 @@
     <Project Path="src/Sferix.SPO.Generators/Sferix.SPO.Generators.csproj" />
     <Project Path="src/Sferix.SPO.Provider.SQLite/Sferix.SPO.Provider.SQLite.csproj" />
   </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/SpoExample.Module/SpoExample.Module.csproj" />
+    <Project Path="samples/SpoExample.Console/SpoExample.Console.csproj" />
+  </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Sferix.SPO.Tests.Unit/Sferix.SPO.Tests.Unit.csproj" />
     <Project Path="tests/Sferix.SPO.Tests.SQLite/Sferix.SPO.Tests.SQLite.csproj" />

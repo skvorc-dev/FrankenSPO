@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Sferix.SPO.Abstractions/Sferix.SPO.Abstractions.csproj" />
+    <ProjectReference Include="../../src/Sferix.SPO.Generators/Sferix.SPO.Generators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../src/Sferix.SPO.Core/Sferix.SPO.Core.csproj" />
+    <ProjectReference Include="../../src/Sferix.SPO.Provider.SQLite/Sferix.SPO.Provider.SQLite.csproj" />
+    <ProjectReference Include="../SpoExample.Module/SpoExample.Module.csproj" />
+  </ItemGroup>
+</Project>
