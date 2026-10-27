@@ -18,6 +18,8 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
     private const string EntityAttribute = "Sferix.SPO.Abstractions.Metadata.SpoEntityAttribute";
     private const string FieldAttribute = "Sferix.SPO.Abstractions.Metadata.SpoFieldAttribute";
     internal const string TrackingName = "SpoEntities";
+    private const string BaseObject = "Sferix.SPO.Abstractions.Entities.SPOBaseObject";
+    private const int ReservedFieldNumbers = 1000000;
     private const string MetadataNamespace = "global::Sferix.SPO.Abstractions.Metadata";
 
     /// <inheritdoc />
@@ -55,6 +57,14 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
             return Rejected(symbol, displayName, classLocation, diagnostics);
         }
 
+        var baseType = symbol.BaseType;
+        var derivesFromBaseObject = baseType?.ToDisplayString() == BaseObject;
+        if (!derivesFromBaseObject && baseType?.SpecialType != SpecialType.System_Object)
+        {
+            diagnostics.Add(new(Diagnostics.UnsupportedBaseClass, classLocation, Args(displayName, baseType?.ToDisplayString() ?? string.Empty)));
+            return Rejected(symbol, displayName, classLocation, diagnostics);
+        }
+
         if (!IsPartialChain(symbol, declaration))
             diagnostics.Add(new(Diagnostics.NotPartial, classLocation, Args(displayName)));
 
@@ -72,9 +82,16 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
                 Args(displayName)));
         }
 
-        var properties = new List<PropertyModel>();
+        var ownProperties = new List<PropertyModel>();
+        var inheritedProperties = new List<PropertyModel>();
         var usedNumbers = new HashSet<int>();
-        foreach (var member in symbol.GetMembers())
+        if (derivesFromBaseObject)
+            CollectProperties(baseType!, false, inheritedProperties);
+        CollectProperties(symbol, true, ownProperties);
+
+        void CollectProperties(INamedTypeSymbol type, bool own, List<PropertyModel> into)
+        {
+        foreach (var member in type.GetMembers())
         {
             ct.ThrowIfCancellationRequested();
             if (member is not IPropertySymbol { IsStatic: false, IsIndexer: false } property)
@@ -83,7 +100,7 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
             if (field is null)
                 continue;
 
-            var location = property.Locations.Length > 0 ? LocationInfo.From(property.Locations[0]) : classLocation;
+            var location = own && property.Locations.Length > 0 ? LocationInfo.From(property.Locations[0]) : classLocation;
             var number = field.ConstructorArguments.Length > 0 && field.ConstructorArguments[0].Value is int n ? n : 0;
             var valid = true;
 
@@ -97,8 +114,14 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
                 diagnostics.Add(new(Diagnostics.InvalidFieldNumber, location, Args(property.Name, number.ToString(), "Duplicate")));
                 valid = false;
             }
+            else if (own && number >= ReservedFieldNumbers)
+            {
+                diagnostics.Add(new(Diagnostics.ReservedFieldNumber, location, Args(property.Name, number.ToString())));
+                valid = false;
+            }
 
-            if (property.GetMethod is null || property.SetMethod is null)
+            // An init-only setter cannot be called from the generated SetValue delegate.
+            if (property.GetMethod is null || property.SetMethod is null || property.SetMethod.IsInitOnly)
             {
                 diagnostics.Add(new(Diagnostics.MissingAccessor, location, Args(property.Name)));
                 valid = false;
@@ -116,8 +139,12 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
             }
 
             if (valid)
-                properties.Add(new(number, property.Name, typeExpression, nullable, enumUnderlying));
+                into.Add(new(number, property.Name, typeExpression, nullable, enumUnderlying));
         }
+        }
+
+        var properties = inheritedProperties.OrderBy(p => p.Number).Concat(ownProperties.OrderBy(p => p.Number)).ToList();
+        var canCreate = !symbol.IsAbstract && symbol.InstanceConstructors.Any(c => c.Parameters.Length == 0);
 
         var containers = new List<ContainerInfo>();
         for (var container = symbol.ContainingType; container is not null; container = container.ContainingType)
@@ -130,8 +157,9 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
             displayName,
             id,
             classLocation,
-            new(properties.OrderBy(p => p.Number).ToImmutableArray()),
-            new(diagnostics.ToImmutableArray()));
+            new(properties.ToImmutableArray()),
+            new(diagnostics.ToImmutableArray()),
+            canCreate);
     }
 
     private static EntityModel Rejected(
@@ -274,9 +302,14 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
             sb.Append("            new ").Append(MetadataNamespace).Append(".PropertyMetadata(")
               .Append(p.Number).Append(", ").Append(SymbolDisplay.FormatLiteral(p.Name, quote: true))
               .Append(", typeof(").Append(p.ClrTypeExpression).Append("), ").Append(p.IsNullable ? "true" : "false")
-              .Append(", ").Append(p.EnumUnderlyingTypeExpression is null ? "null" : "typeof(" + p.EnumUnderlyingTypeExpression + ")").AppendLine("),");
+              .Append(", ").Append(p.EnumUnderlyingTypeExpression is null ? "null" : "typeof(" + p.EnumUnderlyingTypeExpression + ")").AppendLine(",");
+            var storedType = p.ClrTypeExpression + (p.IsNullable ? "?" : string.Empty);
+            var suppress = p.IsNullable ? string.Empty : "!";
+            sb.Append("                static o => (object?)((").Append(model.Name).Append(")o).").Append(p.Name).AppendLine(",");
+            sb.Append("                static (o, v) => ((").Append(model.Name).Append(")o).").Append(p.Name)
+              .Append(" = (").Append(storedType).Append(")v").Append(suppress).AppendLine("),");
         }
-        sb.AppendLine("        });");
+        sb.Append("        }, ").Append(model.CanCreateInstance ? "static () => new " + model.Name + "()" : "null").AppendLine(");");
         sb.AppendLine("}");
 
         foreach (var _ in model.Containers.Items)

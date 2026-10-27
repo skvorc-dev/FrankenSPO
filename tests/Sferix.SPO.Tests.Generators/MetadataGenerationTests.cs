@@ -1,3 +1,4 @@
+using Microsoft.CodeAnalysis;
 using Xunit;
 using System.Reflection;
 using Sferix.SPO.Abstractions.Metadata;
@@ -19,7 +20,7 @@ public sealed class MetadataGenerationTests
             [SpoField(2)] public int? Age { get; set; }
             [SpoField(3)] public Tier Level { get; set; }
             [SpoField(4)] public byte[]? Photo { get; set; }
-            [SpoField(5)] public System.DateTimeOffset Created { get; init; }
+            [SpoField(5)] public System.DateTimeOffset Created { get; set; }
             public string NotPersistent { get; set; } = "";
         }
         public static class Probe { public static EntityMetadata Get() => Customer.SpoMetadata; }
@@ -116,6 +117,92 @@ public sealed class MetadataGenerationTests
         Assert.Equal(typeof(int), properties[1].EnumUnderlyingType);
         Assert.Equal(typeof(long), properties[2].EnumUnderlyingType);
         Assert.Null(properties[3].EnumUnderlyingType);
+    }
+
+    [Fact]
+    public void BaseObjectFieldsComeFirstAndAccessorsRoundTripEveryType()
+    {
+        const string source = $$"""
+            using Sferix.SPO.Abstractions.Metadata;
+            using Sferix.SPO.Abstractions.Entities;
+            namespace Shop.Model;
+            public enum Small : byte { A, B }
+            public enum Wide : long { A, B }
+            [SpoEntity("{{EntityId}}")]
+            public partial class Item : SPOBaseObject
+            {
+                [SpoField(1)] public bool Flag { get; set; }
+                [SpoField(2)] public int Count { get; set; }
+                [SpoField(3)] public long Big { get; set; }
+                [SpoField(4)] public decimal Price { get; set; }
+                [SpoField(5)] public double Ratio { get; set; }
+                [SpoField(6)] public string Title { get; set; } = "";
+                [SpoField(7)] public string? Note { get; set; }
+                [SpoField(8)] public System.Guid Key { get; set; }
+                [SpoField(9)] public System.DateTime When { get; set; }
+                [SpoField(10)] public System.DateTimeOffset Offset { get; set; }
+                [SpoField(11)] public byte[] Blob { get; set; } = [];
+                [SpoField(12)] public int? MaybeInt { get; set; }
+                [SpoField(13)] public Small Size { get; set; }
+                [SpoField(14)] public Wide? MaybeWide { get; set; }
+            }
+            public static class Probe { public static EntityMetadata Get() => Item.SpoMetadata; }
+            """;
+        var run = GeneratorHarness.Run(source);
+        Assert.Empty(run.GeneratorDiagnostics);
+        Assert.Empty(run.CompilationErrors);
+        Assert.DoesNotContain(run.Output.GetDiagnostics(), d => d.Severity >= DiagnosticSeverity.Warning && d.Id.StartsWith("CS", StringComparison.Ordinal));
+
+        var metadata = Probe(run);
+        var numbers = metadata.Properties.Select(p => p.Number).ToArray();
+        Assert.Equal([1000001, 1000002, 1000003, 1000004, 1000005, 1000006], numbers.Take(6));
+        Assert.Equal(["Id", "CreatedAt", "ModifiedAt", "IsDeleted", "DeletedAt", "Version"], metadata.Properties.Take(6).Select(p => p.ClrName));
+        Assert.Equal(Enumerable.Range(1, 14), numbers.Skip(6));
+
+        var item = metadata.CreateInstance!();
+        var values = new Dictionary<string, object?>
+        {
+            ["Flag"] = true, ["Count"] = 7, ["Big"] = 1L << 40, ["Price"] = 12.5m, ["Ratio"] = 0.25, ["Title"] = "t",
+            ["Note"] = "n", ["Key"] = Guid.NewGuid(), ["When"] = new DateTime(2026, 1, 2, 3, 4, 5, DateTimeKind.Utc),
+            ["Offset"] = new DateTimeOffset(2026, 1, 2, 3, 4, 5, TimeSpan.FromHours(2)), ["Blob"] = new byte[] { 1, 2 },
+            ["MaybeInt"] = 5, ["Size"] = Enum.ToObject(item.GetType().Assembly.GetType("Shop.Model.Small")!, 1),
+            ["MaybeWide"] = Enum.ToObject(item.GetType().Assembly.GetType("Shop.Model.Wide")!, 1L),
+            ["Id"] = Guid.NewGuid(), ["CreatedAt"] = new DateTime(2026, 5, 6, 0, 0, 0, DateTimeKind.Utc),
+            ["IsDeleted"] = true, ["DeletedAt"] = new DateTime(2026, 6, 7, 0, 0, 0, DateTimeKind.Utc), ["Version"] = 3L,
+        };
+        foreach (var property in metadata.Properties.Where(p => values.ContainsKey(p.ClrName)))
+        {
+            property.SetValue!(item, values[property.ClrName]);
+            Assert.Equal(values[property.ClrName], property.GetValue!(item));
+        }
+
+        var maybeInt = metadata.Properties.Single(p => p.ClrName == "MaybeInt");
+        maybeInt.SetValue!(item, null);
+        Assert.Null(maybeInt.GetValue!(item));
+        var note = metadata.Properties.Single(p => p.ClrName == "Note");
+        note.SetValue!(item, null);
+        Assert.Null(note.GetValue!(item));
+        var deleted = metadata.Properties.Single(p => p.ClrName == "DeletedAt");
+        deleted.SetValue!(item, null);
+        Assert.Null(deleted.GetValue!(item));
+        Assert.Same(item.GetType(), metadata.CreateInstance!().GetType());
+        Assert.NotSame(item, metadata.CreateInstance!());
+    }
+
+    [Fact]
+    public void AbstractEntityHasNoFactory()
+    {
+        const string source = $$"""
+            using Sferix.SPO.Abstractions.Metadata;
+            namespace Shop.Model;
+            [SpoEntity("{{EntityId}}")]
+            public abstract partial class Shape { [SpoField(1)] public int Sides { get; set; } }
+            public static class Probe { public static EntityMetadata Get() => Shape.SpoMetadata; }
+            """;
+        var run = GeneratorHarness.Run(source);
+        Assert.Empty(run.GeneratorDiagnostics);
+        Assert.Empty(run.CompilationErrors);
+        Assert.Null(Probe(run).CreateInstance);
     }
 
     private static EntityMetadata Probe(GeneratorRun run)

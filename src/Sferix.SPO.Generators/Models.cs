@@ -29,7 +29,8 @@ internal sealed record EntityModel(
     Guid? Id,
     LocationInfo ClassLocation,
     EquatableArray<PropertyModel> Properties,
-    EquatableArray<DiagnosticInfo> Diagnostics);
+    EquatableArray<DiagnosticInfo> Diagnostics,
+    bool CanCreateInstance = false);
 
 /// <summary>An array with value equality, so incremental pipeline steps can be cached.</summary>
 internal readonly struct EquatableArray<T>(ImmutableArray<T> items) : IEquatable<EquatableArray<T>>

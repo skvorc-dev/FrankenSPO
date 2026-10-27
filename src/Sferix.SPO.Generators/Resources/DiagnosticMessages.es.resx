@@ -98,7 +98,7 @@
     <value>La propiedad persistente necesita getter y setter</value>
   </data>
   <data name="SPO0006_Message" xml:space="preserve">
-    <value>La propiedad '{0}' tiene [SpoField] pero le falta un getter o un setter</value>
+    <value>La propiedad '{0}' tiene [SpoField] pero le falta un getter o un setter, o su setter es solo init</value>
   </data>
   <data name="SPO0007_Title" xml:space="preserve">
     <value>Entidad genérica no admitida</value>
@@ -117,5 +117,17 @@
   </data>
   <data name="SPO0009_Message" xml:space="preserve">
     <value>La propiedad '{0}' es una enumeración con tipo subyacente 'ulong', que no cabe en una columna de 64 bits con signo</value>
+  </data>
+  <data name="SPO0010_Title" xml:space="preserve">
+    <value>Clase base de entidad no admitida</value>
+  </data>
+  <data name="SPO0010_Message" xml:space="preserve">
+    <value>La entidad '{0}' deriva de '{1}'; una entidad solo puede derivar de 'object' o 'SPOBaseObject'</value>
+  </data>
+  <data name="SPO0011_Title" xml:space="preserve">
+    <value>Número de campo reservado para el framework</value>
+  </data>
+  <data name="SPO0011_Message" xml:space="preserve">
+    <value>La propiedad '{0}' tiene [SpoField({1})]: los números desde 1000000 están reservados para el framework</value>
   </data>
 </root>

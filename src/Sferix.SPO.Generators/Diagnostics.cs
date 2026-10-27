@@ -25,6 +25,10 @@ internal static class Diagnostics
 
     public static readonly DiagnosticDescriptor UnsupportedEnumUnderlyingType = Error("SPO0009");
 
+    public static readonly DiagnosticDescriptor UnsupportedBaseClass = Error("SPO0010");
+
+    public static readonly DiagnosticDescriptor ReservedFieldNumber = Error("SPO0011");
+
     private static DiagnosticDescriptor Error(string id) =>
         new(id, DiagnosticMessages.Localizable(id + "_Title"), DiagnosticMessages.Localizable(id + "_Message"),
             Category, DiagnosticSeverity.Error, isEnabledByDefault: true);

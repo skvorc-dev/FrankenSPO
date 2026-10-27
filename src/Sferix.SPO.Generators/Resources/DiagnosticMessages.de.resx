@@ -98,7 +98,7 @@
     <value>Persistente Eigenschaft benötigt Getter und Setter</value>
   </data>
   <data name="SPO0006_Message" xml:space="preserve">
-    <value>Die Eigenschaft '{0}' hat [SpoField], aber es fehlt ein Getter oder ein Setter</value>
+    <value>Die Eigenschaft '{0}' hat [SpoField], aber es fehlt ein Getter oder ein Setter, oder der Setter ist nur für die Initialisierung (init)</value>
   </data>
   <data name="SPO0007_Title" xml:space="preserve">
     <value>Generische Entität nicht unterstützt</value>
@@ -117,5 +117,17 @@
   </data>
   <data name="SPO0009_Message" xml:space="preserve">
     <value>Die Eigenschaft '{0}' ist ein Enum mit dem zugrunde liegenden Typ 'ulong', der nicht in eine vorzeichenbehaftete 64-Bit-Spalte passt</value>
+  </data>
+  <data name="SPO0010_Title" xml:space="preserve">
+    <value>Nicht unterstützte Basisklasse der Entität</value>
+  </data>
+  <data name="SPO0010_Message" xml:space="preserve">
+    <value>Die Entität '{0}' erbt von '{1}'; eine Entität darf nur von 'object' oder 'SPOBaseObject' erben</value>
+  </data>
+  <data name="SPO0011_Title" xml:space="preserve">
+    <value>Feldnummer für das Framework reserviert</value>
+  </data>
+  <data name="SPO0011_Message" xml:space="preserve">
+    <value>Die Eigenschaft '{0}' hat [SpoField({1})]: Nummern ab 1000000 sind für das Framework reserviert</value>
   </data>
 </root>

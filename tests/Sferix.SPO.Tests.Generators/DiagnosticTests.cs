@@ -169,4 +169,44 @@ public sealed class DiagnosticTests
         Assert.Equal(["SPO0009"], run.GeneratorDiagnosticIds);
         Assert.Empty(run.GeneratedTrees);
     }
+
+    [Fact]
+    public void InitOnlyFieldPropertyIsReported()
+    {
+        var run = Run($"[SpoEntity(\"{Id1}\")] public partial class C {{ [SpoField(1)] public int X {{ get; init; }} }}");
+        Assert.Equal(["SPO0006"], run.GeneratorDiagnosticIds);
+    }
+
+    [Fact]
+    public void OtherBaseClassIsReported()
+    {
+        var run = Run($"public class Other {{ }} [SpoEntity(\"{Id1}\")] public partial class C : Other {{ }}");
+        Assert.Equal(["SPO0010"], run.GeneratorDiagnosticIds);
+        Assert.Empty(run.GeneratedTrees);
+    }
+
+    [Fact]
+    public void BaseObjectAndObjectAreAccepted()
+    {
+        var run = Run($"[SpoEntity(\"{Id1}\")] public partial class A : Sferix.SPO.Abstractions.Entities.SPOBaseObject {{ }} [SpoEntity(\"{Id2}\")] public partial class B {{ }}");
+        Assert.Empty(run.GeneratorDiagnostics);
+    }
+
+    [Theory]
+    [InlineData(1000000)]
+    [InlineData(1000001)]
+    [InlineData(2000000)]
+    public void FieldNumberFromOneMillionUpIsReserved(int number)
+    {
+        var run = Run($"[SpoEntity(\"{Id1}\")] public partial class C {{ [SpoField({number})] public int X {{ get; set; }} }}");
+        Assert.Equal(["SPO0011"], run.GeneratorDiagnosticIds);
+        Assert.Empty(run.GeneratedTrees);
+    }
+
+    [Fact]
+    public void LargestAllowedFieldNumberIsAccepted()
+    {
+        var run = Run($"[SpoEntity(\"{Id1}\")] public partial class C {{ [SpoField(999999)] public int X {{ get; set; }} }}");
+        Assert.Empty(run.GeneratorDiagnostics);
+    }
 }
