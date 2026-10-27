@@ -74,7 +74,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
   here is the one later cards copy; keep it small (one `.resx` per assembly, no localization framework).
 
 ### S-02b · Neutral schema model, SQLite DDL, create and reopen
-- Issue: #5 · Size: M · Status: In Progress (sonnet-2)
+- Issue: #5 · Size: M · Status: Done (PR #69, sonnet-2)
 - Goal: create and reopen a SQLite database with deterministic first-time schema and validation against the model.
 - Acceptance:
   - [ ] `Sferix.SPO.Abstractions/Schema`: immutable `SchemaModel` (tables, columns, optional primary-key columns)
@@ -97,7 +97,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Notes: D-32 (63-character identifiers), D-34.
 
 ### S-03a · `SPOBaseObject`, inherited fields and generated accessors
-- Issue: #5 · Size: M · Status: Ready · after S-02b
+- Issue: #5 · Size: M · Status: In Progress (sonnet-2)
 - Goal: entities derive from `SPOBaseObject`, the generator includes its fields, and generated metadata can create
   instances and read/write every property without reflection (D-35, D-37, D-43).
 - Acceptance:
@@ -120,7 +120,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Notes: D-35, D-37, D-42, D-43.
 
 ### S-03b · Modules and public model activation
-- Issue: #5 · Size: S · Status: Ready · after S-02b
+- Issue: #5 · Size: S · Status: Done (PR #71, haiku-2)
 - Goal: an application registers its entity modules and activates the model through a small public API (D-36, D-43).
 - Acceptance:
   - [ ] `Sferix.SPO.Abstractions/Modules/ISpoModule.cs`: `IEnumerable<EntityMetadata> Entities { get; }`
@@ -216,7 +216,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
   `src/Sferix.SPO.Provider.SQLite/**`, `tests/Sferix.SPO.Tests.{Generators,SQLite}/**`.
 
 ### S-14 · Localization audit
-- Issue: #5 · Size: S · Status: Backlog · after S-03a and S-03b
+- Issue: #5 · Size: S · Status: Backlog · after S-03a
 - Goal: a check that no user-visible string escaped the four-language rule (D-41).
 - Acceptance:
   - [ ] Search `src/**` for string literals in `throw`, `Exception(` and `DiagnosticDescriptor` calls and in console or
@@ -225,12 +225,15 @@ the main agent completes each card (files, exact acceptance) before moving it to
   - [ ] `scripts/validate_repository.py` also fails when a culture value's `{n}` placeholders differ from the neutral's
   - [ ] `EntityId`'s constructor message moves to `AbstractionsMessages` (four languages)
   - [ ] `docs/error-codes.md` lists `SPO1001`… with exception type and meaning (D-42)
+  - [ ] The codes `SPO1005`/`SPO1006` (today constants in `SchemaBuilder`) move to `SpoModelException` and its XML
+        docs list them; `SchemaBuilder` uses those constants
   - [ ] `<NeutralResourcesLanguage>`/`<NeutralLanguage>en</NeutralLanguage>` set once in `Directory.Build.props`, so
         English is served from the main assembly without probing for an `en` satellite
   - [ ] Findings that need code changes outside resources: listed in the PR for the main agent, not fixed
   - [ ] `python3 scripts/validate_repository.py` passes; build 0 warnings; CI green
 - Files: `src/**/Resources/**`, `src/Sferix.SPO.Abstractions/Metadata/EntityId.cs`, `scripts/validate_repository.py`,
-  `Directory.Build.props`, `docs/error-codes.md`
+  `Directory.Build.props`, `docs/error-codes.md`, `src/Sferix.SPO.Core/Model/SpoModelException.cs`,
+  `src/Sferix.SPO.Core/Schema/SchemaBuilder.cs`
 - Notes: D-40, D-41. Each card localizes its own strings; this card only catches what was missed.
 
 ### S-07 · SQL injection regression suite
