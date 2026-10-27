@@ -25,4 +25,38 @@ for doc in sorted(architecture.glob("*.md")):
         raise SystemExit(f"{doc.relative_to(root)}: missing '**Status: specified, not implemented.**' in its first 5 lines")
     if f"]({doc.name})" not in overview and f"](./{doc.name})" not in overview:
         raise SystemExit(f"{doc.relative_to(root)}: not linked from docs/architecture/OVERVIEW.md")
+import xml.etree.ElementTree as ET
+
+# Every neutral .resx needs the same keys, with a non-empty value, in de, hr and es (D-41).
+translations = ("de", "hr", "es")
+
+
+def resource_keys(path):
+    values = {}
+    for data in ET.parse(path).getroot().iter("data"):
+        values[data.get("name")] = (data.findtext("value") or "").strip()
+    return values
+
+
+for neutral in sorted((root / "src").rglob("*.resx")):
+    if neutral.name.count(".") != 1:
+        continue
+    expected = resource_keys(neutral)
+    for key, value in expected.items():
+        if not value:
+            raise SystemExit(f"{neutral.relative_to(root)}: neutral value for '{key}' is empty")
+    for language in translations:
+        culture = neutral.with_name(neutral.name.replace(".resx", f".{language}.resx"))
+        if not culture.is_file():
+            raise SystemExit(f"{neutral.relative_to(root)}: missing {culture.name}")
+        actual = resource_keys(culture)
+        for key in expected:
+            if key not in actual:
+                raise SystemExit(f"{culture.relative_to(root)}: missing key '{key}'")
+            if not actual[key]:
+                raise SystemExit(f"{culture.relative_to(root)}: empty value for key '{key}'")
+        for key in actual:
+            if key not in expected:
+                raise SystemExit(f"{culture.relative_to(root)}: key '{key}' is not in {neutral.name}")
+
 print("FrankenSPO repository validation passed")

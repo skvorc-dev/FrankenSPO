@@ -11,3 +11,7 @@ FrankenSPO is in initial development.
   manifest alongside code changes.
 - Respect MIT and record third-party dependency and source provenance in `THIRD-PARTY-NOTICES.md`.
 - Do not submit private data, secret material or proprietary framework implementation code.
+- **Four languages:** every user-visible string lives in a `.resx` resource in four languages: `X.resx` (English, neutral),
+  `X.de.resx`, `X.hr.resx` and `X.es.resx`, with the same keys and no empty values (D-40, D-41).
+- **Checked in CI:** `scripts/validate_repository.py` fails when a language file or key is missing; keep placeholders such as `{0}` identical in every language.
+- Messages never contain SQL text or values.
