@@ -139,7 +139,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Notes: D-33, D-39. Does not touch the files of S-02b.
 
 ### S-12 · Generator diagnostics from resources
-- Issue: #5 · Size: S · Status: Backlog · after S-02
+- Issue: #5 · Size: S · Status: Ready (sonnet-2, after S-01b)
 - Goal: all generator diagnostic titles and messages come from `.resx` in en, de, hr, es (D-40, D-41), IDs unchanged.
 - Acceptance:
   - [ ] `Diagnostics.cs` uses `LocalizableResourceString` for title and message of every `SPO0001`… descriptor
@@ -150,7 +150,8 @@ the main agent completes each card (files, exact acceptance) before moving it to
   - [ ] Build 0 warnings (RS1xxx analyzer rules included); CI green
 - Files: `src/Sferix.SPO.Generators/**`, `tests/Sferix.SPO.Tests.Generators/**`
 - Not in scope: language packages (P2 or later).
-- Notes: D-40, D-41, the pattern from S-13. Not in parallel with another card that touches the generator.
+- Notes: D-40, D-41. Done by the worker that owns the generator (sonnet-2), before S-02, so S-02's SPO0009 is
+  added in resources directly. Not in parallel with another card that touches the generator.
 
 ### S-13 · Localization baseline: four languages and a CI check
 - Issue: #5 · Size: S · Status: In Progress (haiku-2)
@@ -171,6 +172,18 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Notes: D-40, D-41. Runs in parallel with sonnet-2 (S-01b, S-02): do not touch `src/Sferix.SPO.Generators/**`,
   `src/Sferix.SPO.Abstractions/**`, `src/Sferix.SPO.Core/Model/**`, any `*.csproj` or `FrankenSPO.slnx`,
   `src/Sferix.SPO.Provider.SQLite/**`, `tests/Sferix.SPO.Tests.{Generators,SQLite}/**`.
+
+### S-14 · Localization audit
+- Issue: #5 · Size: S · Status: Backlog · after S-02b and S-11
+- Goal: a check that no user-visible string escaped the four-language rule (D-41).
+- Acceptance:
+  - [ ] Search `src/**` for string literals in `throw`, `Exception(` and `DiagnosticDescriptor` calls and in console or
+        log output; each one is either a resource or listed with a reason (e.g. parameter names)
+  - [ ] Read the de, hr, es texts against en: same meaning, same placeholders, consistent terms; fix wording
+  - [ ] Findings that need code changes outside resources: listed in the PR for the main agent, not fixed
+  - [ ] `python3 scripts/validate_repository.py` passes; build 0 warnings; CI green
+- Files: `src/**/Resources/**`
+- Notes: D-40, D-41. Each card localizes its own strings; this card only catches what was missed.
 
 ### S-07 · SQL injection regression suite
 - Issue: #6 · Size: M · Status: Backlog · after S-05
