@@ -9,13 +9,19 @@ public sealed class LocalizationTests
     private const string Source =
         "using Sferix.SPO.Abstractions.Metadata;\n[SpoEntity(\"3f2504e0-4f89-11d3-9a0c-0305e82c3301\")] public class Customer { }";
 
-    private static string MessageIn(string culture)
+    private const string AbstractSource =
+        "using Sferix.SPO.Abstractions.Metadata;\n[SpoEntity(\"3f2504e0-4f89-11d3-9a0c-0305e82c3301\")] public abstract partial class Shape { }";
+
+    private const string InitOnlySource =
+        "using Sferix.SPO.Abstractions.Metadata;\n[SpoEntity(\"3f2504e0-4f89-11d3-9a0c-0305e82c3301\")] public partial class C { [SpoField(1)] public int X { get; init; } }";
+
+    private static string MessageIn(string culture, string source = Source)
     {
         var previous = CultureInfo.CurrentUICulture;
         try
         {
             CultureInfo.CurrentUICulture = new CultureInfo(culture);
-            return Assert.Single(GeneratorHarness.Run(Source).GeneratorDiagnostics).GetMessage();
+            return Assert.Single(GeneratorHarness.Run(source).GeneratorDiagnostics).GetMessage();
         }
         finally
         {
@@ -33,6 +39,21 @@ public sealed class LocalizationTests
     [InlineData("es", "deben declararse como 'partial'")]
     public void SupportedCultureReportsTranslatedText(string culture, string expected) =>
         Assert.Contains(expected, MessageIn(culture));
+
+    [Theory]
+    [InlineData("de", "abstrakte")]
+    [InlineData("hr", "apstraktna")]
+    [InlineData("es", "abstracta")]
+    public void AbstractEntityMessageIsTranslated(string culture, string expected) =>
+        Assert.Contains(expected, MessageIn(culture, AbstractSource));
+
+    [Theory]
+    [InlineData("en", "init-only")]
+    [InlineData("de", "init")]
+    [InlineData("hr", "init")]
+    [InlineData("es", "init")]
+    public void MissingAccessorMessageNamesInitOnlySetter(string culture, string expected) =>
+        Assert.Contains(expected, MessageIn(culture, InitOnlySource));
 
     [Fact]
     public void FieldNumberReasonIsTranslated()

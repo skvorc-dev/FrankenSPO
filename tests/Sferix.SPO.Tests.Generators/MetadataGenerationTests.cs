@@ -189,22 +189,6 @@ public sealed class MetadataGenerationTests
         Assert.NotSame(item, metadata.CreateInstance!());
     }
 
-    [Fact]
-    public void AbstractEntityHasNoFactory()
-    {
-        const string source = $$"""
-            using Sferix.SPO.Abstractions.Metadata;
-            namespace Shop.Model;
-            [SpoEntity("{{EntityId}}")]
-            public abstract partial class Shape { [SpoField(1)] public int Sides { get; set; } }
-            public static class Probe { public static EntityMetadata Get() => Shape.SpoMetadata; }
-            """;
-        var run = GeneratorHarness.Run(source);
-        Assert.Empty(run.GeneratorDiagnostics);
-        Assert.Empty(run.CompilationErrors);
-        Assert.Null(Probe(run).CreateInstance);
-    }
-
     private static EntityMetadata Probe(GeneratorRun run)
     {
         using var stream = new MemoryStream();

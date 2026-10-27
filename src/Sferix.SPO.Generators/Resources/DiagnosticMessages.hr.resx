@@ -130,4 +130,16 @@
   <data name="SPO0011_Message" xml:space="preserve">
     <value>Svojstvo '{0}' ima [SpoField({1})]: brojevi od 1000000 nadalje rezervirani su za okvir</value>
   </data>
+  <data name="SPO0012_Title" xml:space="preserve">
+    <value>Klasa entiteta ne smije biti apstraktna</value>
+  </data>
+  <data name="SPO0012_Message" xml:space="preserve">
+    <value>[SpoEntity] na '{0}' nije podržan: apstraktna ili statička klasa ne može biti entitet jer P1 nema preslikavanje nasljeđivanja</value>
+  </data>
+  <data name="SPO0013_Title" xml:space="preserve">
+    <value>Član entiteta skriva član osnovne klase</value>
+  </data>
+  <data name="SPO0013_Message" xml:space="preserve">
+    <value>Član '{1}' entiteta '{0}' skriva član klase SPOBaseObject; preimenujte ga ili uklonite duplikat</value>
+  </data>
 </root>

@@ -57,6 +57,13 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
             return Rejected(symbol, displayName, classLocation, diagnostics);
         }
 
+        // Abstract and static classes cannot be instantiated, and P1 has no inheritance mapping (D-35).
+        if (symbol.IsAbstract || symbol.IsStatic)
+        {
+            diagnostics.Add(new(Diagnostics.AbstractEntity, classLocation, Args(displayName)));
+            return Rejected(symbol, displayName, classLocation, diagnostics);
+        }
+
         var baseType = symbol.BaseType;
         var derivesFromBaseObject = baseType?.ToDisplayString() == BaseObject;
         if (!derivesFromBaseObject && baseType?.SpecialType != SpecialType.System_Object)
@@ -64,6 +71,11 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
             diagnostics.Add(new(Diagnostics.UnsupportedBaseClass, classLocation, Args(displayName, baseType?.ToDisplayString() ?? string.Empty)));
             return Rejected(symbol, displayName, classLocation, diagnostics);
         }
+
+        if (derivesFromBaseObject)
+            foreach (var member in OwnMembersHidingBase(symbol, baseType!))
+                diagnostics.Add(new(
+                    Diagnostics.HidesBaseMember, LocationInfo.From(member.Locations[0]), Args(displayName, member.Name)));
 
         if (!IsPartialChain(symbol, declaration))
             diagnostics.Add(new(Diagnostics.NotPartial, classLocation, Args(displayName)));
@@ -144,7 +156,7 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
         }
 
         var properties = inheritedProperties.OrderBy(p => p.Number).Concat(ownProperties.OrderBy(p => p.Number)).ToList();
-        var canCreate = !symbol.IsAbstract && symbol.InstanceConstructors.Any(c => c.Parameters.Length == 0);
+        var canCreate = symbol.InstanceConstructors.Any(c => c.Parameters.Length == 0);
 
         var containers = new List<ContainerInfo>();
         for (var container = symbol.ContainingType; container is not null; container = container.ContainingType)
@@ -165,6 +177,20 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
     private static EntityModel Rejected(
         INamedTypeSymbol symbol, string displayName, LocationInfo location, List<DiagnosticInfo> diagnostics) =>
         new(null, default, symbol.Name, displayName, null, location, default, new(diagnostics.ToImmutableArray()));
+
+    // Name-based: a same-named member hides the base member whether or not it uses `new`. Overrides and
+    // compiler-generated members do not hide, and private base members are not inherited.
+    private static IEnumerable<ISymbol> OwnMembersHidingBase(INamedTypeSymbol symbol, INamedTypeSymbol baseType)
+    {
+        var inheritedNames = new HashSet<string>(
+            baseType.GetMembers().Where(m => m.DeclaredAccessibility != Accessibility.Private && IsDataMember(m)).Select(m => m.Name));
+        return symbol.GetMembers()
+            .Where(m => IsDataMember(m) && !m.IsImplicitlyDeclared && !m.IsOverride && m.Locations.Length > 0)
+            .Where(m => inheritedNames.Contains(m.Name));
+    }
+
+    private static bool IsDataMember(ISymbol member) =>
+        member is IPropertySymbol or IFieldSymbol or IMethodSymbol { MethodKind: MethodKind.Ordinary };
 
     private static bool IsGenericChain(INamedTypeSymbol symbol)
     {

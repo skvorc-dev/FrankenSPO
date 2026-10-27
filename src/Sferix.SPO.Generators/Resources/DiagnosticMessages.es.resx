@@ -130,4 +130,16 @@
   <data name="SPO0011_Message" xml:space="preserve">
     <value>La propiedad '{0}' tiene [SpoField({1})]: los números desde 1000000 están reservados para el framework</value>
   </data>
+  <data name="SPO0012_Title" xml:space="preserve">
+    <value>La clase de entidad no debe ser abstracta</value>
+  </data>
+  <data name="SPO0012_Message" xml:space="preserve">
+    <value>[SpoEntity] en '{0}' no se admite: una clase abstracta o estática no puede ser una entidad, porque P1 no tiene mapeo de herencia</value>
+  </data>
+  <data name="SPO0013_Title" xml:space="preserve">
+    <value>Un miembro de la entidad oculta un miembro base</value>
+  </data>
+  <data name="SPO0013_Message" xml:space="preserve">
+    <value>El miembro '{1}' de la entidad '{0}' oculta un miembro de SPOBaseObject; renómbrelo o elimine el duplicado</value>
+  </data>
 </root>
