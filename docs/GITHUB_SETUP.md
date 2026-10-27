@@ -26,6 +26,6 @@ Organization Project **FrankenSPO Roadmap** (project 1) has Status and Priority 
 - Ruleset **Protect main**: no deletions and no force pushes; pull requests required (squash merge only); required status checks `docs` and `dotnet (ubuntu-latest|windows-latest|macos-latest)`.
 - CodeQL: default setup for C#.
 - Private vulnerability reporting: enabled (see [SECURITY.md](../SECURITY.md)).
-- Dependabot: version updates for GitHub Actions and NuGet, configured in `.github/dependabot.yml`.
+- Dependabot: version updates for GitHub Actions and NuGet, configured in `.github/dependabot.yml`; Dependabot alerts and the dependency graph are on (needed by the dependency review check).
 
 Publication of NuGet packages and GitHub Releases is deferred until reproducible, tested code exists.
