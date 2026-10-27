@@ -7,6 +7,7 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | Agent | Branch | Since |
 |------|-------|-------|--------|-------|
+| S-01b Generator edge cases, then S-02 (chain) | #5 | sonnet-2 | `task/Sonnet_S-01b_20261027T1152` | 2026-10-27 |
 
 ## Review
 
@@ -17,7 +18,9 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | Size |
 |------|-------|------|
-| S-01b Generator edge cases | #5 | S |
+| S-02 Provider contract, capabilities, activation (queued for sonnet-2 after S-01b) | #5 | M |
+
+Next when their dependency merges: S-02b (sonnet-2, after S-02), S-11 (Haiku worker, after S-02).
 
 ## Done (this phase)
 
