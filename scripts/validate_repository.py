@@ -8,7 +8,7 @@ if missing:
     raise SystemExit("Missing files: " + ", ".join(missing))
 capabilities = json.loads((root / "docs/compatibility/features.json").read_text(encoding="utf-8"))
 assert capabilities["schema_version"] == 1
-allowed = {"planned", "implemented", "tested", "provider-verified", "release-ready", "external-planned", "unsupported", "experimental"}
+allowed = {"planned", "specified", "implemented", "tested", "provider-verified", "release-ready", "external-planned", "unsupported", "experimental"}
 for field in ("providers", "features"):
     for name, status in capabilities[field].items():
         assert status in allowed, f"Unknown feature status: {field}.{name}={status}"
