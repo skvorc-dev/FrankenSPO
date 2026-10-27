@@ -8,6 +8,14 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 | Card | Issue | Agent | Branch | Since |
 |------|-------|-------|--------|-------|
 | S-01 Generator: entity declaration and stable metadata IDs | #5 | sonnet-2 | `task/Sonnet_S-01_<yyyyMMddTHHmm>` | 2026-10-27 |
+| F-18 | #1 | haiku-1 (chain 2, 1/8) | `task/Haiku_F-18_<yyyyMMddTHHmm>` | 2026-10-27 |
+| F-19 | #1 | haiku-1 (chain 2, 2/8) | `task/Haiku_F-19_<yyyyMMddTHHmm>` | 2026-10-27 |
+| F-20 | #15 | haiku-1 (chain 2, 3/8) | `task/Haiku_F-20_<yyyyMMddTHHmm>` | 2026-10-27 |
+| F-21 | #1 | haiku-1 (chain 2, 4/8) | `task/Haiku_F-21_<yyyyMMddTHHmm>` | 2026-10-27 |
+| F-22 | #3 | haiku-1 (chain 2, 5/8) | `task/Haiku_F-22_<yyyyMMddTHHmm>` | 2026-10-27 |
+| F-23 | #4 | haiku-1 (chain 2, 6/8) | `task/Haiku_F-23_<yyyyMMddTHHmm>` | 2026-10-27 |
+| F-24 | #4 | haiku-1 (chain 2, 7/8) | `task/Haiku_F-24_<yyyyMMddTHHmm>` | 2026-10-27 |
+| F-25 | #15 | haiku-1 (chain 2, 8/8) | `task/Haiku_F-25_<yyyyMMddTHHmm>` | 2026-10-27 |
 
 ## Review
 

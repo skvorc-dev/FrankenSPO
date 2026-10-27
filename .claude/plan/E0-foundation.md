@@ -162,3 +162,78 @@ Small, exact cards for one worker in a chain (D-17). Each card: its own branch f
   - [ ] If a test fails, do **not** change `src/`; stop and report it
   - [ ] `dotnet test` green
 - Files: `tests/Sferix.SPO.Tests.Unit/IdentifierTests.cs`
+
+## Haiku chain 2 (cards F-18 … F-25)
+
+Same rules as chain 1. These cards must not touch S-01's files (`src/`, `tests/`, `FrankenSPO.slnx`,
+`docs/compatibility/features.json`, `THIRD-PARTY-NOTICES.md`).
+
+### F-18 · Public roadmap reflects P0 done and the P1 scope
+- Issue: #1 · Size: S · Status: In Progress (haiku-1, chain 2 task 1)
+- Acceptance:
+  - [ ] `docs/ROADMAP.md`: a "State" column: P0 done (2026-10-27), P1 in progress, later phases planned
+  - [ ] Under the table, one short paragraph: P1 also includes optimistic concurrency, GroupBy/aggregates, a
+        `SPOBaseObject` base class, and policy declarations that fail closed (no policy engine yet); link
+        `.claude/docs/DECISIONS.md` (D-29…D-37) and `docs/architecture/OVERVIEW.md`
+  - [ ] No dates for future phases
+- Files: `docs/ROADMAP.md`
+
+### F-19 · README links the architecture contracts
+- Issue: #1 · Size: S · Status: In Progress (haiku-1, chain 2 task 2)
+- Acceptance:
+  - [ ] "Development" section links `docs/architecture/OVERVIEW.md` (which links the five contracts) and states
+        "Foundation (P0) complete; the SQLite proof of concept (P1) is in development"
+  - [ ] The "Early foundation" warning stays (no ORM runtime yet); nothing claims a feature works
+- Files: `README.md`
+
+### F-20 · Mark finished task documents as historical
+- Issue: #15 · Size: S · Status: In Progress (haiku-1, chain 2 task 3)
+- Acceptance:
+  - [ ] `docs/CODEX_TASK_0001.md` and `docs/FOUNDATION_0001.md` start with
+        `> **Historical:** completed during P0; current work is tracked in the roadmap and issues.`
+  - [ ] Their old "Status:" lines are kept below it unchanged; no other edits
+- Files: `docs/CODEX_TASK_0001.md`, `docs/FOUNDATION_0001.md`
+
+### F-21 · PoC acceptance lists the owner decisions
+- Issue: #1 · Size: S · Status: In Progress (haiku-1, chain 2 task 4)
+- Acceptance:
+  - [ ] New section "Decisions that refine this contract" at the end of `docs/POC_ACCEPTANCE.md`: one bullet per
+        decision D-29 … D-37 with its short title and a link to `.claude/docs/DECISIONS.md`; copy no decision text
+        beyond a title of up to 8 words
+  - [ ] Existing text unchanged
+- Files: `docs/POC_ACCEPTANCE.md`
+
+### F-22 · Validator checks the architecture docs
+- Issue: #3 · Size: S · Status: In Progress (haiku-1, chain 2 task 5)
+- Acceptance:
+  - [ ] `scripts/validate_repository.py`: every `docs/architecture/*.md` except `OVERVIEW.md` has the line
+        `**Status: specified, not implemented.**` (or a later status word) within its first 5 lines, and is linked
+        from `OVERVIEW.md`; failure messages name the file
+  - [ ] Passes on current `main`; a quick local negative test (temporarily removing a link) fails as expected,
+        then restore it and say so in the PR
+- Files: `scripts/validate_repository.py`
+
+### F-23 · CI cancels superseded runs
+- Issue: #4 · Size: S · Status: In Progress (haiku-1, chain 2 task 6)
+- Acceptance:
+  - [ ] `ci.yml` gets `concurrency: { group: ci-${{ github.ref }}, cancel-in-progress: ${{ github.event_name == 'pull_request' }} }`
+        at workflow level (runs on `main` are never cancelled)
+  - [ ] Job names unchanged (they are required checks in the ruleset)
+- Files: `.github/workflows/ci.yml`
+
+### F-24 · Dependabot groups related updates
+- Issue: #4 · Size: S · Status: In Progress (haiku-1, chain 2 task 7)
+- Acceptance:
+  - [ ] `dependabot.yml`: NuGet group `test-tools` (`xunit*`, `Microsoft.NET.Test.Sdk`); Actions group `actions`
+        (all); existing `ignore` rules kept exactly
+  - [ ] YAML valid
+- Files: `.github/dependabot.yml`
+
+### F-25 · Glossary gets the new terms
+- Issue: #15 · Size: S · Status: In Progress (haiku-1, chain 2 task 8)
+- Acceptance:
+  - [ ] Rows added to `.claude/docs/GLOSSARY.md` (this card allows that file): `SPOBaseObject`, `[SpoEntity]`,
+        `[SpoField]`, `ISpoModule` / `<Name>Module`, model activation, uncertain commit, optimistic concurrency
+        (version column); one line each, wording from DECISIONS D-29…D-37, each row naming its decision
+  - [ ] Existing rows unchanged; new rows appended at the end of the table
+- Files: `.claude/docs/GLOSSARY.md`
