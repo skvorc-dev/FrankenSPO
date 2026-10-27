@@ -33,5 +33,5 @@ internal sealed class SqliteSchemaDialect : ISpoSchemaDialect
         _ => throw new ArgumentOutOfRangeException(nameof(type)),
     };
 
-    private static string Quote(string identifier) => "\"" + new SqlIdentifier(identifier).Value + "\"";
+    internal static string Quote(string identifier) => "\"" + new SqlIdentifier(identifier).Value + "\"";
 }

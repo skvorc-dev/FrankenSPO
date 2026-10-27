@@ -70,4 +70,16 @@
   <data name="SchemaColumnDiffers" xml:space="preserve">
     <value>Baza podataka ne odgovara modelu: stupac '{1}' tablice '{0}' ima drugačiji tip ili mogućnost null vrijednosti. Ništa nije promijenjeno.</value>
   </data>
+  <data name="DateTimeNotUtc" xml:space="preserve">
+    <value>Stupac '{1}' tablice '{0}' dobio je DateTime koji nije UTC. Prije spremanja pretvorite u UTC; ništa nije zapisano.</value>
+  </data>
+  <data name="KeyColumnRequired" xml:space="preserve">
+    <value>Tablica '{0}' za ovu operaciju zahtijeva točno jedan stupac primarnog ključa.</value>
+  </data>
+  <data name="ValueCountMismatch" xml:space="preserve">
+    <value>Tablica '{0}' ima {1} stupaca, ali je predano {2} vrijednosti.</value>
+  </data>
+  <data name="UnknownColumn" xml:space="preserve">
+    <value>Tablica '{0}' nema stupac '{1}'.</value>
+  </data>
 </root>

@@ -14,6 +14,18 @@ internal static class SqliteMessages
     internal static string Mismatch(SchemaMismatchKind kind, string table, string? column) =>
         string.Format(CultureInfo.CurrentUICulture, Get("Schema" + kind), table, column);
 
+    internal static string DateTimeNotUtc(string table, string column) =>
+        string.Format(CultureInfo.CurrentUICulture, Get(nameof(DateTimeNotUtc)), table, column);
+
+    internal static string KeyColumnRequired(string table) =>
+        string.Format(CultureInfo.CurrentUICulture, Get(nameof(KeyColumnRequired)), table);
+
+    internal static string ValueCountMismatch(string table, int columns, int values) =>
+        string.Format(CultureInfo.CurrentUICulture, Get(nameof(ValueCountMismatch)), table, columns, values);
+
+    internal static string UnknownColumn(string table, string column) =>
+        string.Format(CultureInfo.CurrentUICulture, Get(nameof(UnknownColumn)), table, column);
+
     private static string Get(string name) =>
         Resources.GetString(name, CultureInfo.CurrentUICulture)
         ?? throw new InvalidOperationException($"Missing SQLite provider resource '{name}'.");

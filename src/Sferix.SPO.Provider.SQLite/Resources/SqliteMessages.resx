@@ -70,4 +70,16 @@
   <data name="SchemaColumnDiffers" xml:space="preserve">
     <value>The database does not match the model: column '{1}' of table '{0}' has a different type or nullability. Nothing was changed.</value>
   </data>
+  <data name="DateTimeNotUtc" xml:space="preserve">
+    <value>Column '{1}' of table '{0}' got a DateTime that is not UTC. Convert it to UTC before saving; nothing was written.</value>
+  </data>
+  <data name="KeyColumnRequired" xml:space="preserve">
+    <value>Table '{0}' needs exactly one primary-key column for this operation.</value>
+  </data>
+  <data name="ValueCountMismatch" xml:space="preserve">
+    <value>Table '{0}' has {1} columns but {2} values were given.</value>
+  </data>
+  <data name="UnknownColumn" xml:space="preserve">
+    <value>Table '{0}' has no column '{1}'.</value>
+  </data>
 </root>
