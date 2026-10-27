@@ -3,11 +3,11 @@
 Milestone **P0 — Foundation**. Gate: clean baseline, green CI on three OSes, public-safe docs, self-organising repo.
 
 ### F-01 · Repository policies and contributor guidance
-- Issue: #2 · Size: S · Status: Review
+- Issue: #2 · Size: S · Status: Done (#2 closed, D-15)
 - Goal: public-safe README, LICENSE, CONTRIBUTING, SECURITY, CODE_OF_CONDUCT, THIRD-PARTY-NOTICES, AGENTS.md.
 - Acceptance:
   - [x] All files exist and are checked by `scripts/validate_repository.py`
-  - [ ] Owner confirms LICENSE copyright holder and that no text reveals private details
+  - [x] Owner confirms LICENSE copyright holder and that no text reveals private details
 - Files: root `*.md`, `LICENSE`
 
 ### F-02 · Architecture contracts and capability statuses
@@ -32,7 +32,7 @@ Milestone **P0 — Foundation**. Gate: clean baseline, green CI on three OSes, p
 - Goal: dependency problems are caught in PRs, not on `main`.
 - Acceptance:
   - [ ] `.github/workflows/dependency-review.yml` runs `actions/dependency-review-action` on PRs and fails on high severity
-  - [ ] CodeQL for C# is enabled (default setup or a workflow), once owner confirms GitHub settings allow it
+  - [x] CodeQL for C# is enabled (default setup, D-16)
   - [ ] CI green
 - Files: `.github/workflows/**`
 - Notes: Dependabot for NuGet is added by F-05. D-12.

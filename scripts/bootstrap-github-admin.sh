@@ -11,7 +11,6 @@ for repo in FrankenSPO FrankenSPO.MiddleTier FrankenSPO.WebApi; do
   gh label create 'type:docs' --repo "$ORG/$repo" --color 0075CA --description 'Documentation and examples' --force
   gh label create 'type:security' --repo "$ORG/$repo" --color B60205 --description 'Security related' --force
   gh label create 'type:tests' --repo "$ORG/$repo" --color 0E8A16 --description 'Tests and conformance' --force
-  gh label create 'status:blocked' --repo "$ORG/$repo" --color C2E0C6 --description 'Blocked by verified prerequisite' --force
 done
 for priority in 'P0:Critical:BD1E1E' 'P1:High:EF6B2E' 'P2:Normal:FBCA04' 'P3:Low:0E8A16'; do
   IFS=: read -r p label color <<< "$priority"

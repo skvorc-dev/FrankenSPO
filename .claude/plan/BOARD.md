@@ -14,18 +14,18 @@ Who works on what now. Only the main agent and the owner edit this file. Mirrore
 
 | Card | Issue | PR | Waiting for |
 |------|-------|----|-------------|
-| F-01 Repository policies | #2 | — | owner: confirm LICENSE holder and public texts, then close #2 |
 
-## Ready (unassigned)
+## Ready (unassigned — the main agent takes them until workers start, D-17)
 
 | Card | Issue | Size |
 |------|-------|------|
 | F-02 Architecture contracts and capability statuses | #3 | M |
-| F-04 CI security gates | #4 | S |
+| F-04 CI security gates (dependency review left; CodeQL on) | #4 | S |
 
 ## Done (this phase)
 
 | Card | Issue | PR |
 |------|-------|----|
+| F-01 Repository policies | #2 | owner confirmed, #2 closed |
 | F-03 CI green again (NU1903) | #4 | #14 |
 | F-06 Protect `main` (ruleset "Protect main") | #15 | settings |
