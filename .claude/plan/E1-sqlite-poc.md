@@ -53,7 +53,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
   - [ ] `Sferix.SPO.Abstractions/Providers`: `SpoCapability` enum with `AtomicSaveChanges` only, and `ISpoProvider`
         with `string Name` and `IReadOnlySet<SpoCapability> Capabilities`. Nothing else public in this card
   - [ ] `SpoCapabilityMissingException` (Abstractions, public, sealed) names the capability and the provider, no SQL;
-        it has a stable code and its message comes from an English `.resx` resource (D-40)
+        it has a stable code and its message comes from `.resx` resources in en, de, hr, es (D-40, D-41)
   - [ ] `Sferix.SPO.Core/Model`: internal `CompiledModel.Build(IEnumerable<EntityMetadata>, ISpoProvider,
         IReadOnlySet<SpoCapability> required)` = activation: rejects duplicate entity IDs, entity/property names that
         fail `SqlIdentifier`, and every required capability the provider lacks. `InternalsVisibleTo` the test projects
@@ -70,7 +70,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
   `src/Sferix.SPO.Core/Model/**`, `src/Sferix.SPO.Core/Sferix.SPO.Core.csproj`, `src/Sferix.SPO.Provider.SQLite/**`,
   `src/Sferix.SPO.Generators/**`, `tests/Sferix.SPO.Tests.{Unit,SQLite,Generators}/**`
 - Not in scope: schema model and DDL (S-02b), policies (S-11), registration API `AddModule<T>()`, ObjectSpace.
-- Notes: D-33, D-34, D-36, D-39, D-40; owner question 1 from #53. The resource and exception-code pattern set
+- Notes: D-33, D-34, D-36, D-39, D-40, D-41; reuse the resource pattern and check from S-13; owner question 1 from #53. The resource and exception-code pattern set
   here is the one later cards copy; keep it small (one `.resx` per assembly, no localization framework).
 
 ### S-02b · Neutral schema model, SQLite DDL, create and reopen
@@ -86,7 +86,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
         Guid/Binary → BLOB, DateTime → INTEGER; NOT NULL from nullability; quoted identifiers; DDL in one transaction
   - [ ] Ensure-schema: empty database → creates all tables; existing database that matches → no change; missing
         table, missing/extra column, wrong type or nullability → `SpoSchemaMismatchException` naming table and
-        column, nothing changed (no migrations, providers.md); message from `.resx` with a stable code (D-40)
+        column, nothing changed (no migrations, providers.md); message from `.resx` (en, de, hr, es) with a stable code (D-40, D-41)
   - [ ] Tests on a real temp-file database: create, reopen, each mismatch; generated DDL snapshot per storage type
   - [ ] Build 0 warnings; CI green
 - Files: `src/Sferix.SPO.Abstractions/Schema/**`, `src/Sferix.SPO.Core/Schema/**`,
@@ -140,15 +140,37 @@ the main agent completes each card (files, exact acceptance) before moving it to
 
 ### S-12 · Generator diagnostics from resources
 - Issue: #5 · Size: S · Status: Backlog · after S-02
-- Goal: all generator diagnostic titles and messages come from an English `.resx` (D-40), IDs unchanged.
+- Goal: all generator diagnostic titles and messages come from `.resx` in en, de, hr, es (D-40, D-41), IDs unchanged.
 - Acceptance:
   - [ ] `Diagnostics.cs` uses `LocalizableResourceString` for title and message of every `SPO0001`… descriptor
   - [ ] Diagnostic IDs, severities and message arguments unchanged; existing diagnostic tests pass unchanged
-  - [ ] Test: with `CurrentUICulture` set to a culture without resources, the English text is reported
+  - [ ] `de`, `hr`, `es` resources for every diagnostic; `scripts/validate_repository.py` passes
+  - [ ] Test: with `CurrentUICulture` set to a culture without resources, the English text is reported; with `de`,
+        the German text
   - [ ] Build 0 warnings (RS1xxx analyzer rules included); CI green
 - Files: `src/Sferix.SPO.Generators/**`, `tests/Sferix.SPO.Tests.Generators/**`
-- Not in scope: translations, language packages (P2 or later).
-- Notes: D-40. Not in parallel with another card that touches the generator.
+- Not in scope: language packages (P2 or later).
+- Notes: D-40, D-41, the pattern from S-13. Not in parallel with another card that touches the generator.
+
+### S-13 · Localization baseline: four languages and a CI check
+- Issue: #5 · Size: S · Status: In Progress (haiku-2)
+- Goal: the resource pattern every later card copies exists in Core with en, de, hr, es, and CI rejects a missing
+  language or key (D-40, D-41).
+- Acceptance:
+  - [ ] `src/Sferix.SPO.Core/Resources/CoreMessages.resx` plus `.de.resx`, `.hr.resx`, `.es.resx`, with an internal
+        accessor class; the `SqlIdentifier` exception messages come from it; behaviour otherwise unchanged
+  - [ ] `scripts/validate_repository.py`: for every neutral `src/**/*.resx`, the three culture files exist, have
+        exactly the same keys, and no empty values; a clear error names the file and key
+  - [ ] Test (Tests.Unit, new file under `Localization/`): the `SqlIdentifier` message is English under an unsupported
+        culture and German under `de`; satellite assemblies for de, hr, es are produced by the Release build
+  - [ ] `CONTRIBUTING.md`: three lines on the four-language rule and the check
+  - [ ] Build 0 warnings; CI green on all three OSes
+- Files: `src/Sferix.SPO.Core/Resources/**`, `src/Sferix.SPO.Core/Sql/SqlIdentifier.cs`,
+  `tests/Sferix.SPO.Tests.Unit/Localization/**`, `scripts/validate_repository.py`, `CONTRIBUTING.md`
+- Not in scope: generator diagnostics (S-12), Abstractions resources (S-02 adds its own), packaging.
+- Notes: D-40, D-41. Runs in parallel with sonnet-2 (S-01b, S-02): do not touch `src/Sferix.SPO.Generators/**`,
+  `src/Sferix.SPO.Abstractions/**`, `src/Sferix.SPO.Core/Model/**`, any `*.csproj` or `FrankenSPO.slnx`,
+  `src/Sferix.SPO.Provider.SQLite/**`, `tests/Sferix.SPO.Tests.{Generators,SQLite}/**`.
 
 ### S-07 · SQL injection regression suite
 - Issue: #6 · Size: M · Status: Backlog · after S-05
