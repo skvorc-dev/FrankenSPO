@@ -162,7 +162,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
   might audit — add new keys only.
 
 ### S-03d · ObjectSpace: add, get, update, identity map, UUIDv7
-- Issue: #5 · Size: M · Status: In Progress (sonnet-2)
+- Issue: #5 · Size: M · Status: Done (PR #79, sonnet-2)
 - Goal: an application opens an ObjectSpace from `SpoModel`, adds, loads and updates `SPOBaseObject` entities on real
   SQLite in one atomic SaveChanges; identity map by entity ID + key; misuse detected (D-29, D-30, D-35, D-44).
 - Acceptance:
@@ -197,7 +197,7 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Notes: D-29, D-30, D-35, D-42, D-44. Parallel to S-15 (generator only).
 
 ### S-15 · Generator: abstract entities and hidden base members
-- Issue: #5 · Size: S · Status: In Progress (haiku-2)
+- Issue: #5 · Size: S · Status: Done (PR #78, haiku-2)
 - Goal: the generator rejects what the ObjectSpace cannot handle, before runtime (review of #73).
 - Acceptance:
   - [ ] Error `SPO0012`: `[SpoEntity]` on an `abstract` class (no inheritance mapping in P1, D-35)
@@ -207,15 +207,35 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Files: `src/Sferix.SPO.Generators/**`, `tests/Sferix.SPO.Tests.Generators/**`
 - Notes: D-35, D-43.
 
-### S-04 · Scalar tracking, audit timestamps, SoftDelete
-- Issue: #5 · Size: M · Status: Backlog · after S-03d
-- Goal: per-type comparers, failed save keeps values dirty (D-30); UTC timestamps via `TimeProvider`; Deleted state,
-  `IncludeDeleted()` (D-35).
+### S-04 · Exact change detection and SoftDelete
+- Issue: #5 · Size: M · Status: In Progress (sonnet-2)
+- Goal: dirty checks are exact per type (D-30, D-45) and entities can be soft-deleted and are then hidden (D-35).
+- Acceptance:
+  - [ ] Per-property comparer chosen once at activation from the generated `ClrType` (D-45): `decimal` by value and
+        scale (`1.5m` ≠ `1.50m`), `DateTime` by ticks and kind, `DateTimeOffset` by ticks and offset, `byte[]` by
+        content, `string` ordinal, the rest `Equals`; tests for each, including that `1.5m` → `1.50m` is saved
+  - [ ] `ISpoObjectSpace.Delete<T>(T entity)`: a tracked entity is marked deleted; `SaveChanges` sets
+        `IsDeleted = true` and `DeletedAt = ModifiedAt = UtcNow` in the same transaction; failure restores them (D-30).
+        An added, unsaved entity is just no longer tracked. Untracked entity → `SPO1012` (four languages, error-codes)
+  - [ ] `Get`/`GetAsync` return null for a soft-deleted row and for an entity deleted in this ObjectSpace;
+        `IncludeDeleted()` comes with queries (S-05a)
+  - [ ] Tests on real SQLite: delete+save, reopen → `Get` is null, row still exists with the flags set; delete of an
+        added entity inserts nothing; failed save keeps the entity pending deletion; sync and async
+  - [ ] Build 0 warnings; CI green on all three OSes; PR lists the public API addition
+- Files: `src/Sferix.SPO.Abstractions/ObjectSpace/**`, `src/Sferix.SPO.Core/ObjectSpace/**`,
+  `src/Sferix.SPO.Core/Resources/**`, `docs/error-codes.md`, `tests/Sferix.SPO.Tests.SQLite/**`
+- Not in scope: hard delete, restore of deleted rows, version check (S-10).
+- Notes: D-30, D-35, D-42, D-45.
 
-### S-05 · LINQ core subset with parameters and validated identifiers
-- Issue: #6 · Size: M · Status: Backlog · after S-03
-- Goal: Where, string StartsWith/EndsWith/Contains, OrderBy/ThenBy, Skip/Take, Select to DTO, First/Single/Count/Any
-  (D-32); `SpoQueryNotSupportedException` for the rest.
+### S-05a · LINQ core subset: filter, order, page, single results
+- Issue: #6 · Size: M · Status: Backlog · after S-04
+- Goal: `ISpoObjectSpace.Query<T>()` translates the D-32 subset (without Select and GroupBy) into a neutral query
+  model in Core; SQLite renders it with parameters; results go through the identity map (D-32, D-35, D-45).
+  Card completed when S-04 is merged.
+
+### S-05 · Select to DTO
+- Issue: #6 · Size: S · Status: Backlog · after S-05a
+- Goal: `Select` into a DTO or anonymous type, as untracked results (tracking rule 10).
 
 ### S-05b · GroupBy and aggregates
 - Issue: #6 · Size: M · Status: Backlog · after S-05
@@ -306,8 +326,29 @@ the main agent completes each card (files, exact acceptance) before moving it to
 - Goal: the cases listed in `docs/POC_ACCEPTANCE.md` (quotes, tautologies, comments, semicolons, sort names, LIKE).
 
 ### S-08 · `SpoExample.Module` and `SpoExample.Console`
-- Issue: #7 · Size: M · Status: Backlog · after S-04
-- Goal: compilable sample with run instructions; built in CI.
+- Issue: #7 · Size: M · Status: In Progress (haiku-2)
+- Goal: a compilable sample shows today's working features end to end; it is built in CI (POC_ACCEPTANCE).
+- Acceptance:
+  - [ ] `samples/SpoExample.Module` (class library): a `Customer : SPOBaseObject` entity with a few typed fields
+        (string, decimal, enum, nullable DateTime in UTC) and `CustomerModule : ISpoModule`
+  - [ ] `samples/SpoExample.Console`: builds the model with `SqliteProvider`, opens a temp-file database, adds,
+        saves, reads back in a new ObjectSpace, updates, prints the results; exits 0; deletes its temp file
+  - [ ] Both projects in `FrankenSPO.slnx`, so CI builds them; the generator referenced as an analyzer
+  - [ ] `samples/README.md`: what it shows, `dotnet run --project samples/SpoExample.Console`, and what it does
+        **not** show yet (queries, delete, concurrency); output text in English only (sample output, not library text)
+  - [ ] Build 0 warnings; CI green on all three OSes; PR shows the console output from a local run
+- Files: `samples/**`, `FrankenSPO.slnx`
+- Notes: D-36, D-43. Parallel to S-04: do not touch `src/**` or `tests/**`. S-09 extends the sample later.
+
+### S-16 · Analyzer: module names end in `Module`
+- Issue: #5 · Size: S · Status: Backlog · after S-08
+- Goal: a class implementing `ISpoModule` whose name does not end in `Module` is a compile error (D-36).
+- Acceptance:
+  - [ ] `DiagnosticAnalyzer` in `Sferix.SPO.Generators`, error `SPO0014` in en, de, hr, es
+  - [ ] Tests: `CustomerModule` passes, `Customers` fails, an abstract base also checked; `AnalyzerReleases.Unshipped.md`
+  - [ ] Build 0 warnings (RS1xxx rules included); CI green
+- Files: `src/Sferix.SPO.Generators/**`, `tests/Sferix.SPO.Tests.Generators/**`
+- Notes: D-36.
 
 ### S-09 · Capability manifest and docs for the PoC
 - Issue: #1 · Size: S · Status: Backlog · last card of E1
