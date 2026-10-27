@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Sferix.SPO.Generators.Resources;
 
 namespace Sferix.SPO.Generators;
 
@@ -88,12 +89,12 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
 
             if (number <= 0)
             {
-                diagnostics.Add(new(Diagnostics.InvalidFieldNumber, location, Args(property.Name, number.ToString(), "the number must be positive")));
+                diagnostics.Add(new(Diagnostics.InvalidFieldNumber, location, Args(property.Name, number.ToString(), "NotPositive")));
                 valid = false;
             }
             else if (!usedNumbers.Add(number))
             {
-                diagnostics.Add(new(Diagnostics.InvalidFieldNumber, location, Args(property.Name, number.ToString(), "the number is already used in this entity")));
+                diagnostics.Add(new(Diagnostics.InvalidFieldNumber, location, Args(property.Name, number.ToString(), "Duplicate")));
                 valid = false;
             }
 
@@ -206,7 +207,10 @@ public sealed class SpoMetadataGenerator : IIncrementalGenerator
                 // The suggested GUID is created here, not in the model, so the model stays equal between runs.
                 spc.ReportDiagnostic(ReferenceEquals(diagnostic.Descriptor, Diagnostics.InvalidEntityId)
                     ? Diagnostic.Create(diagnostic.Descriptor, diagnostic.Location.ToLocation(), model.DisplayName, Guid.NewGuid().ToString("D"))
-                    : diagnostic.ToDiagnostic());
+                    : ReferenceEquals(diagnostic.Descriptor, Diagnostics.InvalidFieldNumber)
+                        ? Diagnostic.Create(diagnostic.Descriptor, diagnostic.Location.ToLocation(),
+                            diagnostic.Args.Items[0], diagnostic.Args.Items[1], DiagnosticMessages.Get("SPO0004_Reason" + diagnostic.Args.Items[2]))
+                        : diagnostic.ToDiagnostic());
             }
 
             if (duplicates.TryGetValue(model.DisplayName, out var duplicateId))
