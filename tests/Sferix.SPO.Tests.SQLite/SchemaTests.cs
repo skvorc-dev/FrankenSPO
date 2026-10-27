@@ -60,6 +60,16 @@ public sealed class SchemaTests : IDisposable
     }
 
     [Fact]
+    public void TableNamedLikeSqliteInternalPrefixIsNotHidden()
+    {
+        var schema = Schema(Entity("App.SqliteData", new PropertyMetadata(1, "V", typeof(int), false)));
+        using (var connection = Open())
+            SqliteSchemaInitializer.EnsureSchema(connection, schema);
+        using var reopened = Open();
+        SqliteSchemaInitializer.EnsureSchema(reopened, schema);
+    }
+
+    [Fact]
     public void SchemaOrderFollowsFieldNumber()
     {
         var table = Assert.Single(Schema(Customer()).Tables);

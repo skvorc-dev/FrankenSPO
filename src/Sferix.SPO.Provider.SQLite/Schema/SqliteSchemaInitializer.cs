@@ -64,7 +64,7 @@ internal static class SqliteSchemaInitializer
         var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         using var command = connection.CreateCommand();
         command.Transaction = transaction;
-        command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'table' AND name NOT LIKE 'sqlite_%'";
+        command.CommandText = "SELECT name FROM sqlite_master WHERE type = 'table' AND substr(name, 1, 7) <> 'sqlite_'";
         using var reader = command.ExecuteReader();
         while (reader.Read())
             names.Add(reader.GetString(0));
